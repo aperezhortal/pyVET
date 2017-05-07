@@ -4,6 +4,7 @@
 *.o
 *.so
 *.cpp
+*.c
 
 # Project configuration files
 #############################

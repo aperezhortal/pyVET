@@ -1,0 +1,35 @@
+Metadata-Version: 1.2
+Name: pyVET
+Version: 1.0
+Summary: Variational Echo Tracking Algorithm (VET)
+Home-page: http://pypi.python.org/pypi/pyVET/
+Author: Andrés A. Pérez Hortal
+Author-email: andres.perezhortal@mail.mcgill.ca , andresperezcba@gmail.com
+License: LICENSE.txt
+Description: ======================================================
+        pyVET -- Variational Echo Tracking Algorithm
+        ======================================================
+        
+        pyVET provides a python implementation of the Variational Echo Tracking
+        presented by Laroche and Zawazdki (1995).
+    
+        This algorithm is used by the McGill Algorithm for Prediction by Lagrangian Extrapolation (MAPLE)
+        described in Germann and Zawadzki (2002).
+        
+        
+        Notes
+        -----
+        Laroche, S., and I. Zawadzki, 1995: 
+        Retrievals of horizontal winds from single-Doppler clear-air data by methods of 
+        cross-correlation and variational analysis. J. Atmos. Oceanic Technol., 12, 721–738.
+        doi: http://dx.doi.org/10.1175/1520-0426(1995)012<0721:ROHWFS>2.0.CO;2
+        url: http://dx.doi.org/10.1175/1520-0426(1995)012<0721:ROHWFS>2.0.CO;2
+     
+        Germann, U. and I. Zawadzki, 2002: 
+        Scale-Dependence of the Predictability of Precipitation from Continental Radar Images.
+        Part I: Description of the Methodology. Mon. Wea. Rev., 130, 2859–2873,
+        doi: 10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2.
+        url: http://dx.doi.org/10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2
+     
+     
+Platform: UNKNOWN

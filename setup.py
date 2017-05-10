@@ -1,47 +1,83 @@
+""" 
+Setup
+"""
+from __future__ import division, absolute_import, print_function
 
-from Cython.Build.Dependencies import cythonize
-import numpy
+
+__author__ = "Andres Perez Hortal"
+__copyright__ = "Copyright (c) 2017, Andres A. Perez Hortal, McGill University"
+__license__ = "BSD-3-Clause License, see LICENCE.txt for more details"
+__email__ = "andresperezcba@gmail.com"
+
+
+
+
+
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
 
+try:
+    import numpy
+except ImportError:
+    raise RuntimeError( "Numpy required to pior running the package installation\n" +
+                        "Try installing it with:\n" + 
+                        "$> pip install numpy" )
+    
+    
+try:
+    from Cython.Build.Dependencies import cythonize
+    CythonPresent = True
+except ImportError:
+    CythonPresent = False
+    
 
-# This is a list of files to install, and where
-# (relative to the 'root' dir, where setup.py is)
-# You could be more specific.
-# Build the dist with:
-#    python setup.py sdist
-# More ifo on :https://www.digitalocean.com/community/tutorials/how-to-package-and-distribute-python-applications
-morphLibExtension = Extension( "pyVET.morphing", 
-                               sources = ['pyVET/morphing.pyx'],
+_VET_ExtensionArguments = dict(extra_compile_args = ['-fopenmp'],
                                include_dirs=[numpy.get_include()],
-                               extra_compile_args = ['-fopenmp'],
-                               extra_link_args = ['-fopenmp'] )
+                               language='c',
+                               extra_link_args = ['-fopenmp'] 
+                               )
+
+if CythonPresent:
+    _VETLibExtension = Extension( "pyVET._VET", 
+                                  sources = ['pyVET/_VET.pyx'],
+                                  **_VET_ExtensionArguments )
+                                           
+    externalModules = cythonize([_VETLibExtension])                                       
+else:
+    _VETLibExtension = Extension( "pyVET._VET", 
+                                  sources = ['pyVET/_VET.c'],
+                                  **_VET_ExtensionArguments )
+    externalModules = [_VETLibExtension]
 
 
-setup( name = "pyVET",
-    version = "1.0.0",
-    description = "pyVET",
+build_requires=['numpy']
+
+
+
+setup(
+    name='pyVET',
+    version='1.0',
     author = "Andres Perez Hortal",
     author_email = "andresperezcba@gmail.com",
-    # Name the folder where your packages live:
-    # (If you have other packages (dirs) or modules (py files) then
-    # put them into the package directory - they will be found 
-    # recursively.)
-    
-    packages = find_packages(),
-    # package_data={'pyWAT': ['icons/*']},
-    ext_modules =cythonize( [ morphLibExtension]),
-    include_package_data = True,
-    # packages = ['pyWrf'],
-    # 'package' package must contain files (see list above)
-    # I called the package 'package' thus cleverly confusing the whole issue...
-    # This dict maps the package name =to=> directories
-    # It says, package *needs* these files.
-    # package_data = {'wrfUtilities' : ["README"] , 'wrfUtilities' : ["parameters.ini"] },
-    # 'runner' is in the root.
-    # scripts = ["runner"],
-    long_description = """
-    Variational Echo Tracking
-    """ 
-    
- ) 
+    packages=find_packages(),
+    ext_modules = externalModules,
+    #url='http://pypi.python.org/pypi/pyVET/',
+    license='LICENSE.txt',
+    description='Variational Echo Tracking Algorithm',
+    long_description=open('README.rst').read(),
+    classifiers=[
+    'Development Status :: 5 - Production/Stable',    'Intended Audience :: Science/Research',
+    'Topic :: Scientific/Engineering',
+    'Topic :: Scientific/Engineering :: Atmospheric Science',
+    'License :: OSI Approved :: BSD License',
+    'Programming Language :: Python :: 2',
+    'Programming Language :: Python :: 2.7',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Cython'],
+    setup_requires=build_requires,
+    install_requires=build_requires
+    )
+
+
+

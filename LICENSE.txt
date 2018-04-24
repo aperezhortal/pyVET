@@ -1,9 +1,5 @@
 BSD-3-Clause Licence
-Copyright (c) 2017, Andres A. Perez Hortal
-Department of Atmospheric and Oceanic Sciences
-McGill University
-Montreal, Canada
-All rights reserved.
+Copyright (c) 2018, Andres A. Perez Hortal
 
 Redistribution and use in source and binary forms, with or without 
 modification, are permitted provided that the following conditions are met:

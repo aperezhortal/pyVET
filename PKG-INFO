@@ -4,7 +4,7 @@ Version: 1.0
 Summary: Variational Echo Tracking Algorithm (VET)
 Home-page: http://pypi.python.org/pypi/pyVET/
 Author: Andrés A. Pérez Hortal
-Author-email: andres.perezhortal@mail.mcgill.ca , andresperezcba@gmail.com
+Author-email: andresperezcba@gmail.com
 License: LICENSE.txt
 Description: ======================================================
         pyVET -- Variational Echo Tracking Algorithm

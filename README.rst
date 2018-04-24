@@ -41,7 +41,7 @@ The pyVET package need the following dependencies
 * skimage
 
 
-Installing SkewT
+Installing PyVET
 ================
 
 Install from source

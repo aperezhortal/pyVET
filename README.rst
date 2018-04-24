@@ -48,7 +48,7 @@ Install from source
 -------------------
 
 The latest version can be installed manually by downloading the sources from
-https://github.com/aperezhortal/SkewTplus
+https://github.com/aperezhortal/pyVET
 
 Then, run::
 

@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+
+#
+# Licensed under the BSD-3-Clause license
+# Copyright (c) 2018, Andres A. Perez Hortal
+
 """
 Error handling module
 """

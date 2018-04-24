@@ -1,12 +1,15 @@
+# -*- coding: utf-8 -*-
+
+#
+# Licensed under the BSD-3-Clause license
+# Copyright (c) 2018, Andres A. Perez Hortal
+#
+
 """
 Cython module for morphing and cost functions implementations used in
 in the Variation Echo Tracking Algorithm
 """
 
-__author__ = "Andres Perez Hortal"
-__copyright__ = "Copyright (c) 2017, Andres A. Perez Hortal"
-__license__ = "BSD-3-Clause License, see LICENCE.txt for more details"
-__email__ = "andresperezcba@gmail.com"
 
 from cython.parallel import prange, parallel
 from pyVET.errorHandling import fatalError
@@ -27,6 +30,7 @@ cimport numpy as np
 @cython.wraparound( False )
 @cython.nonecheck( False )
 @cython.cdivision( True )
+#TODO rename to WARP
 def _morph( np.ndarray[np.float64_t, ndim = 2] image, np.ndarray[np.float64_t, ndim = 3] displacement ):
     """ 
     
@@ -320,4 +324,5 @@ def _costFunction( np.ndarray[np.float64_t, ndim = 3] sectorDisplacement2D,
             smoothnessPenalty += tempSmoothPenalty * sectorSmoothGain[i]            
                        
     return  residuals + smoothnessPenalty
+
 

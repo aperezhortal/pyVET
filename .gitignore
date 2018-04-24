@@ -5,13 +5,14 @@
 *.so
 *.cpp
 *.c
+*.pyc
 
 # Project configuration files
 #############################
 
 .project
 .pydevproject
-
+.settings
 
 # Python precompiled
 ####################

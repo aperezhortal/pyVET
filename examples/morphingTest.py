@@ -1,8 +1,5 @@
-'''
-Created on Oct 6, 2016
+# -*- coding: utf-8 -*-
 
-@author: aperez
-'''
 # For python 3 portability
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)

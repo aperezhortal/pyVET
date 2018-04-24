@@ -1,32 +1,43 @@
+# -*- coding: utf-8 -*-
+
+#
+# Licensed under the BSD-3-Clause license
+# Copyright (c) 2018, Andres A. Perez Hortal
+
 '''
 Variational Echo Tracking (VET) Module
 
 
 This module implements the VET algorithm presented
 by `Laroche and Zawazdki (1995)`_ and used in the 
-McGill Algorithm for Prediction by Lagrangian Extrapolation (MAPLE) described in
-`Germann and Zawadzki (2002)`_.
+McGill Algorithm for Prediction by Lagrangian Extrapolation (MAPLE) described
+in `Germann and Zawadzki (2002)`_.
 
 
-.. _`Laroche and Zawazdki (1995)`: http://dx.doi.org/10.1175/1520-0426(1995)012<0721:ROHWFS>2.0.CO;2
+.. _`Laroche and Zawazdki (1995)`:\
+    http://dx.doi.org/10.1175/1520-0426(1995)012<0721:ROHWFS>2.0.CO;2
 
-.. _`Germann and Zawadzki (2002)`: http://dx.doi.org/10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2
+.. _`Germann and Zawadzki (2002)`:\
+    http://dx.doi.org/10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2
      
 
-The morphing and the cost functions are implemented in Cython and paralellized for performance
+The morphing and the cost functions are implemented in Cython and parallelized 
+for performance
 purposes.
    
 References
 ----------    
 
 Laroche, S., and I. Zawadzki, 1995: 
-Retrievals of horizontal winds from single-Doppler clear-air data by methods of 
-cross-correlation and variational analysis. J. Atmos. Oceanic Technol., 12, 721–738.
+Retrievals of horizontal winds from single-Doppler clear-air data by 
+methods of cross-correlation and variational analysis.
+J. Atmos. Oceanic Technol., 12, 721–738.
 doi: http://dx.doi.org/10.1175/1520-0426(1995)012<0721:ROHWFS>2.0.CO;2
 
 Germann, U. and I. Zawadzki, 2002: 
-Scale-Dependence of the Predictability of Precipitation from Continental Radar Images.
-Part I: Description of the Methodology. Mon. Wea. Rev., 130, 2859–2873,
+Scale-Dependence of the Predictability of Precipitation from Continental 
+Radar Images. Part I: Description of the Methodology.
+Mon. Wea. Rev., 130, 2859–2873,
 doi: 10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2.      
 
 
@@ -45,17 +56,6 @@ from pyVET._VET import _costFunction
 from pyVET.errorHandling import fatalError
 
 
-__author__ = "Andres Perez Hortal"
-__copyright__ = "Copyright (c) 2017, Andres A. Perez Hortal, McGill University"
-__license__ = "BSD-3-Clause License, see LICENCE.txt for more details"
-__email__ = "andresperezcba@gmail.com"
-
-
-
-
-
-
-
 def roundInt( scalar ):
     """
     Round number to nearest integer. Returns and integer value.
@@ -64,21 +64,27 @@ def roundInt( scalar ):
 
 
 
-def costFunction( sectorDisplacement1D, inputImage, referenceImage, blocksShape, smoothGain ):
+def costFunction( sectorDisplacement1D, inputImage, 
+                  referenceImage, blocksShape, smoothGain ):
     """
     Variational Echo Tracking Cost Function
     
-    .. _`scipy.optimize.minimize` : https://docs.scipy.org/doc/scipy-0.18.1/reference/generated/scipy.optimize.minimize.html
+    .. _`scipy.optimize.minimize` :\
+    https://docs.scipy.org/doc/scipy-0.18.1/reference/\
+    generated/scipy.optimize.minimize.html
     
     This function is designed to be used with the `scipy.optimize.minimize`_ 
     
-    The function first argument is the variable to be used in the minimization procedure.
+    The function first argument is the variable to be used in the 
+    minimization procedure.
     
-    The sector displacement must be a flat array compatible with the dimensions of the
-    input image and sectors shape (see parameters section below for more details).
+    The sector displacement must be a flat array compatible with the 
+    dimensions of the input image and sectors shape (see parameters section
+    below for more details).
         
     
-    .. _ndarray: https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html
+    .. _ndarray:\
+        https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html
     
     Parameters
     ----------
@@ -97,7 +103,8 @@ def costFunction( sectorDisplacement1D, inputImage, referenceImage, blocksShape,
         
         
     inputImage : ndarray_  (ndim=2)
-        Input image array (nx by ny pixels) where the sector displacement is applied.
+        Input image array (nx by ny pixels) where the sector displacement
+        is applied.
         
      
     referenceImage : ndarray_ (ndim=2)
@@ -119,9 +126,11 @@ def costFunction( sectorDisplacement1D, inputImage, referenceImage, blocksShape,
         Value of the cost function
     """    
     
-    sectorDisplacement2D = sectorDisplacement1D.reshape( *( ( 2, ) + blocksShape ) )
+    sectorDisplacement2D = sectorDisplacement1D.reshape( 
+                                *( ( 2, ) + blocksShape ) )
     
-    return _costFunction( sectorDisplacement2D, inputImage, referenceImage, smoothGain )
+    return _costFunction( sectorDisplacement2D, inputImage, 
+                          referenceImage, smoothGain )
 
 
 
@@ -132,25 +141,29 @@ def VET( inputImage, referenceImage,
          firstGuess = None,
          verbose=False ):
     '''
-    Variational Echo Tracking Algorithm presented in `Laroche and Zawazdki (1995)`_ 
-    and used in the McGill Algorithm for Prediction by Lagrangian Extrapolation (MAPLE) described in
+    Variational Echo Tracking Algorithm presented in
+    `Laroche and Zawazdki (1995)`_  and used in the McGill Algorithm for
+    Prediction by Lagrangian Extrapolation (MAPLE) described in
     `Germann and Zawadzk (2002)`_.
 
-    .. _`Laroche and Zawazdki (1995)`: http://dx.doi.org/10.1175/1520-0426(1995)012<0721:ROHWFS>2.0.CO;2
+    .. _`Laroche and Zawazdki (1995)`:\
+        http://dx.doi.org/10.1175/1520-0426(1995)012<0721:ROHWFS>2.0.CO;2
 
-    .. _`Germann and Zawadzki (2002)`: http://dx.doi.org/10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2
+    .. _`Germann and Zawadzki (2002)`:\
+        http://dx.doi.org/10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2
      
-    
     This algorithm computes the displacement field (Warping) between two images
-    that minimizes sum of the residuals of the squared image differences along with
-    a smoothness constrain.   
+    that minimizes sum of the residuals of the squared image differences along
+    with a smoothness constrain.   
     
-    In order to find the minimum an scaling guess procedure is applied, from larger scales
-    to a finer scale. This reduces the changes that the minimization procedure converges to 
-    a local minima. The scaling guess is defined by the scaling factors (see **factors** keyword).
+    In order to find the minimum an scaling guess procedure is applied,
+    from larger scales
+    to a finer scale. This reduces the changes that the minimization procedure
+    converges to a local minima. The scaling guess is defined by the scaling
+    factors (see **factors** keyword).
     
-    The smoothness of the returned displacement field is controlled by the smoothness constrain
-    gain (**smoothGain** keyword).
+    The smoothness of the returned displacement field is controlled by the
+    smoothness constrain gain (**smoothGain** keyword).
     
     If a first guess is not given, zero displacements are used as first guess. 
     
@@ -166,9 +179,11 @@ def VET( inputImage, referenceImage,
         Same shape as the input image.
             
     factors : list or array 
-        If dimension is 1, the same factors will be used both image dimensions (x and y)
-        If is 2D, the each row determines the factors of the corresponding dimensions.
-        The factors denotes the number of sectors in each dimension used in each scaling procedure.
+        If dimension is 1, the same factors will be used both image dimensions
+        (x and y). If is 2D, the each row determines the factors of the 
+        corresponding dimensions.
+        The factors denotes the number of sectors in each dimension used in 
+        each scaling procedure.
         
     smoothGain : float
         Smooth gain factor
@@ -192,13 +207,15 @@ def VET( inputImage, referenceImage,
     ----------    
     
     Laroche, S., and I. Zawadzki, 1995: 
-    Retrievals of horizontal winds from single-Doppler clear-air data by methods of 
-    cross-correlation and variational analysis. J. Atmos. Oceanic Technol., 12, 721–738.
+    Retrievals of horizontal winds from single-Doppler clear-air data by
+    methods of cross-correlation and variational analysis.
+    J. Atmos. Oceanic Technol., 12, 721–738.
     doi: http://dx.doi.org/10.1175/1520-0426(1995)012<0721:ROHWFS>2.0.CO;2
     
     Germann, U. and I. Zawadzki, 2002: 
-    Scale-Dependence of the Predictability of Precipitation from Continental Radar Images.
-    Part I: Description of the Methodology. Mon. Wea. Rev., 130, 2859–2873,
+    Scale-Dependence of the Predictability of Precipitation from Continental
+    Radar Images.  Part I: Description of the Methodology.
+    Mon. Wea. Rev., 130, 2859–2873,
     doi: 10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2. 
     
     '''
@@ -219,7 +236,10 @@ def VET( inputImage, referenceImage,
     factors = numpy.array( factors, dtype = numpy.int )
     
     if factors.ndim == 1 and inputImage.shape[0] == inputImage.shape[1]:
-        newFactors = numpy.zeros( ( 2, ) + factors.shape ) + factors.reshape( ( 1, factors.shape[0] ) )
+        
+        newFactors = numpy.zeros( ( 2, ) + factors.shape ) \
+                    + factors.reshape( ( 1, factors.shape[0] ) )
+        
         factors = newFactors
         
     if factors.ndim != 2:
@@ -232,10 +252,12 @@ def VET( inputImage, referenceImage,
     for i in range( factors.shape[1] ):
         
         if ( inputImage.shape[0] % factors[0, i] ) > 0:
-            raise Exception( "The factor %d does not divide x dimension" % factors[0, i] )
+            raise Exception(
+                 "The factor %d does not divide x dimension" % factors[0, i] )
         
         if ( inputImage.shape[1] % factors[1, i] ) > 0:
-            raise Exception( "The factor %d does not divide y dimension" % factors[1, i] )
+            raise Exception(
+                "The factor %d does not divide y dimension" % factors[1, i] )
     
     
     # Sort factors in descending order 
@@ -246,7 +268,8 @@ def VET( inputImage, referenceImage,
         firstGuess = numpy.zeros( ( 2, ) + inputImage.shape, order = 'C' )
     else:
         if firstGuess.shape != ( 2, ) + inputImage.shape:
-            raise fatalError( "The shape of the initial guess do not match the Input image dimensions" )
+            raise fatalError( "The shape of the initial guess do not match " +
+                              "the Input image dimensions" )
 
 
     for i in range( factors.shape[1] ):        
@@ -269,11 +292,16 @@ def VET( inputImage, referenceImage,
         initialGuess = numpy.mean( numpy.mean( sectorFirstGuess,
                                                axis = 4, keepdims = True ),
                                                axis = 5, keepdims = True )
+        
+        print("initialGuess.shape",initialGuess.shape)
         debugPrint("Minimizing")
         result = minimize( costFunction,
                            initialGuess[:, :, :, 0, 0, 0].flatten(),
-                           args = ( inputImage, referenceImage, blocksShape,smoothGain ),
-                           method = 'CG', options = {'eps':0.1, 'gtol': 0.1, 'maxiter' : 20, 'disp': True}
+                           args = ( inputImage, referenceImage, 
+                                    blocksShape,smoothGain ),
+                           method = 'CG', 
+                           options = {'eps':0.1, 'gtol': 0.1, 
+                                      'maxiter' : 20, 'disp': True}
                            ) 
 #         pr.disable()
 #         s = StringIO.StringIO()
@@ -285,18 +313,25 @@ def VET( inputImage, referenceImage,
         sectorDisplacements = result.x
         if factors[0, i] > 1 and factors[1, i] > 1:
             
-            sectorDisplacement2D = sectorDisplacements.reshape( *( sectorFirstGuess.shape[0:3] ) )
+            sectorDisplacement2D = sectorDisplacements.reshape(
+                                     *( sectorFirstGuess.shape[0:3] ) )
             
-            zoomFactor = ( 1, sectorFirstGuess.shape[4], sectorFirstGuess.shape[5] )
+            zoomFactor = ( 1, sectorFirstGuess.shape[4], 
+                           sectorFirstGuess.shape[5] )
             
-            firstGuess = zoom( sectorDisplacement2D, zoomFactor, order = 1, mode = 'nearest' )
+            firstGuess = zoom( sectorDisplacement2D, zoomFactor, 
+                               order = 1, mode = 'nearest' )
             
             
         else:
-            firstGuessAsBlocks = view_as_blocks( firstGuess,
-                                                 block_shape = ( 1, ) + sectorShape )    
+            firstGuessAsBlocks = view_as_blocks( 
+                                    firstGuess,
+                                    block_shape = ( 1, ) + sectorShape )    
 
-            firstGuessAsBlocks[:] = sectorDisplacements.reshape( ( 2, ) + sectorFirstGuess.shape[1:3] + ( 1, 1, 1 ) )
+            firstGuessAsBlocks[:] = sectorDisplacements.reshape( 
+                                        ( 2, ) 
+                                        + sectorFirstGuess.shape[1:3] 
+                                        + ( 1, 1, 1 ) )
         
     return firstGuess 
 

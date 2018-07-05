@@ -22,4 +22,6 @@ __pycache__
 
 doc/build
 build
-
+dist
+examples/.ipynb_checkpoints
+pyVET.egg-info

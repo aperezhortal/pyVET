@@ -303,8 +303,8 @@ def _costFunction( np.ndarray[np.float64_t, ndim = 3] sectorDisplacement2D,
      
     if smoothGain > 0.:
         
-        sectorSmoothGain[0] = smoothGain / ( < np.float64_t > ( blockSizeInX * blockSizeInX ) )  
-        sectorSmoothGain[1] = smoothGain / ( < np.float64_t > ( blockSizeInY * blockSizeInY ) )
+        sectorSmoothGain[0] = smoothGain / ( < np.float64_t > ( blockSizeInX **2))  
+        sectorSmoothGain[1] = smoothGain / ( < np.float64_t > ( blockSizeInY **2) )
         
         for i in range( 2 ):
             
@@ -325,4 +325,137 @@ def _costFunction( np.ndarray[np.float64_t, ndim = 3] sectorDisplacement2D,
                        
     return  residuals + smoothnessPenalty
 
+@cython.boundscheck( False )
+@cython.wraparound( False )
+@cython.nonecheck( False )
+@cython.cdivision( True )
+def _costFunction2( np.ndarray[np.float64_t, ndim = 3] displacement2D,
+                    np.ndarray[np.float64_t, ndim = 2] inputImage,
+                    np.ndarray[np.float64_t, ndim = 2] referenceImage,
+                    float smoothGain ):
+    """
+    Variational Echo Tracking Cost function.
+    
+    This function computes the Variational Echo Tracking (VET) Cost function presented
+    by `Laroche and Zawazdki (1995)`_ and used in the 
+    McGill Algorithm for Prediction by Lagrangian Extrapolation (MAPLE) described in
+    `Germann and Zawadzki (2002)`_.
+    
+    
+    .. _`Laroche and Zawazdki (1995)`: http://dx.doi.org/10.1175/1520-0426(1995)012<0721:ROHWFS>2.0.CO;2
+    
+    .. _`Germann and Zawadzki (2002)`: http://dx.doi.org/10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2
+     
+     
+    The cost function is a the sum of the residuals of the squared image differences 
+    along with a smoothness constrain.   
+        
+    This cost function implementation, supports displacement vector sectorization.
+    The displacement vector represent the displacement aaplied to the pixels in 
+    each individual sector.
+     
+    This help to reduce the number of degrees of freedom of the cost function when 
+    hierarchical approaches are used to obtain the minima of the cost function
+    (from low resolution to full image resolution).
+    For example, in the MAPLE algorithm an Scaling Guess procedure is used to find the displacement vectors.
+    The echo motion field is retrieved in three runs with increasing resolution.
+    The retrieval starts with (left) a uniform field, which is used as a first guess to retrieve (middle) the field on a 5 × 5 grid, which in turn is the first guess of (right) the final minimization with a 25 × 25 grid
+    
+    The shape of the sector is deduced from the image shape and the displacement
+    vector shape. 
+    
+    IMPORTANT: The number of sectors in each dimension (x and y) must be a factor
+    full image size.
+         
+    The value of displaced pixels that fall outside the limits takes the 
+    value of the nearest edge.
+    
+    The cost function is computed in parallel over the x axis.
+    
+    .. _ndarray: https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html
+         
+    Parameters
+    ----------
+    
+    sectorDisplacement2D : ndarray_ (ndim=3)  
+        Array of displacements to apply to each sector. The dimensions are:
+        sectorDisplacement2D [ x (0) or y (1) displacement, 
+                               i index of sector, j index of sector ]  
+        
+        
+    inputImage : ndarray_  (ndim=2)
+        Input image array where the sector displacement is applied
+     
+    referenceImage : ndarray_
+        Image array to be used as reference 
+    
+    smoothGain : float
+        Smoothness constrain gain
+        
+    Returns
+    -------
+    
+    penalty : float
+        Value of the cost function
+    
+    
+    References
+    ----------
+    
+    Laroche, S., and I. Zawadzki, 1995: 
+    Retrievals of horizontal winds from single-Doppler clear-air data by methods of 
+    cross-correlation and variational analysis. J. Atmos. Oceanic Technol., 12, 721–738.
+    doi: http://dx.doi.org/10.1175/1520-0426(1995)012<0721:ROHWFS>2.0.CO;2
+ 
+    Germann, U. and I. Zawadzki, 2002: 
+    Scale-Dependence of the Predictability of Precipitation from Continental Radar Images.
+    Part I: Description of the Methodology. Mon. Wea. Rev., 130, 2859–2873,
+    doi: 10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2. 
+    
+    """
+    
+    cdef np.intp_t imageSizeInX = < np.intp_t > inputImage.shape[0]
+    cdef np.intp_t imageSizeInY = < np.intp_t > inputImage.shape[1]
+    
+    #TODO: Add size check
+    
+     
+    cdef np.intp_t  x, y, i, j, l, m
+                   
+            
+    cdef np.ndarray[np.float64_t, ndim = 2] morphedImage = \
+        _morph( inputImage, displacement2D )
+            
+    cdef np.float64_t residuals = 0
+    
+    for x in range( imageSizeInX ):
+        for y in range( imageSizeInY ):
+            residuals += ( morphedImage[x, y] - referenceImage[x, y] ) ** 2
 
+            
+    cdef np.float64_t smoothnessPenalty = 0
+    
+    cdef  np.float64_t sectorSmoothGain[2]
+    cdef  np.float64_t tempSmoothPenalty  
+    
+     
+    if smoothGain > 0.:
+        
+        for i in range( 2 ):
+            
+            tempSmoothPenalty = 0
+            
+            with nogil, parallel():
+                
+                for x in prange( 1, imageSizeInX - 1, schedule = 'dynamic' ):
+                
+                    for y in range( 1, imageSizeInY - 1 ):
+                                            
+                        tempSmoothPenalty += ( ( displacement2D[i, x + 1, y] - 2 * displacement2D[i, x, y] + displacement2D[i, x - 1, y] ) ** 2 + 
+                                               ( displacement2D[i, x, y + 1] - 2 * displacement2D[i, x, y] + displacement2D[i, x, y - 1] ) ** 2 + 
+                                               0.125 * ( displacement2D[i, x + 1, y + 1] - displacement2D[i, x + 1, y - 1] - displacement2D[i, x - 1, y + 1] + 
+                                                displacement2D[i, x - 1, y - 1] ) ** 2 )  
+            
+            smoothnessPenalty += tempSmoothPenalty * sectorSmoothGain[i]            
+                       
+    return  residuals + smoothnessPenalty

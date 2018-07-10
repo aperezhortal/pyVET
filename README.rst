@@ -26,17 +26,19 @@ doi: 10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2
 Documentation
 =============
 
-Comming soon
+Coming soon
 
 Dependencies
 ============
 
 The pyVET package need the following dependencies
 
+* future
 * numpy
 * cython
 * scipy
 * skimage
+* matplolib (for examples)
 
 
 Installing PyVET
@@ -48,9 +50,11 @@ Install from source
 The latest version can be installed manually by downloading the sources from
 https://github.com/aperezhortal/pyVET
 
-Then, run::
-
+Then, for a global installation run::    
     python setup.py install
+For user installation (
+https://docs.python.org/2/install/#alternate-installation-the-user-scheme)::
+    python setup.py install --user
 
 If you want to put it somewhere different than your system files, you can do::
     

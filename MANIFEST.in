@@ -1,3 +1,3 @@
 include *.txt *.rst
 recursive-include examples *
-recursive-include SkpyVET *.pyx *.pxd  
+recursive-include pyVET *.pyx  

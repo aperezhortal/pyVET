@@ -1,15 +1,16 @@
 # coding: utf-8
 
-# # VET Test - Curl field displacement
+# # VET Test - Linear field displacement
 
 # In this Jupyter notebook, we will test the Variational Echo Tracking implementation using
 # reference image and a target image that was morphed using a known displacement field.
- 
+# 
 # The VET should be able to retrieve actual displacement field.
- 
+# 
 
 # ## Load reference image
 # Lets start by loading a reference image from the scipy package and resizing it to a suitable size:
+
 
 import numpy
 from scipy.misc.common import face # import the racoon face image
@@ -51,8 +52,8 @@ x, y = numpy.meshgrid(positions,
 # A rotor displacement is applied
 displacement = numpy.zeros((2, image_size, image_size))
 
-displacement[0, :] = y
-displacement[1, :] = -x
+displacement[0, :] = x
+displacement[1, :] = 0
 
 displacement *= 2
 
@@ -84,6 +85,7 @@ plt.show()
 # ## Retrieve displacement field using VET
 # Now, we apply morph the reference image by appliying the displacement field:    
 
+
 from pyVET.vet import morph
 
 morphed_image, mask = morph(reference_image, displacement)
@@ -109,6 +111,7 @@ new_displacement, intermediate_steps = vet(reference_image,
 
 
 # ## Show the scaling guess procedure results
+
 
 from pyVET.vet import downsize
 
@@ -138,18 +141,20 @@ plt.show()
 
 # ## Compare retrieved displacement field with the applied one
 
+
 plt.close()
 plt.figure(figsize=(13, 13))
 
 plt.subplot(121, aspect='equal')
 step = 31
+plt.title("Reference Displacement")
 plt.quiver(x[::step, ::step], y[::step, ::step],
            displacement[0, ::step, ::step],
            displacement[1, ::step, ::step], scale=10)
 plt.xlim(-1, 1)
 plt.ylim(-1, 1)
-
 plt.subplot(122, aspect='equal')
+plt.title("VET Displacement")
 plt.quiver(x[::step, ::step], y[::step, ::step],
            new_displacement[0, ::step, ::step],
            new_displacement[1, ::step, ::step], scale=10)
@@ -159,5 +164,5 @@ plt.ylim(-1, 1)
 plt.show()
 
 
-# The small differences in the fields are mostly because the minimization is never carried out in the grid resultion.
+# The differences in the fields are mostly because the minimization is never carried out in the grid resultion.
 # The minimum sector size was 16x16 grid points.

@@ -20,24 +20,7 @@ in `Germann and Zawadzki (2002)`_.
 
 
 The morphing and the cost functions are implemented in Cython and parallelized
-for performance
-purposes.
-
-References
-----------
-
-Laroche, S., and I. Zawadzki, 1995:
-Retrievals of horizontal winds from single-Doppler clear-air data by
-methods of cross-correlation and variational analysis.
-J. Atmos. Oceanic Technol., 12, 721–738.
-doi: http://dx.doi.org/10.1175/1520-0426(1995)012<0721:ROHWFS>2.0.CO;2
-
-Germann, U. and I. Zawadzki, 2002:
-Scale-Dependence of the Predictability of Precipitation from Continental
-Radar Images. Part I: Description of the Methodology.
-Mon. Wea. Rev., 130, 2859–2873,
-doi: 10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2.
-
+for performance.
 '''
 # For python 3 portability
 
@@ -132,28 +115,24 @@ def cost_function(sector_displacement_1d,
 
 
     .. _ndarray:\
-        https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html
+    https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html
+
 
     Parameters
     ----------
 
-
     sector_displacement_1d : ndarray_
         Array of displacements to apply to each sector. The dimensions are:
-        sector_displacement_2d [ x (0) or y (1) displacement,
-                               i index of sector, j index of sector ].
+        sector_displacement_2d
+        [ x (0) or y (1) displacement, i index of sector, j index of sector ].
         The shape of the sector displacements must be compatible with the
         input image and the block shape.
         The shape should be (2, mx, my) where mx and my are the numbers of
         sectors in the x and the y dimension.
 
-
-
-
     input_image : ndarray_  (ndim=2)
         Input image array (nx by ny pixels) where the sector displacement
         is applied.
-
 
     reference_image : ndarray_ (ndim=2)
         Image array to be used as reference (nx by ny pixels).
@@ -161,7 +140,6 @@ def cost_function(sector_displacement_1d,
     blocks_shape : ndarray_ (ndim=2)
         Number of sectors in each dimension (x and y).
         blocks_shape.shape = (mx,my)
-
 
     smooth_gain : float
         Smoothness constrain gain
@@ -172,6 +150,7 @@ def cost_function(sector_displacement_1d,
 
     penalty : float
         Value of the cost function
+
     """
 
     sector_displacement_2d = sector_displacement_1d.reshape(
@@ -292,8 +271,8 @@ def vet(input_image, reference_image,
     if factors.ndim == 1 and input_image.shape[0] == input_image.shape[1]:
 
         new_factors = (numpy.zeros((2,) + factors.shape, dtype=numpy.int)
-                      + factors.reshape((1, factors.shape[0]))
-                      )
+                       + factors.reshape((1, factors.shape[0]))
+                       )
         factors = new_factors
 
     if factors.ndim != 2:
@@ -377,5 +356,5 @@ def vet(input_image, reference_image,
 
     if intermediate_steps:
         return first_guess, scaling_guesses
-    
+
     return first_guess

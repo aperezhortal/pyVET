@@ -5,41 +5,50 @@
 # Copyright (c) 2018, Andres A. Perez Hortal
 
 """
-Error handling module
+Error handling module.
+
+This module includes customized pyVET exceptions.
 """
+
 # For python 3 portability
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 
-__author__ = "Andres Perez Hortal"
-__copyright__ = "Copyright (c) 2017, Andres A. Perez Hortal, McGill University"
-__license__ = "BSD-3-Clause License, see LICENCE.txt for more details"
-__email__ = "andresperezcba@gmail.com"
+from builtins import super
 
 
-class FileNotFoundException(Exception):
+class GeneralException(Exception):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+    def __str__(self):
+        return self.message
+
+    def __repr__(self):
+        return self.message
+    
+    
+        
+class FileNotFoundException(GeneralException):
     """ Exception when a file is not found"""
     file_path = None
     message = None
 
     def __init__(self, filePath):
-        Exception.__init__(self, filePath)
+        super().__init__(filePath)
         self.file_path = filePath
         self.message = 'Parameter file not found:  ' + self.file_path + '\n\n'
+    
 
 
-class FatalError(Exception):
+class FatalError(GeneralException):
     """ Fatal error exception """
 
     def __init__(self, main_error_message, *details_messages):
         """ Constructor """
 
-        super(
-            FatalError,
-            self).__init__(
-            self,
-            main_error_message,
-            *details_messages)
+        super().__init__(main_error_message,
+                         *details_messages)
 
         self.main_error_message = main_error_message
 
@@ -52,8 +61,4 @@ class FatalError(Exception):
 
         self.message += '\n'
 
-    def __str__(self):
-        return self.message
-
-    def __repr__(self):
-        return self.message
+    

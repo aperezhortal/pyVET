@@ -255,7 +255,6 @@ def vet(input_image, reference_image,
     '''
 
     if verbose:
-
         def debug_print(*args, **kwargs):
             print(*args, **kwargs)
     else:
@@ -346,7 +345,8 @@ def vet(input_image, reference_image,
                           )
 
         first_guess = result.x.reshape(*(first_guess.shape))
-        scaling_guesses.append(first_guess)
+        if first_guess is None:
+            scaling_guesses.append(first_guess)
 
     first_guess = zoom(first_guess,
                        (1,

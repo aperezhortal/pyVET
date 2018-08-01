@@ -26,6 +26,9 @@ from libc.math cimport floor, round
 cimport numpy as np
 
 
+#TODO: Add linear_interpolation_1D , nogil 
+#TODO: Add linear_interpolation_2D , nogil
+
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.nonecheck(False)
@@ -138,8 +141,7 @@ def _morph(np.ndarray[np.float64_t, ndim=2] image,
                     x_ceil_int = x_floor_int + 1
                     if x_ceil_int > x_max_value_int:
                         x_ceil_int = x_max_value_int
-                    
-                    
+                                        
                 if y_float_value < 0:
                     mask[x, y] = 1
                     y_float_value = 0
@@ -195,8 +197,8 @@ def _morph(np.ndarray[np.float64_t, ndim=2] image,
 @cython.nonecheck(False)
 @cython.cdivision(True)
 def _cost_function(np.ndarray[np.float64_t, ndim=3] sector_displacement,
+                  np.ndarray[np.float64_t, ndim=2] template_image,
                   np.ndarray[np.float64_t, ndim=2] input_image,
-                  np.ndarray[np.float64_t, ndim=2] reference_image,
                   np.ndarray[np.int8_t, ndim=2] mask,
                   float smooth_gain):
     """
@@ -257,10 +259,10 @@ def _cost_function(np.ndarray[np.float64_t, ndim=3] sector_displacement,
                                i index of sector, j index of sector ]  
         
         
-    input_image : ndarray_  (ndim=2)
+    template_image : ndarray_  (ndim=2)
         Input image array where the sector displacement is applied
      
-    reference_image : ndarray_
+    input_image : ndarray_
         Image array to be used as reference 
     
     smooth_gain : float
@@ -293,8 +295,8 @@ def _cost_function(np.ndarray[np.float64_t, ndim=3] sector_displacement,
     cdef np.intp_t x_sectors = < np.intp_t > sector_displacement.shape[1]
     cdef np.intp_t y_sectors = < np.intp_t > sector_displacement.shape[2]   
     
-    cdef np.intp_t x_image_size = < np.intp_t > input_image.shape[0]
-    cdef np.intp_t y_image_size = < np.intp_t > input_image.shape[1]
+    cdef np.intp_t x_image_size = < np.intp_t > template_image.shape[0]
+    cdef np.intp_t y_image_size = < np.intp_t > template_image.shape[1]
     
     if x_image_size % x_sectors != 0:
         raise FatalError("Error computing cost function",
@@ -333,20 +335,17 @@ def _cost_function(np.ndarray[np.float64_t, ndim=3] sector_displacement,
                         real_displacement[1, x, y] = (
                             sector_displacement[1, i, j])
                         
-                    
-                
             
     cdef np.ndarray[np.float64_t, ndim = 2] morphed_image 
     cdef np.ndarray[np.int8_t, ndim = 2] morph_mask
     
-    morphed_image, morph_mask = _morph(input_image, real_displacement)
+    morphed_image, morph_mask = _morph(template_image, real_displacement)
             
-    cdef np.float64_t residuals
-    residuals = 0 
+    cdef np.float64_t residuals = 0 
     for x in range(x_image_size):
         for y in range(y_image_size):
             if (mask[x, y] == 0) and (morph_mask[x, y] == 0):
-                residuals += (morphed_image[x, y] - reference_image[x, y]) ** 2
+                residuals += (morphed_image[x, y] - input_image[x, y]) ** 2
 
             
     cdef np.float64_t smoothness_penalty = 0
@@ -388,15 +387,13 @@ def _cost_function(np.ndarray[np.float64_t, ndim=3] sector_displacement,
                                    + sector_displacement[i, x - 1, y - 1])
                         df_dxdy = df_dxdy / (4 * x_block_size * y_block_size)
                                                        
-                        inloop_smoothness_penalty += (df_dx2 * df_dx2 
-                                               + 2 * df_dxdy * df_dxdy
-                                               + df_dy2 * df_dy2)
-                        
+                        inloop_smoothness_penalty = (df_dx2 * df_dx2 
+                                                     + 2 * df_dxdy * df_dxdy
+                                                     + df_dy2 * df_dy2)
             
-            smoothness_penalty += (inloop_smoothness_penalty
-                                   * smooth_gain
-                                   * x_block_size
-                                   * y_block_size)            
+                        smoothness_penalty += inloop_smoothness_penalty 
+                                                
+        smoothness_penalty *= smooth_gain * x_block_size* y_block_size            
                        
-    return  residuals + smoothness_penalty
+    return  residuals, smoothness_penalty
 

@@ -91,12 +91,15 @@ def downsize(input_array, x_factor, y_factor=None):
     return numpy.ma.masked_invalid(data)
 
 
+
+
 def cost_function(sector_displacement_1d,
+                  template_image,
                   input_image,
-                  reference_image,
                   blocks_shape,
                   mask,
-                  smooth_gain):
+                  smooth_gain,
+                  debug=False):
     """
     Variational Echo Tracking Cost Function
 
@@ -130,7 +133,7 @@ def cost_function(sector_displacement_1d,
         The shape should be (2, mx, my) where mx and my are the numbers of
         sectors in the x and the y dimension.
 
-    input_image : ndarray_  (ndim=2)
+    template_image : ndarray_  (ndim=2)
         Input image array (nx by ny pixels) where the sector displacement
         is applied.
 
@@ -156,13 +159,18 @@ def cost_function(sector_displacement_1d,
     sector_displacement_2d = sector_displacement_1d.reshape(
         *((2,) + tuple(blocks_shape)))
 
-    return _cost_function(sector_displacement_2d, input_image,
-                          reference_image, mask, smooth_gain)
-
+    residuals, smoothness_penalty = _cost_function(
+        sector_displacement_2d, template_image,
+        input_image, mask, smooth_gain)
+    if debug:
+        print()
+        print("residuals",residuals)
+        print("smoothness_penalty",smoothness_penalty)
+    return residuals + smoothness_penalty 
 
 # TODO: input parameter check
 # TODO: add keywords for minimization options
-def vet(input_image, reference_image,
+def vet(template_image, input_image,
         mask,
         factors=[64, 16, 4, 2, 1],
         smooth_gain=100,
@@ -182,8 +190,10 @@ def vet(input_image, reference_image,
         http://dx.doi.org/10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2
 
     This algorithm computes the displacement field between two images
-    that minimizes sum of the residuals of the squared image differences along
-    with a smoothness constrain.
+    ( the input_image with respect to the template image).
+    The displacement is sought by minimizing sum of the residuals of the
+    squared differences of the images pixels and the contribution of a
+    smoothness constrain.
 
     In order to find the minimum an scaling guess procedure is applied,
     from larger scales
@@ -200,12 +210,12 @@ def vet(input_image, reference_image,
     Parameters
     ----------
 
+    template_image : ndarray_
+        Reference image used to obtain the displacement (2D array).
+        
     input_image : ndarray_
         Input image of nx by ny pixels (2D array)
-
-    reference_image : ndarray_
-        Reference image used to obtain the displacement (2D array).
-        Same shape as the input image.
+        Same shape as the template image.
 
     factors : list or array
         If dimension is 1, the same factors will be used both image dimensions
@@ -235,7 +245,8 @@ def vet(input_image, reference_image,
     -------
 
     displacementField : ndarray_
-        Displacement Field (2D array)
+        Displacement Field (2D array representing the transformation) that
+        warps the template image into the input image.
 
     References
     ----------
@@ -261,13 +272,13 @@ def vet(input_image, reference_image,
         def debug_print(*args, **kwargs):
             pass
 
+    template_image = numpy.array(template_image, dtype=numpy.float64)
     input_image = numpy.array(input_image, dtype=numpy.float64)
-    reference_image = numpy.array(reference_image, dtype=numpy.float64)
 
     # Check that the factors divide the domain
     factors = numpy.asarray(factors, dtype=numpy.int)
 
-    if factors.ndim == 1 and input_image.shape[0] == input_image.shape[1]:
+    if factors.ndim == 1 and template_image.shape[0] == template_image.shape[1]:
 
         new_factors = (numpy.zeros((2,) + factors.shape, dtype=numpy.int)
                        + factors.reshape((1, factors.shape[0]))
@@ -283,11 +294,11 @@ def vet(input_image, reference_image,
     # Check that the factors divide the domain
     for i in range(factors.shape[1]):
 
-        if (input_image.shape[0] % factors[0, i]) > 0:
+        if (template_image.shape[0] % factors[0, i]) > 0:
             raise Exception(
                 "The factor %d does not divide x dimension" % factors[0, i])
 
-        if (input_image.shape[1] % factors[1, i]) > 0:
+        if (template_image.shape[1] % factors[1, i]) > 0:
             raise Exception(
                 "The factor %d does not divide y dimension" % factors[1, i])
 
@@ -303,24 +314,25 @@ def vet(input_image, reference_image,
     else:
         if first_guess.shape != first_guess_shape:
             raise FatalError("The shape of the initial guess do not match " +
-                             "the factors coarse resolution***")
+                             "the factors coarse resolution")
         else:
             initial_guess = first_guess
 
     first_guess = None
 
+    _template_image = numpy.asarray(template_image, dtype='float64')
     _input_image = numpy.asarray(input_image, dtype='float64')
-    _reference_image = numpy.asarray(reference_image, dtype='float64')
 
     if intermediate_steps:
         scaling_guesses = list()
     for i in range(factors.shape[1]):
         # Minimize for each sector size
 
-        sector_shape = (round_int(input_image.shape[0] / factors[0, i]),
-                        round_int(input_image.shape[1] / factors[1, i]))
+        sector_shape = (round_int(template_image.shape[0] / factors[0, i]),
+                        round_int(template_image.shape[1] / factors[1, i]))
 
-        debug_print("\nSector Shape:", sector_shape)
+        debug_print("\nNumber of sectors: %s" % str(factors[:, i]))
+        debug_print("Sector Shape:", sector_shape)
 
         if first_guess is None:
             first_guess = initial_guess
@@ -336,22 +348,31 @@ def vet(input_image, reference_image,
 
         result = minimize(cost_function,
                           first_guess.flatten(),
-                          args=(_input_image, _reference_image,
+                          args=(_template_image, _input_image,
                                 factors[:, i], mask,
                                 smooth_gain),
                           method='CG',
                           options={'eps': 0.1, 'gtol': 0.1,
                                    'maxiter': 20, 'disp': True}
                           )
-
+        
+        
         first_guess = result.x.reshape(*(first_guess.shape))
+        
+        if verbose:
+            cost_function(result.x,
+                          _template_image, _input_image,
+                          factors[:, i], mask,
+                          smooth_gain,
+                          debug=True)
+            
         if first_guess is None:
             scaling_guesses.append(first_guess)
 
     first_guess = zoom(first_guess,
                        (1,
-                        _input_image.shape[0] / first_guess.shape[1],
-                        _input_image.shape[1] / first_guess.shape[2]),
+                        _template_image.shape[0] / first_guess.shape[1],
+                        _template_image.shape[1] / first_guess.shape[2]),
                        order=1, mode='nearest')
 
     if intermediate_steps:

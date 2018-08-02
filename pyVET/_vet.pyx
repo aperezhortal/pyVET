@@ -14,9 +14,11 @@ in the Variation Echo Tracking Algorithm
 from cython.parallel import prange, parallel
 from pyVET.error_handling import FatalError
 import numpy as np
-from skimage.transform import warp
 
 cimport cython
+cimport numpy as np
+
+ctypedef np.float64_t float64
 
 from libc.math cimport floor, round
 
@@ -26,16 +28,57 @@ from libc.math cimport floor, round
 cimport numpy as np
 
 
-#TODO: Add linear_interpolation_1D , nogil 
-#TODO: Add linear_interpolation_2D , nogil
+cdef inline float64 float_abs(float64 a) nogil: return a if a > 0. else -a
+""" Return the absolute value of a float """
+
+@cython.cdivision(True)
+cdef inline float64 _linear_interpolation(float64 x,
+                                          float64 x1,
+                                          float64 x2,
+                                          float64 y1,
+                                          float64 y2) nogil:
+    """
+    Linear interpolation at x.
+    y(x) = y1 + (x-x1) * (y2-y1) / (x2-x1)
+    """
+    
+    if (float_abs(x1 - x2) < 1e-6):
+        return y1
+        
+    return y1 + (x - x1) * (y2 - y1) / (x2 - x1) 
+
+@cython.cdivision(True)
+cdef inline float64 _bilinear_interpolation(float64 x,
+                                            float64 y,
+                                            float64 x1,
+                                            float64 x2,
+                                            float64 y1,
+                                            float64 y2,
+                                            float64 Q11,
+                                            float64 Q12,
+                                            float64 Q21,
+                                            float64 Q22) nogil:
+    '''https://en.wikipedia.org/wiki/Bilinear_interpolation'''
+    
+    cdef float64 f_x_y1, f_x_y2
+    
+    f_x_y1 = _linear_interpolation(x, x1, x2, Q11, Q21)
+    f_x_y2 = _linear_interpolation(x, x1, x2, Q12, Q22)
+    return _linear_interpolation(y, y1, y2, f_x_y1, f_x_y2)
+
+
+
+    
+# TODO: Add linear_interpolation_1D , nogil 
+# TODO: Add linear_interpolation_2D , nogil
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.nonecheck(False)
 @cython.cdivision(True)
 # TODO rename to WARP
-def _morph(np.ndarray[np.float64_t, ndim=2] image,
-           np.ndarray[np.float64_t, ndim=3] displacement):
+def _morph(np.ndarray[float64, ndim=2] image,
+           np.ndarray[float64, ndim=3] displacement):
     """ 
     
     Morph image by applying a displacement field (Warping).
@@ -93,7 +136,7 @@ def _morph(np.ndarray[np.float64_t, ndim=2] image,
           
     # Use bilinear interpolation to obtain the value of the displaced pixel
     
-    cdef np.ndarray[np.float64_t, ndim = 2] new_image = (
+    cdef np.ndarray[float64, ndim = 2] new_image = (
         np.zeros([nx, ny], dtype=np.float64))
     
     cdef np.ndarray[np.int8_t, ndim = 2] mask = (
@@ -104,13 +147,13 @@ def _morph(np.ndarray[np.float64_t, ndim=2] image,
     cdef np.intp_t x_max_value_int = nx - 1
     cdef np.intp_t y_max_value_int = ny - 1
 
-    cdef np.float64_t xMaxValuefloat = < np.float64_t > x_max_value_int
-    cdef np.float64_t yMaxValuefloat = < np.float64_t > y_max_value_int
+    cdef float64 xMaxValuefloat = < float64 > x_max_value_int
+    cdef float64 yMaxValuefloat = < float64 > y_max_value_int
         
-    cdef np.float64_t x_float_value, y_float_value
+    cdef float64 x_float_value, y_float_value
     
-    cdef np.float64_t x_interpolation0
-    cdef np.float64_t x_interpolation1  
+    cdef float64 x_interpolation0
+    cdef float64 x_interpolation1  
      
     cdef np.intp_t x_floor_int 
     cdef np.intp_t x_ceil_int
@@ -121,8 +164,8 @@ def _morph(np.ndarray[np.float64_t, ndim=2] image,
         for x in prange(nx , schedule='dynamic'):
             for y in range(ny):                
                 
-                x_float_value = < np.float64_t > x - displacement[0, x, y] 
-                y_float_value = < np.float64_t > y - displacement[1, x, y]
+                x_float_value = (< float64 > x) - displacement[0, x, y] 
+                y_float_value = (< float64 > y) - displacement[1, x, y]
                                 
                 if x_float_value < 0:
                     mask[x, y] = 1
@@ -159,36 +202,19 @@ def _morph(np.ndarray[np.float64_t, ndim=2] image,
                         y_ceil_int = y_max_value_int
                 
                     
-                if x_floor_int == x_ceil_int:
-                    
-                    x_interpolation0 = image[x_floor_int, y_floor_int]
-                    x_interpolation1 = image[x_floor_int, y_ceil_int]                    
-    
-                else:
-                    
-                    x_interpolation0 = (
-                        (< np.float64_t > x_ceil_int - x_float_value) 
-                        * image[x_floor_int, y_floor_int] 
-                        + (x_float_value -< np.float64_t > x_floor_int) 
-                        * image[x_ceil_int, y_floor_int])
-                    
-                    x_interpolation1 = (
-                        (< np.float64_t > x_ceil_int - x_float_value) 
-                        * image[x_floor_int, y_ceil_int] 
-                        + (x_float_value -< np.float64_t > x_floor_int) 
-                        * image[x_ceil_int, y_ceil_int]
-                        )
-                
-                if x_interpolation0 == x_interpolation1:
-                    new_image[x, y] = x_interpolation0
-                else:
-                    new_image[x, y] = (
-                            x_interpolation0 
-                            * (< np.float64_t > y_ceil_int - y_float_value) 
-                            + x_interpolation1 
-                            * (y_float_value -< np.float64_t > y_floor_int)
-                            )
-    
+ 
+                new_image[x, y] = _bilinear_interpolation(
+                                        x_float_value,
+                                        y_float_value,
+                                        < float64 > x_floor_int,
+                                        < float64 > x_ceil_int,
+                                        < float64 > y_floor_int,
+                                        < float64 > y_ceil_int,
+                                        image[x_floor_int, y_floor_int],
+                                        image[x_floor_int, y_ceil_int],
+                                        image[x_ceil_int, y_floor_int],
+                                        image[x_ceil_int, y_ceil_int])
+
     return new_image, mask
 
 
@@ -196,9 +222,9 @@ def _morph(np.ndarray[np.float64_t, ndim=2] image,
 @cython.wraparound(False)
 @cython.nonecheck(False)
 @cython.cdivision(True)
-def _cost_function(np.ndarray[np.float64_t, ndim=3] sector_displacement,
-                  np.ndarray[np.float64_t, ndim=2] template_image,
-                  np.ndarray[np.float64_t, ndim=2] input_image,
+def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
+                  np.ndarray[float64, ndim=2] template_image,
+                  np.ndarray[float64, ndim=2] input_image,
                   np.ndarray[np.int8_t, ndim=2] mask,
                   float smooth_gain):
     """
@@ -315,7 +341,7 @@ def _cost_function(np.ndarray[np.float64_t, ndim=3] sector_displacement,
             < np.intp_t > (round(y_image_size / y_sectors)))
     
     
-    cdef np.ndarray[np.float64_t, ndim = 3] real_displacement = (
+    cdef np.ndarray[float64, ndim = 3] real_displacement = (
             np.zeros([2, x_image_size, y_image_size], dtype=np.float64))
      
     cdef np.intp_t  x, y, i, j, l, m
@@ -336,25 +362,25 @@ def _cost_function(np.ndarray[np.float64_t, ndim=3] sector_displacement,
                             sector_displacement[1, i, j])
                         
             
-    cdef np.ndarray[np.float64_t, ndim = 2] morphed_image 
+    cdef np.ndarray[float64, ndim = 2] morphed_image 
     cdef np.ndarray[np.int8_t, ndim = 2] morph_mask
     
     morphed_image, morph_mask = _morph(template_image, real_displacement)
             
-    cdef np.float64_t residuals = 0 
+    cdef float64 residuals = 0 
     for x in range(x_image_size):
         for y in range(y_image_size):
             if (mask[x, y] == 0) and (morph_mask[x, y] == 0):
                 residuals += (morphed_image[x, y] - input_image[x, y]) ** 2
 
             
-    cdef np.float64_t smoothness_penalty = 0
+    cdef float64 smoothness_penalty = 0
     
-    cdef np.float64_t df_dx2 = 0
-    cdef np.float64_t df_dxdy = 0
-    cdef np.float64_t df_dy2 = 0
+    cdef float64 df_dx2 = 0
+    cdef float64 df_dxdy = 0
+    cdef float64 df_dy2 = 0
 
-    cdef  np.float64_t inloop_smoothness_penalty  
+    cdef float64 inloop_smoothness_penalty  
     
      
     if smooth_gain > 0.:
@@ -393,7 +419,7 @@ def _cost_function(np.ndarray[np.float64_t, ndim=3] sector_displacement,
             
                         smoothness_penalty += inloop_smoothness_penalty 
                                                 
-        smoothness_penalty *= smooth_gain * x_block_size* y_block_size            
+        smoothness_penalty *= smooth_gain * x_block_size * y_block_size            
                        
     return  residuals, smoothness_penalty
 

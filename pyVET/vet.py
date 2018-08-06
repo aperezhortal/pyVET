@@ -168,6 +168,7 @@ def cost_function(sector_displacement_1d,
         print("smoothness_penalty", smoothness_penalty)
     return residuals + smoothness_penalty
 
+
 # TODO: add keywords for minimization options 
 def vet(input_images,
         factors=[32, 16, 4, 2, 1],
@@ -204,12 +205,17 @@ def vet(input_images,
     smoothness constrain gain (**smooth_gain** keyword).
 
     If a first guess is not given, zero displacements are used as first guess.
-
-
+    
+    .. _MaskedArray: https://docs.scipy.org/doc/numpy/reference/\
+        maskedarray.baseclass.html#numpy.ma.MaskedArray
+    
+    .. _ndarray:\
+    https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html
+    
     Parameters
     ----------
 
-    input_images : ndarray_
+    input_images : ndarray_ or MaskedArray
         Input images, sequence of 2D arrays, or 3D arrays.
         The first dimension represents the template_image and the input_image.
         The template_image (first element in first dimensions) denotes the
@@ -236,7 +242,6 @@ def vet(input_images,
     intermediate_steps : bool, optional
         If True, also return a list with the first guesses obtained during the
         scaling procedure. False, by default.
-
 
     verbose : bool, optional
         Verbosity enabled if True (default). 

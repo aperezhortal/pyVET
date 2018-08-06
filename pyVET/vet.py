@@ -23,7 +23,6 @@ The morphing and the cost functions are implemented in Cython and parallelized
 for performance.
 '''
 # For python 3 portability
-
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 
@@ -164,19 +163,19 @@ def cost_function(sector_displacement_1d,
         input_image, mask, smooth_gain)
     if debug:
         print()
-        print("residuals",residuals)
-        print("smoothness_penalty",smoothness_penalty)
+        print("residuals", residuals)
+        print("smoothness_penalty", smoothness_penalty)
     return residuals + smoothness_penalty 
 
 # TODO: input parameter check
 # TODO: add keywords for minimization options
-def vet(template_image, input_image,
-        mask,
-        factors=[64, 16, 4, 2, 1],
+def vet(input_images,
+        mask=None,
+        factors=[32, 16, 4, 2, 1],
         smooth_gain=100,
         first_guess=None,
         intermediate_steps=False,
-        verbose=False):
+        verbose=True):
     '''
     Variational Echo Tracking Algorithm presented in
     `Laroche and Zawadzki (1995)`_  and used in the McGill Algorithm for
@@ -209,13 +208,14 @@ def vet(template_image, input_image,
 
     Parameters
     ----------
-
-    template_image : ndarray_
-        Reference image used to obtain the displacement (2D array).
         
-    input_image : ndarray_
-        Input image of nx by ny pixels (2D array)
-        Same shape as the template image.
+    input_images : ndarray_
+        Input images, sequence of 2D arrays, or 3D arrays.
+        The first dimension represents the template_image and the input_image.
+        The template_image (first element in first dimensions) denotes the 
+        reference image used to obtain the displacement (2D array).
+        The second is the target image.
+        The expected dimensions are (2,nx,ny). 
 
     factors : list or array
         If dimension is 1, the same factors will be used both image dimensions
@@ -264,7 +264,9 @@ def vet(template_image, input_image,
     doi: 10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2.
 
     '''
-
+    
+    print("Running VET algorithm")
+    
     if verbose:
         def debug_print(*args, **kwargs):
             print(*args, **kwargs)
@@ -272,9 +274,19 @@ def vet(template_image, input_image,
         def debug_print(*args, **kwargs):
             pass
 
-    template_image = numpy.array(template_image, dtype=numpy.float64)
-    input_image = numpy.array(input_image, dtype=numpy.float64)
-
+    input_images = numpy.array(input_images, dtype=numpy.float64)
+    
+    if (input_images.ndim != 3 or input_images.shape[0] != 2):
+        raise FatalError("input_images dimension mismatch",
+                         "input_images.shape: %s"%str(input_images.shape),
+                         "(2, x, y ) dimensions expected.")
+        
+    template_image = numpy.array(input_images[0,:], dtype=numpy.float64)
+    input_image = numpy.array(input_images[1,:], dtype=numpy.float64)
+    
+    if mask is None:
+        mask=numpy.zeros_like(template_image, dtype='int8')
+        
     # Check that the factors divide the domain
     factors = numpy.asarray(factors, dtype=numpy.int)
 
@@ -289,7 +301,8 @@ def vet(template_image, input_image,
         if factors.shape[0] != 2:
             raise FatalError("Error computing VET",
                              "Incorrect factors dimensions.",
-                             "factor should be a 1D or 2D array")
+                             "factor should be a 1D if the input images"
+                             +" are square or 2D array otherwise")
 
     # Check that the factors divide the domain
     for i in range(factors.shape[1]):
@@ -313,7 +326,7 @@ def vet(template_image, input_image,
         initial_guess = numpy.zeros(first_guess_shape, order='C')
     else:
         if first_guess.shape != first_guess_shape:
-            raise FatalError("The shape of the initial guess do not match " +
+            raise FatalError("The shape of the initial guess do not match " + 
                              "the factors coarse resolution")
         else:
             initial_guess = first_guess

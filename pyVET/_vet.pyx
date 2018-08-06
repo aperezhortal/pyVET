@@ -9,8 +9,6 @@
 Cython module for morphing and cost functions implementations used in
 in the Variation Echo Tracking Algorithm
 """
-
-
 from cython.parallel import prange, parallel
 from pyVET.error_handling import FatalError
 import numpy as np
@@ -325,12 +323,12 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
     cdef np.intp_t y_image_size = < np.intp_t > template_image.shape[1]
     
     if x_image_size % x_sectors != 0:
-        raise FatalError("Error computing cost function",
+        raise ValueError("Error computing cost function.\n",
                           "The number of sectors in x axis (axis=0)"
                           + " don't divide the image size")
     
     if y_image_size % y_sectors != 0:
-        raise FatalError("Error computing cost function",
+        raise ValueError("Error computing cost function.\n",
                           "The number of sectors in y axis (axis=1) don't"
                           + " divide the image size")
     

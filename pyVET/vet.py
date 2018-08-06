@@ -35,7 +35,6 @@ from skimage.util.shape import view_as_blocks
 
 from pyVET._vet import _cost_function  # @UnresolvedImport
 from pyVET._vet import _morph  # @UnresolvedImport
-from pyVET.error_handling import FatalError
 
 
 def round_int(scalar):
@@ -290,8 +289,8 @@ def vet(input_images,
     input_images = numpy.array(input_images, dtype=numpy.float64)
 
     if (input_images.ndim != 3 or input_images.shape[0] != 2):
-        raise FatalError("input_images dimension mismatch",
-                         "input_images.shape: %s" % str(input_images.shape),
+        raise ValueError("input_images dimension mismatch.\n" +
+                         "input_images.shape: %s\n" % str(input_images.shape)+
                          "(2, x, y ) dimensions expected.")
 
 
@@ -324,20 +323,18 @@ def vet(input_images,
 
     if factors.ndim != 2:
         if factors.shape[0] != 2:
-            raise FatalError("Error computing VET",
-                             "Incorrect factors dimensions.",
+            raise ValueError("Incorrect factors dimensions.\n",
                              "factor should be a 1D if the input images"
                              + " are square or 2D array otherwise")
 
     # Check that the factors divide the domain
     for i in range(factors.shape[1]):
-
         if (template_image.shape[0] % factors[0, i]) > 0:
-            raise Exception(
+            raise ValueError(
                 "The factor %d does not divide x dimension" % factors[0, i])
 
         if (template_image.shape[1] % factors[1, i]) > 0:
-            raise Exception(
+            raise ValueError(
                 "The factor %d does not divide y dimension" % factors[1, i])
 
     # Sort factors in descending order
@@ -351,7 +348,7 @@ def vet(input_images,
         initial_guess = numpy.zeros(first_guess_shape, order='C')
     else:
         if first_guess.shape != first_guess_shape:
-            raise FatalError("The shape of the initial guess do not match " + 
+            raise ValueError("The shape of the initial guess do not match " + 
                              "the factors coarse resolution")
         else:
             initial_guess = first_guess

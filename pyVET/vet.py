@@ -168,9 +168,7 @@ def cost_function(sector_displacement_1d,
         print("smoothness_penalty", smoothness_penalty)
     return residuals + smoothness_penalty
 
-# TODO: input parameter check
-# TODO: add keywords for minimization options
-# TODO: add masked arrays support! 
+# TODO: add keywords for minimization options 
 def vet(input_images,
         factors=[32, 16, 4, 2, 1],
         smooth_gain=100,

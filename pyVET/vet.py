@@ -51,7 +51,26 @@ def ceil_int(scalar):
 
 
 def get_padding(dimension_size, sectors):
+    """
+    Get the padding at each side of the one dimensions of the image
+    so the new image dimensions are divided evenly in the
+    number of *sectors* specified.
 
+    Parameters
+    ----------
+
+    dimension_size : int
+        Actual dimension size.
+
+    sectors : int
+        number of sectors over which the the image will be divided.
+
+    Return
+    ------
+
+    pad_before , pad_after: int, int
+        Padding at each side of the image for the corresponding dimension.
+    """
     reminder = dimension_size % sectors
 
     if reminder != 0:
@@ -67,17 +86,77 @@ def get_padding(dimension_size, sectors):
     return (0, 0)
 
 
-def morph(image, displacement):
+def morph(image, displacement, indexing='ij'):
     """
-    Morph image by applying a displacement field (Warping) in the images
-    coordinates.
+    Morph image by applying a displacement field (Warping).
 
-    Take caution that (rows, columns)=(i,j)==(y,x).
+    The new image is created by selecting for each position the values of the
+    input image at the positions given by the x and y displacements.
+    The routine works in a backward sense.
+    The displacement vectors have to refer to their destination.
 
-    See :py:func:`vet._vet._morph`.
+    For more information in Morphing functions see Section 3 in
+    `Beezley and Mandel (2008)`_.
+
+    Beezley, J. D., & Mandel, J. (2008).
+    Morphing ensemble Kalman filters. Tellus A, 60(1), 131-140.
+
+    .. _`Beezley and Mandel (2008)`: http://dx.doi.org/10.1111/\
+    j.1600-0870.2007.00275.x
+
+
+    The displacement field in x and y directions and the image must have the
+    same dimensions.
+
+    The morphing is executed in parallel over x axis.
+
+    The value of displaced pixels that fall outside the limits takes the
+    value of the nearest edge. Those pixels are indicated by values greater
+    than 1 in the output mask.
+
+    Parameters
+    ----------
+
+    image : ndarray (ndim = 2)
+        Image to morph
+
+    displacement : ndarray (ndim = 3)
+        Displacement field to be applied (Warping). The first dimension
+        corresponds to the coordinate to displace, depending on the indexing
+        convention (see indexing parameter below).
+
+        The dimensions are:
+        displacement [ i/x (0) or j/y (1) ,
+                      i index of pixel, j index of pixel ]
+
+
+
+    indexing : {‘xy’, ‘ij’}, optional
+        Cartesian (‘xy’, default) or matrix (‘ij’) indexing of output.
+        If ‘xy’ is selected, the displacement field dimensions correspond
+        to (x,y). Otherwise, the displacements corresponds to indexes of the
+        2D images (i,j).
+
+    Returns
+    -------
+
+    morphed_image : ndarray (float64 ,ndim = 2)
+        Morphed image
+
+    mask : ndarray (int8 ,ndim = 2)
+        Invalid values mask. Points outside the boundaries are masked.
+        Values greater than 1, indicate masked values.
     """
+
+    if indexing not in ['xy', 'ij']:
+        raise ValueError("Valid values for `indexing` are 'xy' and 'ij'.")
+
     _image = numpy.asarray(image, dtype='float64', order='C')
     _displacement = numpy.asarray(displacement, dtype='float64', order='C')
+
+    if indexing == 'xy':
+        _displacement = _displacement[::-1, :, :]
+
     return _morph(_image, _displacement)
 
 
@@ -100,6 +179,10 @@ def downsize(input_array, x_factor, y_factor=None):
 
     Returns
     -------
+
+    downsized_array : MaskedArray
+        Downsized array with the invalid entries masked.
+
     '''
 
     x_factor = int(x_factor)
@@ -193,6 +276,7 @@ def cost_function(sector_displacement_1d,
 
 
 # TODO: add keywords for minimization options
+# TODO: Add mask to padded values!!!
 def vet(input_images,
         sectors=[[32, 16, 4, 2, 1], [32, 16, 4, 2, 1]],
         smooth_gain=100,
@@ -345,9 +429,9 @@ def vet(input_images,
         sectors = new_sectors
     elif sectors.ndim > 2 or sectors.ndim < 1:
         raise ValueError("Incorrect sectors dimensions.\n",
-                         +"Only 1D or 2D arrays are supported to define"
+                         + "Only 1D or 2D arrays are supported to define"
                          + "the number of sectors used in"
-                          + "the scaling procedure")
+                         + "the scaling procedure")
 
     # Sort sectors in descending order
     sectors[0, :].sort()
@@ -446,10 +530,12 @@ def vet(input_images,
                        order=1, mode='nearest')
 
     # Remove the extra padding if any
+
     ni = _template_image.shape[0]
     nj = _template_image.shape[1]
 
-    first_guess = first_guess[pad_i[0]:ni - pad_i[1],
+    first_guess = first_guess[:,
+                              pad_i[0]:ni - pad_i[1],
                               pad_j[0]:nj - pad_j[1]]
 
     if indexing == 'xy':

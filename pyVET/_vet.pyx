@@ -77,8 +77,7 @@ cdef inline float64 _bilinear_interpolation(float64 x,
 # TODO rename to WARP
 def _morph(np.ndarray[float64, ndim=2] image,
            np.ndarray[float64, ndim=3] displacement):
-    """ 
-    
+    """
     Morph image by applying a displacement field (Warping).
     
     The new image is created by selecting for each position the values of the

@@ -466,8 +466,7 @@ def vet(input_images,
     template_image = numpy.asarray(template_image, dtype='float64')
     input_image = numpy.asarray(input_image, dtype='float64')
 
-    if intermediate_steps:
-        scaling_guesses = list()
+    scaling_guesses = list()
 
     previous_sectors_in_i = sectors[0, 0]
     previous_sectors_in_j = sectors[1, 0]
@@ -518,7 +517,7 @@ def vet(input_images,
                                    'maxiter': 20, 'disp': True}
                           )
 
-        first_guess = result.x.reshape(*(first_guess.shape))
+        first_guess = result.x.reshape(*first_guess.shape)
 
         if verbose:
             cost_function(result.x,
@@ -528,11 +527,10 @@ def vet(input_images,
                           smooth_gain,
                           debug=True)
 
-        if first_guess is None:
-            if indexing == 'xy':
-                scaling_guesses.append(first_guess[::-1, :, :])
-            else:
-                scaling_guesses.append(first_guess)
+        if indexing == 'xy':
+            scaling_guesses.append(first_guess[::-1, :, :])
+        else:
+            scaling_guesses.append(first_guess)
 
         previous_sectors_in_i = sectors_in_i
         previous_sectors_in_j = sectors_in_j

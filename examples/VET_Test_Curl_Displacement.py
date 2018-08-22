@@ -4,25 +4,27 @@
 
 # In this Jupyter notebook, we will test the Variational Echo Tracking implementation using
 # reference image and a target image that was morphed using a known displacement field.
- 
+
 # The VET should be able to retrieve actual displacement field.
- 
+
 
 # ## Load reference image
 # Lets start by loading a reference image from the scipy package and resizing it to a suitable size:
 
 import numpy
-from scipy.misc.common import face # import the racoon face image
-from skimage import transform 
+from scipy.misc.common import face  # import the racoon face image
+from skimage import transform
 import matplotlib.pyplot as plt
 
 # Image size to use in the example
 image_size = 16 * 4 * 2 * 2
 
+
 # Lets first convert the color image to grey scale
 def rgb2gray(rgb):
     """ Function to convert rgb to grey scale"""
     return numpy.dot(rgb[..., :3], [0.299, 0.587, 0.114])
+
 
 reference_image = numpy.array(rgb2gray(face()))
 
@@ -37,7 +39,6 @@ plt.figure(figsize=(8, 8))
 plt.gray()
 plt.imshow(reference_image)
 plt.show()
-
 
 # Lets create an imaginary grid on the image and create a displacement field to apply to the image:
 
@@ -61,6 +62,7 @@ step = 31
 ### Set figures default properties
 import matplotlib
 from matplotlib.ticker import MultipleLocator
+
 matplotlib.rcParams['xtick.labelsize'] = 18
 matplotlib.rcParams['ytick.labelsize'] = 18
 matplotlib.rcParams['axes.titlesize'] = 24
@@ -80,14 +82,12 @@ plt.gca().yaxis.set_major_locator(MultipleLocator(0.5))
 plt.gca().xaxis.set_major_locator(MultipleLocator(0.5))
 plt.show()
 
-
 # ## Retrieve displacement field using VET
 # Now, we apply morph the reference image by appliying the displacement field:    
 
 from pyVET.vet import morph
 
-morphed_image, mask = morph(reference_image, displacement)
-
+morphed_image, mask = morph(reference_image, displacement, indexing='xy')
 
 # Retrieve the displacement field applied to the image using the VET algorithm.
 
@@ -98,15 +98,15 @@ from pyVET.vet import vet
 # This means that the algorithm will start the minimization using 2x2 sector displacements,
 # then, 4x4, and finally 16x16
 factors = [2, 4, 8, 16]
-#mask = numpy.ones_like(reference_image, dtype=numpy.int8)
-new_displacement, intermediate_steps = vet((reference_image,
-                                            morphed_image),
-                                           mask,
+
+input_images = numpy.asarray((reference_image, morphed_image))
+
+new_displacement, intermediate_steps = vet(input_images,
                                            factors,
                                            verbose=True,
                                            intermediate_steps=True,
-                                           smooth_gain=100)
-
+                                           smooth_gain=100,
+                                           indexing='xy')
 
 # ## Show the scaling guess procedure results
 
@@ -157,7 +157,6 @@ plt.quiver(x[::step, ::step], y[::step, ::step],
 plt.xlim(-1, 1)
 plt.ylim(-1, 1)
 plt.show()
-
 
 # The small differences in the fields are mostly because the minimization is never carried out in the grid resultion.
 # The minimum sector size was 16x16 grid points.

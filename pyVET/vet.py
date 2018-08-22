@@ -25,7 +25,6 @@ for performance.
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 
-
 import numpy
 from numpy.ma.core import MaskedArray
 from scipy.ndimage.interpolation import zoom
@@ -341,9 +340,13 @@ def vet(input_images,
         Smooth gain factor
 
     first_guess : ndarray_, optional_
+        The shape of the first guess should have the same shape as the initial
+        sectors shapes used in the scaling procedure.
         If first_guess is not present zeros are used as first guess.
-        The shape should be compatible with the input image.
-        That is (2,nx,ny).
+
+        E.g.:
+            If the first sector shape in the scaling procedure is (ni,nj), then
+            the first_guess should have (2, ni, nj ) shape.
 
     intermediate_steps : bool, optional
         If True, also return a list with the first guesses obtained during the
@@ -352,11 +355,22 @@ def vet(input_images,
     verbose : bool, optional
         Verbosity enabled if True (default).
 
-    indexing : {‘xy’, ‘ij’}, optional
-        Cartesian (‘xy’, default) or matrix (‘ij’) indexing of output.
-        If ‘xy’ is selected, the displacement field dimensions correspond
-        to (x,y). Otherwise, the displacements corresponds to indexes of the
+    indexing : {'xy', 'ij'}, optional
+        Cartesian ('xy', default) or matrix ('ij') indexing of output.
+        If 'xy' is selected, the displacement field dimensions correspond
+        to (x,y).
+        Otherwise, the displacements corresponds to indexes of the
         2D images (i,j).
+
+        E.g.:
+            If 'ij' is selected, the returned displacementField first dimension
+            denote the displacement along the row (displacementField[0,:,:])
+            and along the column (displacementField[1,:,:]).
+
+            If 'xy' is selected, the returned displacementField first dimension
+            denote the displacement along the x dimension
+            (displacementField[0,:,:]) or along the y dimension
+            (displacementField[1,:,:]).
 
 
     Returns
@@ -535,8 +549,8 @@ def vet(input_images,
     nj = _template_image.shape[1]
 
     first_guess = first_guess[:,
-                              pad_i[0]:ni - pad_i[1],
-                              pad_j[0]:nj - pad_j[1]]
+                  pad_i[0]:ni - pad_i[1],
+                  pad_j[0]:nj - pad_j[1]]
 
     if indexing == 'xy':
         first_guess = first_guess[::-1, :, :]

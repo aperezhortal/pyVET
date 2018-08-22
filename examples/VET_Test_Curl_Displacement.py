@@ -99,8 +99,8 @@ from pyVET.vet import vet
 # then, 4x4, and finally 16x16
 factors = [2, 4, 8, 16]
 #mask = numpy.ones_like(reference_image, dtype=numpy.int8)
-new_displacement, intermediate_steps = vet(reference_image,
-                                           morphed_image,
+new_displacement, intermediate_steps = vet((reference_image,
+                                            morphed_image),
                                            mask,
                                            factors,
                                            verbose=True,
@@ -113,27 +113,27 @@ new_displacement, intermediate_steps = vet(reference_image,
 from pyVET.vet import downsize
 
 plt.close()
-plt.figure(figsize=(13, 13))
-
-for i, firstGuess in enumerate(intermediate_steps):
-
-    x_factor = reference_image.shape[0] / firstGuess.shape[1]
-    y_factor = reference_image.shape[1] / firstGuess.shape[2]
-
-    # Get the positions of each sector's center
-    new_x = downsize(x, x_factor, y_factor=y_factor)
-    new_y = downsize(y, x_factor, y_factor=y_factor)
-
-    ax = plt.subplot(221 + i, aspect='equal')
-    plt.quiver(new_x, new_y, firstGuess[0, ...],
-               firstGuess[1, ...], scale=10)
-    plt.xlim(-1, 1)
-    plt.ylim(-1, 1)
-
-    ax.yaxis.set_major_locator(MultipleLocator(0.5))
-    ax.xaxis.set_major_locator(MultipleLocator(0.5))
-
-plt.show()
+# plt.figure(figsize=(13, 13))
+# 
+# for i, firstGuess in enumerate(intermediate_steps):
+# 
+#     x_factor = reference_image.shape[0] / firstGuess.shape[1]
+#     y_factor = reference_image.shape[1] / firstGuess.shape[2]
+# 
+#     # Get the positions of each sector's center
+#     new_x = downsize(x, x_factor, y_factor=y_factor)
+#     new_y = downsize(y, x_factor, y_factor=y_factor)
+# 
+#     ax = plt.subplot(221 + i, aspect='equal')
+#     plt.quiver(new_x, new_y, firstGuess[0, ...],
+#                firstGuess[1, ...], scale=10)
+#     plt.xlim(-1, 1)
+#     plt.ylim(-1, 1)
+# 
+#     ax.yaxis.set_major_locator(MultipleLocator(0.5))
+#     ax.xaxis.set_major_locator(MultipleLocator(0.5))
+# 
+# plt.show()
 
 
 # ## Compare retrieved displacement field with the applied one

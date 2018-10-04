@@ -2,7 +2,7 @@
 #
 # Licensed under the BSD-3-Clause license
 # Copyright (c) 2018, Andres A. Perez Hortal
-'''
+"""
 Variational Echo Tracking (VET) Module
 
 
@@ -20,19 +20,17 @@ in `Germann and Zawadzki (2002)`_.
 
 The morphing and the cost functions are implemented in Cython and parallelized
 for performance.
-'''
-# For python 3 portability
-from __future__ import (absolute_import, division,
-                        print_function, unicode_literals)
+"""
 
 import numpy
 from numpy.ma.core import MaskedArray
 from scipy.ndimage.interpolation import zoom
-from scipy.optimize._minimize import minimize
+from scipy.optimize import minimize
+
 from skimage.util.shape import view_as_blocks
 
 from pyVET._vet import _cost_function  # @UnresolvedImport
-from pyVET._vet import _morph  # @UnresolvedImport
+from pyVET._vet import _warp  # @UnresolvedImport
 
 
 def round_int(scalar):
@@ -75,17 +73,18 @@ def get_padding(dimension_size, sectors):
     if reminder != 0:
         pad = sectors - reminder
         pad_before = pad // 2
-        if (pad % 2 == 0):
+        if pad % 2 == 0:
             pad_after = pad_before
         else:
             pad_after = pad_before + 1
 
         return pad_before, pad_after
 
-    return (0, 0)
+    return 0, 0
 
 
-def morph(image, displacement, indexing='ij'):
+def morph(image, displacement, indexing='ij',
+          gradient=False):
     """
     Morph image by applying a displacement field (Warping).
 
@@ -136,15 +135,24 @@ def morph(image, displacement, indexing='ij'):
         to (x,y). Otherwise, the displacements corresponds to indexes of the
         2D images (i,j).
 
+    gradient : bool, optional
+        If True, the gradient of the morphing function is returned.
+
+
     Returns
     -------
 
-    morphed_image : ndarray (float64 ,ndim = 2)
-        Morphed image
+    image : ndarray (float64 ,ndim = 2)
+        Morphed image.
 
     mask : ndarray (int8 ,ndim = 2)
         Invalid values mask. Points outside the boundaries are masked.
         Values greater than 1, indicate masked values.
+
+    gradient_values : ndarray (float64 ,ndim = 3), optional
+        If gradient keyword is True, the gradient of the function is also
+        returned.
+
     """
 
     if indexing not in ['xy', 'ij']:
@@ -156,11 +164,11 @@ def morph(image, displacement, indexing='ij'):
     if indexing == 'xy':
         _displacement = _displacement[::-1, :, :]
 
-    return _morph(_image, _displacement)
+    return _warp(_image, _displacement, gradient=gradient)
 
 
 def downsize(input_array, x_factor, y_factor=None):
-    '''
+    """
     Reduce resolution of an array by neighbourhood averaging (2D averaging)
     of x_factor by y_factor elements.
 
@@ -182,7 +190,7 @@ def downsize(input_array, x_factor, y_factor=None):
     downsized_array : MaskedArray
         Downsized array with the invalid entries masked.
 
-    '''
+    """
 
     x_factor = int(x_factor)
 
@@ -198,13 +206,19 @@ def downsize(input_array, x_factor, y_factor=None):
     return numpy.ma.masked_invalid(data)
 
 
+def cost_function_gradient(*args, **kwargs):
+    kwargs["gradient"] = True
+    return cost_function(*args, **kwargs)
+
+
 def cost_function(sector_displacement_1d,
                   template_image,
                   input_image,
                   blocks_shape,
                   mask,
                   smooth_gain,
-                  debug=False):
+                  debug=False,
+                  gradient=False):
     """
     Variational Echo Tracking Cost Function
 
@@ -239,51 +253,76 @@ def cost_function(sector_displacement_1d,
         sectors in the x and the y dimension.
 
     template_image : ndarray_  (ndim=2)
-        Input image array (nx by ny pixels) where the sector displacement
+        Target image array (nx by ny pixels) where the sector displacement
         is applied.
 
-    reference_image : ndarray_ (ndim=2)
+    input_image : ndarray_ (ndim=2)
         Image array to be used as reference (nx by ny pixels).
 
     blocks_shape : ndarray_ (ndim=2)
         Number of sectors in each dimension (x and y).
         blocks_shape.shape = (mx,my)
 
+    mask : ndarray_ (ndim=2)
+        Data mask. If is True, the data is marked as not valid and is not
+        used in the computations.
+
     smooth_gain : float
         Smoothness constrain gain
 
+    debug : bool, optional
+        If True, print debugging information.
+
+    gradient : bool, optional
+        If True, the gradient of the morphing function is returned.
 
     Returns
     -------
 
+    penalty or  gradient values.
+
     penalty : float
         Value of the cost function
 
+    gradient_values : ndarray (float64 ,ndim = 3), optional
+        If gradient keyword is True, the gradient of the function is also
+        returned.
+
     """
 
-    sector_displacement_2d = sector_displacement_1d.reshape(
-        *((2,) + tuple(blocks_shape)))
+    sector_displacement_2d = \
+        sector_displacement_1d.reshape(*((2,) + tuple(blocks_shape)))
 
-    residuals, smoothness_penalty = _cost_function(
-        sector_displacement_2d, template_image,
-        input_image, mask, smooth_gain)
-    if debug:
-        print()
-        print("residuals", residuals)
-        print("smoothness_penalty", smoothness_penalty)
-    return residuals + smoothness_penalty
+    if gradient:
+        gradient_values = _cost_function(sector_displacement_2d, template_image,
+                                         input_image, mask, smooth_gain,
+                                         gradient=True)
+
+        return gradient_values.ravel()
+
+    else:
+        residuals, smoothness_penalty = _cost_function(
+            sector_displacement_2d, template_image,
+            input_image, mask, smooth_gain, gradient=False)
+
+        if debug:
+            print()
+            print("residuals", residuals)
+            print("smoothness_penalty", smoothness_penalty)
+
+        return residuals + smoothness_penalty
 
 
 # TODO: add keywords for minimization options
 # TODO: Add mask to padded values!!!
 def vet(input_images,
-        sectors=[[32, 16, 4, 2, 1], [32, 16, 4, 2, 1]],
+        sectors=((32, 16, 4, 2, 1), (32, 16, 4, 2, 1)),
         smooth_gain=100,
         first_guess=None,
         intermediate_steps=False,
         verbose=True,
         indexing='xy'):
-    '''
+    """
     Variational Echo Tracking Algorithm presented in
     `Laroche and Zawadzki (1995)`_  and used in the McGill Algorithm for
     Prediction by Lagrangian Extrapolation (MAPLE) described in
@@ -380,6 +419,10 @@ def vet(input_images,
         Displacement Field (2D array representing the transformation) that
         warps the template image into the input image.
 
+    intermediate_steps : list
+        List with the first guesses obtained during the
+        scaling procedure.
+
     References
     ----------
 
@@ -394,7 +437,7 @@ def vet(input_images,
     Radar Images.  Part I: Description of the Methodology.
     Mon. Wea. Rev., 130, 2859–2873,
     doi: 10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2.
-    '''
+    """
 
     if indexing not in ['xy', 'ij']:
         raise ValueError("Valid values for `indexing` are 'xy' and 'ij'.")
@@ -410,7 +453,7 @@ def vet(input_images,
 
     input_images = numpy.array(input_images, dtype=numpy.float64)
 
-    if (input_images.ndim != 3 or input_images.shape[0] != 2):
+    if input_images.ndim != 3 or input_images.shape[0] != 2:
         raise ValueError("input_images dimension mismatch.\n" +
                          "input_images.shape: %s\n" % str(input_images.shape) +
                          "(2, x, y ) dimensions expected.")
@@ -508,11 +551,12 @@ def vet(input_images,
 
         result = minimize(cost_function,
                           first_guess.flatten(),
+                          jac=cost_function_gradient,
                           args=(_template_image, _input_image,
                                 (sectors_in_i, sectors_in_j),
                                 mask,
                                 smooth_gain),
-                          method='CG',
+                          method='BFGS',
                           options={'eps': 0.1, 'gtol': 0.1,
                                    'maxiter': 20, 'disp': True}
                           )
@@ -546,9 +590,7 @@ def vet(input_images,
     ni = _template_image.shape[0]
     nj = _template_image.shape[1]
 
-    first_guess = first_guess[:,
-                  pad_i[0]:ni - pad_i[1],
-                  pad_j[0]:nj - pad_j[1]]
+    first_guess = first_guess[:, pad_i[0]:ni - pad_i[1], pad_j[0]:nj - pad_j[1]]
 
     if indexing == 'xy':
         first_guess = first_guess[::-1, :, :]

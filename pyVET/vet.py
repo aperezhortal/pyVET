@@ -468,7 +468,7 @@ def vet(input_images,
 
     input_images[mask] = 0  # Remove any Nan from the raw data
 
-    # Create a 2D mask with the rigth data type for _vet
+    # Create a 2D mask with the right data type for _vet
     mask = numpy.asarray(numpy.any(mask, axis=0), dtype='int8')
 
     template_image = numpy.asarray(
@@ -485,7 +485,7 @@ def vet(input_images,
                        )
         sectors = new_sectors
     elif sectors.ndim > 2 or sectors.ndim < 1:
-        raise ValueError("Incorrect sectors dimensions.\n",
+        raise ValueError("Incorrect sectors dimensions.\n"
                          + "Only 1D or 2D arrays are supported to define"
                          + "the number of sectors used in"
                          + "the scaling procedure")

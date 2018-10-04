@@ -16,6 +16,7 @@ cimport cython
 cimport numpy as np
 
 ctypedef np.float64_t float64
+ctypedef np.int8_t int8
 
 from libc.math cimport floor, round
 
@@ -35,7 +36,7 @@ cdef inline float64 _linear_interpolation(float64 x,
     y(x) = y1 + (x-x1) * (y2-y1) / (x2-x1)
     """
 
-    if (float_abs(x1 - x2) < 1e-6):
+    if float_abs(x1 - x2) < 1e-6:
         return y1
 
     return y1 + (x - x1) * (y2 - y1) / (x2 - x1)
@@ -47,16 +48,16 @@ cdef inline float64 _bilinear_interpolation(float64 x,
                                             float64 x2,
                                             float64 y1,
                                             float64 y2,
-                                            float64 Q11,
-                                            float64 Q12,
-                                            float64 Q21,
-                                            float64 Q22) nogil:
+                                            float64 q11,
+                                            float64 q12,
+                                            float64 q21,
+                                            float64 q22) nogil:
     """https://en.wikipedia.org/wiki/Bilinear_interpolation"""
 
     cdef float64 f_x_y1, f_x_y2
 
-    f_x_y1 = _linear_interpolation(x, x1, x2, Q11, Q21)
-    f_x_y2 = _linear_interpolation(x, x1, x2, Q12, Q22)
+    f_x_y1 = _linear_interpolation(x, x1, x2, q11, q21)
+    f_x_y2 = _linear_interpolation(x, x1, x2, q12, q22)
     return _linear_interpolation(y, y1, y2, f_x_y1, f_x_y2)
 
 @cython.boundscheck(False)
@@ -131,7 +132,7 @@ def _warp(np.ndarray[float64, ndim=2] image,
     cdef np.ndarray[float64, ndim = 2] new_image = (
         np.zeros([nx, ny], dtype=np.float64))
 
-    cdef np.ndarray[np.int8_t, ndim = 2] mask = (
+    cdef np.ndarray[int8, ndim = 2] mask = (
         np.zeros([nx, ny], dtype=np.int8))
 
     cdef np.ndarray[float64, ndim = 3] gradient_values = (
@@ -225,7 +226,7 @@ def _warp(np.ndarray[float64, ndim=2] image,
 def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
                    np.ndarray[float64, ndim=2] template_image,
                    np.ndarray[float64, ndim=2] input_image,
-                   np.ndarray[np.int8_t, ndim=2] mask,
+                   np.ndarray[int8, ndim=2] mask,
                    float smooth_gain,
                    bint gradient = False):
     """
@@ -250,7 +251,7 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
         
     This cost function implementation, supports displacement vector 
     sectorization.
-    The displacement vector represent the displacement aaplied to the pixels in 
+    The displacement vector represent the displacement applied to the pixels in
     each individual sector.
      
     This help to reduce the number of degrees of freedom of the cost function 
@@ -370,7 +371,7 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
                     real_displacement[1, x, y] = sector_displacement[1, i, j]
 
     cdef np.ndarray[float64, ndim = 2] morphed_image
-    cdef np.ndarray[np.int8_t, ndim = 2] morph_mask
+    cdef np.ndarray[int8, ndim = 2] morph_mask
     cdef np.ndarray[float64, ndim = 3] _gradient_data
     cdef np.ndarray[float64, ndim = 3] gradient_residuals
     cdef np.ndarray[float64, ndim = 3] gradient_smooth

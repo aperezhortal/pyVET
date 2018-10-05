@@ -2,8 +2,6 @@
 #
 # Licensed under the BSD-3-Clause license
 # Copyright (c) 2018, Andres A. Perez Hortal
-from __future__ import (absolute_import, division,
-                        print_function, unicode_literals)
 
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
@@ -50,7 +48,7 @@ else:
     external_modules = [_vet_lib_extension]
 
 
-build_requires = ['numpy']
+install_requires = ['numpy', 'scipy', 'scikit-image']
 
 
 setup(
@@ -74,6 +72,6 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Cython'],
-    setup_requires=build_requires,
-    install_requires=build_requires
+    setup_requires=install_requires,
+    install_requires=install_requires
 )

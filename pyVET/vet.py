@@ -314,7 +314,6 @@ def cost_function(sector_displacement_1d,
 
 
 # TODO: add keywords for minimization options
-# TODO: Add mask to padded values!!!
 def vet(input_images,
         sectors=((32, 16, 4, 2, 1), (32, 16, 4, 2, 1)),
         smooth_gain=100,
@@ -526,14 +525,23 @@ def vet(input_images,
             _template_image = numpy.pad(template_image, (pad_i, pad_j), 'edge')
             _input_image = numpy.pad(input_image, (pad_i, pad_j), 'edge')
 
+            _mask = numpy.pad(mask, (pad_i, pad_j),
+                              'constant',
+                              constant_values="1")
+
             if first_guess is None:
                 first_guess = numpy.pad(first_guess, (pad_i, pad_j), 'edge')
         else:
             _template_image = template_image
             _input_image = input_image
+            _mask = mask
 
         sector_shape = (_template_image.shape[0] // sectors_in_i,
                         _template_image.shape[1] // sectors_in_j)
+
+        debug_print("original image shape: %s" % str(input_image.shape))
+        debug_print("padded image shape: %s" % str(_input_image.shape))
+        debug_print("padded template_image image shape: %s" % str(_template_image.shape))
 
         debug_print("\nNumber of sectors: %d,%d" %
                     (sectors_in_i, sectors_in_j))
@@ -554,11 +562,11 @@ def vet(input_images,
                           jac=cost_function_gradient,
                           args=(_template_image, _input_image,
                                 (sectors_in_i, sectors_in_j),
-                                mask,
+                                _mask,
                                 smooth_gain),
                           method='BFGS',
-                          options={'eps': 0.1, 'gtol': 0.1,
-                                   'maxiter': 20, 'disp': True}
+                          options={'eps': 0.1, 'gtol': 0.01,
+                                   'maxiter': 30, 'disp': True}
                           )
 
         first_guess = result.x.reshape(*first_guess.shape)
@@ -567,7 +575,7 @@ def vet(input_images,
             cost_function(result.x,
                           _template_image, _input_image,
                           (sectors_in_i, sectors_in_j),
-                          mask,
+                          _mask,
                           smooth_gain,
                           debug=True)
 

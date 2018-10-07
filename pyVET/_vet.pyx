@@ -466,9 +466,9 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
                         gradient_smooth[i, x, y + 1] += df_dy2
 
                         gradient_smooth[i, x - 1, y - 1] += df_dxdy
-                        gradient_smooth[i, x - 1, y + 1] -= df_dy2
-                        gradient_smooth[i, x + 1, y - 1] -= df_dy2
-                        gradient_smooth[i, x + 1, y + 1] += df_dy2
+                        gradient_smooth[i, x - 1, y + 1] -= df_dxdy
+                        gradient_smooth[i, x + 1, y - 1] -= df_dxdy
+                        gradient_smooth[i, x + 1, y + 1] += df_dxdy
 
                     inloop_smoothness_penalty = (df_dx2 * df_dx2
                                                  + 2 * df_dxdy * df_dxdy

@@ -29,8 +29,8 @@ from scipy.optimize import minimize
 
 from skimage.util.shape import view_as_blocks
 
-from pyVET._vet import _cost_function  # @UnresolvedImport
-from pyVET._vet import _warp  # @UnresolvedImport
+from pyVET._vet import _cost_function
+from pyVET._vet import _warp
 
 
 def round_int(scalar):
@@ -206,21 +206,21 @@ def downsize(input_array, x_factor, y_factor=None):
     return numpy.ma.masked_invalid(data)
 
 
-def cost_function_gradient(*args, **kwargs):
+def vet_cost_function_gradient(*args, **kwargs):
     kwargs["gradient"] = True
-    return cost_function(*args, **kwargs)
+    return vet_cost_function(*args, **kwargs)
 
 
-def cost_function(sector_displacement_1d,
-                  template_image,
-                  input_image,
-                  blocks_shape,
-                  mask,
-                  smooth_gain,
-                  debug=False,
-                  gradient=False):
+def vet_cost_function(sector_displacement_1d,
+                      template_image,
+                      input_image,
+                      blocks_shape,
+                      mask,
+                      smooth_gain,
+                      debug=False,
+                      gradient=False):
     """
-    Variational Echo Tracking Cost Function
+    Variational Echo Tracking Cost Function.
 
     .. _`scipy.optimize.minimize` :\
     https://docs.scipy.org/doc/scipy-0.18.1/reference/\
@@ -234,7 +234,6 @@ def cost_function(sector_displacement_1d,
     The sector displacement must be a flat array compatible with the
     dimensions of the input image and sectors shape (see parameters section
     below for more details).
-
 
     .. _ndarray:\
     https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html
@@ -301,9 +300,11 @@ def cost_function(sector_displacement_1d,
         return gradient_values.ravel()
 
     else:
-        residuals, smoothness_penalty = _cost_function(
-            sector_displacement_2d, template_image,
-            input_image, mask, smooth_gain, gradient=False)
+        residuals, smoothness_penalty = _cost_function(sector_displacement_2d,
+                                                       template_image,
+                                                       input_image, mask,
+                                                       smooth_gain,
+                                                       gradient=False)
 
         if debug:
             print()
@@ -313,14 +314,22 @@ def cost_function(sector_displacement_1d,
         return residuals + smoothness_penalty
 
 
-# TODO: add keywords for minimization options
+# TODO: Implement support for multiple times.
+# This can be done by:
+# * Allowing the input_images to have more than 2 times
+# * Adding the corresponding times of each image
+# * Add the # image to be taken as reference.
+# * The cost function is the sum of all the cost functions for each pair of
+# image, reference image.
 def vet(input_images,
         sectors=((32, 16, 4, 2, 1), (32, 16, 4, 2, 1)),
         smooth_gain=100,
         first_guess=None,
         intermediate_steps=False,
         verbose=True,
-        indexing='xy'):
+        indexing='xy',
+        method='BFGS',
+        options=None):
     """
     Variational Echo Tracking Algorithm presented in
     `Laroche and Zawadzki (1995)`_  and used in the McGill Algorithm for
@@ -350,6 +359,8 @@ def vet(input_images,
 
     If a first guess is not given, zero displacements are used as first guess.
 
+    Internally, the function uses the `scipy minimization`_ function.
+
     .. _MaskedArray: https://docs.scipy.org/doc/numpy/reference/\
         maskedarray.baseclass.html#numpy.ma.MaskedArray
 
@@ -361,7 +372,10 @@ def vet(input_images,
 
     input_images : ndarray_ or MaskedArray
         Input images, sequence of 2D arrays, or 3D arrays.
-        The first dimension represents the template_image and the input_image.
+        The first dimension represents the images time dimension.
+
+
+
         The template_image (first element in first dimensions) denotes the
         reference image used to obtain the displacement (2D array).
         The second is the target image.
@@ -410,6 +424,16 @@ def vet(input_images,
             (displacementField[0,:,:]) or along the y dimension
             (displacementField[1,:,:]).
 
+    method : str or callable, optional
+        Type of solver. See `scipy minimization`_ function for more details.
+        The quasi-Newton method of Broyden, Fletcher, Goldfarb, and Shanno
+        (BFGS) is used by default.
+
+    options : dict, optional
+        A dictionary of solver options.
+        See `scipy minimization`_ function for more details.
+
+    .. _`scipy minimization` : https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html
 
     Returns
     -------
@@ -446,7 +470,25 @@ def vet(input_images,
             print(*args, **kwargs)
     else:
         def debug_print(*args, **kwargs):
-            pass
+            del args
+            del kwargs
+
+    if options is None:
+        options = dict()
+    else:
+        options = dict(options)
+
+    options.setdefault('eps', 0.1)
+    options.setdefault('gtol', 0.1)
+    options.setdefault('maxiter', 30)
+    options.setdefault('disp', True)
+
+    # Set to None to suppress pylint warning.
+    _template_image = None
+    pad_i = None
+    pad_j = None
+    sectors_in_i = None
+    sectors_in_j = None
 
     debug_print("Running VET algorithm")
 
@@ -454,8 +496,8 @@ def vet(input_images,
 
     if input_images.ndim != 3 or input_images.shape[0] != 2:
         raise ValueError("input_images dimension mismatch.\n" +
-                         "input_images.shape: %s\n" % str(input_images.shape) +
-                         "(2, x, y ) dimensions expected.")
+                         "input_images.shape: " + str(input_images.shape) +
+                         "\n(2, x, y ) dimensions expected.")
 
     # Get mask
     if isinstance(input_images, MaskedArray):
@@ -513,8 +555,8 @@ def vet(input_images,
     previous_sectors_in_i = sectors[0, 0]
     previous_sectors_in_j = sectors[1, 0]
 
-    for n, (sectors_in_i, sectors_in_j) in enumerate(
-            zip(sectors[0, :], sectors[1, :])):
+    for n, (sectors_in_i, sectors_in_j) in enumerate(zip(sectors[0, :],
+                                                         sectors[1, :])):
 
         # Minimize for each sector size
         pad_i = get_padding(template_image.shape[0], sectors_in_i)
@@ -527,7 +569,7 @@ def vet(input_images,
 
             _mask = numpy.pad(mask, (pad_i, pad_j),
                               'constant',
-                              constant_values="1")
+                              constant_values=1)
 
             if first_guess is None:
                 first_guess = numpy.pad(first_guess, (pad_i, pad_j), 'edge')
@@ -539,12 +581,13 @@ def vet(input_images,
         sector_shape = (_template_image.shape[0] // sectors_in_i,
                         _template_image.shape[1] // sectors_in_j)
 
-        debug_print("original image shape: %s" % str(input_image.shape))
-        debug_print("padded image shape: %s" % str(_input_image.shape))
-        debug_print("padded template_image image shape: %s" % str(_template_image.shape))
+        debug_print("original image shape: " + str(input_image.shape))
+        debug_print("padded image shape: " + str(_input_image.shape))
+        debug_print("padded template_image image shape: "
+                    + str(_template_image.shape))
 
-        debug_print("\nNumber of sectors: %d,%d" %
-                    (sectors_in_i, sectors_in_j))
+        debug_print("\nNumber of sectors: {0:d},{1:d}".format(sectors_in_i,
+                                                              sectors_in_j))
 
         debug_print("Sector Shape:", sector_shape)
 
@@ -557,27 +600,25 @@ def vet(input_images,
 
         debug_print("Minimizing")
 
-        result = minimize(cost_function,
+        result = minimize(vet_cost_function,
                           first_guess.flatten(),
-                          jac=cost_function_gradient,
+                          jac=vet_cost_function_gradient,
                           args=(_template_image, _input_image,
                                 (sectors_in_i, sectors_in_j),
                                 _mask,
                                 smooth_gain),
-                          method='BFGS',
-                          options={'eps': 0.1, 'gtol': 0.01,
-                                   'maxiter': 30, 'disp': True}
-                          )
+                          method=method,
+                          options=options)
 
         first_guess = result.x.reshape(*first_guess.shape)
 
         if verbose:
-            cost_function(result.x,
-                          _template_image, _input_image,
-                          (sectors_in_i, sectors_in_j),
-                          _mask,
-                          smooth_gain,
-                          debug=True)
+            vet_cost_function(result.x,
+                              _template_image, _input_image,
+                              (sectors_in_i, sectors_in_j),
+                              _mask,
+                              smooth_gain,
+                              debug=True)
 
         if indexing == 'xy':
             scaling_guesses.append(first_guess[::-1, :, :])

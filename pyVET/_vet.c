@@ -5163,8 +5163,8 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  *                         gradient_smooth[i, x, y + 1] += df_dy2
  * 
  *                         gradient_smooth[i, x - 1, y - 1] += df_dxdy             # <<<<<<<<<<<<<<
- *                         gradient_smooth[i, x - 1, y + 1] -= df_dy2
- *                         gradient_smooth[i, x + 1, y - 1] -= df_dy2
+ *                         gradient_smooth[i, x - 1, y + 1] -= df_dxdy
+ *                         gradient_smooth[i, x + 1, y - 1] -= df_dxdy
  */
                                     __pyx_t_115 = __pyx_v_i;
                                     __pyx_t_116 = (__pyx_v_x - 1);
@@ -5174,38 +5174,38 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     /* "pyVET/_vet.pyx":469
  * 
  *                         gradient_smooth[i, x - 1, y - 1] += df_dxdy
- *                         gradient_smooth[i, x - 1, y + 1] -= df_dy2             # <<<<<<<<<<<<<<
- *                         gradient_smooth[i, x + 1, y - 1] -= df_dy2
- *                         gradient_smooth[i, x + 1, y + 1] += df_dy2
+ *                         gradient_smooth[i, x - 1, y + 1] -= df_dxdy             # <<<<<<<<<<<<<<
+ *                         gradient_smooth[i, x + 1, y - 1] -= df_dxdy
+ *                         gradient_smooth[i, x + 1, y + 1] += df_dxdy
  */
                                     __pyx_t_118 = __pyx_v_i;
                                     __pyx_t_119 = (__pyx_v_x - 1);
                                     __pyx_t_120 = (__pyx_v_y + 1);
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_gradient_smooth.rcbuffer->pybuffer.buf, __pyx_t_118, __pyx_pybuffernd_gradient_smooth.diminfo[0].strides, __pyx_t_119, __pyx_pybuffernd_gradient_smooth.diminfo[1].strides, __pyx_t_120, __pyx_pybuffernd_gradient_smooth.diminfo[2].strides) -= __pyx_v_df_dy2;
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_gradient_smooth.rcbuffer->pybuffer.buf, __pyx_t_118, __pyx_pybuffernd_gradient_smooth.diminfo[0].strides, __pyx_t_119, __pyx_pybuffernd_gradient_smooth.diminfo[1].strides, __pyx_t_120, __pyx_pybuffernd_gradient_smooth.diminfo[2].strides) -= __pyx_v_df_dxdy;
 
                                     /* "pyVET/_vet.pyx":470
  *                         gradient_smooth[i, x - 1, y - 1] += df_dxdy
- *                         gradient_smooth[i, x - 1, y + 1] -= df_dy2
- *                         gradient_smooth[i, x + 1, y - 1] -= df_dy2             # <<<<<<<<<<<<<<
- *                         gradient_smooth[i, x + 1, y + 1] += df_dy2
+ *                         gradient_smooth[i, x - 1, y + 1] -= df_dxdy
+ *                         gradient_smooth[i, x + 1, y - 1] -= df_dxdy             # <<<<<<<<<<<<<<
+ *                         gradient_smooth[i, x + 1, y + 1] += df_dxdy
  * 
  */
                                     __pyx_t_121 = __pyx_v_i;
                                     __pyx_t_122 = (__pyx_v_x + 1);
                                     __pyx_t_123 = (__pyx_v_y - 1);
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_gradient_smooth.rcbuffer->pybuffer.buf, __pyx_t_121, __pyx_pybuffernd_gradient_smooth.diminfo[0].strides, __pyx_t_122, __pyx_pybuffernd_gradient_smooth.diminfo[1].strides, __pyx_t_123, __pyx_pybuffernd_gradient_smooth.diminfo[2].strides) -= __pyx_v_df_dy2;
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_gradient_smooth.rcbuffer->pybuffer.buf, __pyx_t_121, __pyx_pybuffernd_gradient_smooth.diminfo[0].strides, __pyx_t_122, __pyx_pybuffernd_gradient_smooth.diminfo[1].strides, __pyx_t_123, __pyx_pybuffernd_gradient_smooth.diminfo[2].strides) -= __pyx_v_df_dxdy;
 
                                     /* "pyVET/_vet.pyx":471
- *                         gradient_smooth[i, x - 1, y + 1] -= df_dy2
- *                         gradient_smooth[i, x + 1, y - 1] -= df_dy2
- *                         gradient_smooth[i, x + 1, y + 1] += df_dy2             # <<<<<<<<<<<<<<
+ *                         gradient_smooth[i, x - 1, y + 1] -= df_dxdy
+ *                         gradient_smooth[i, x + 1, y - 1] -= df_dxdy
+ *                         gradient_smooth[i, x + 1, y + 1] += df_dxdy             # <<<<<<<<<<<<<<
  * 
  *                     inloop_smoothness_penalty = (df_dx2 * df_dx2
  */
                                     __pyx_t_124 = __pyx_v_i;
                                     __pyx_t_125 = (__pyx_v_x + 1);
                                     __pyx_t_126 = (__pyx_v_y + 1);
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_gradient_smooth.rcbuffer->pybuffer.buf, __pyx_t_124, __pyx_pybuffernd_gradient_smooth.diminfo[0].strides, __pyx_t_125, __pyx_pybuffernd_gradient_smooth.diminfo[1].strides, __pyx_t_126, __pyx_pybuffernd_gradient_smooth.diminfo[2].strides) += __pyx_v_df_dy2;
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_gradient_smooth.rcbuffer->pybuffer.buf, __pyx_t_124, __pyx_pybuffernd_gradient_smooth.diminfo[0].strides, __pyx_t_125, __pyx_pybuffernd_gradient_smooth.diminfo[1].strides, __pyx_t_126, __pyx_pybuffernd_gradient_smooth.diminfo[2].strides) += __pyx_v_df_dxdy;
 
                                     /* "pyVET/_vet.pyx":459
  *                     df_dxdy = df_dxdy / (4 * x_block_size * y_block_size)

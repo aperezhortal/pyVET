@@ -83,8 +83,7 @@ def get_padding(dimension_size, sectors):
     return 0, 0
 
 
-def morph(image, displacement, indexing='ij',
-          gradient=False):
+def morph(image, displacement, gradient=False):
     """
     Morph image by applying a displacement field (Warping).
 
@@ -120,20 +119,12 @@ def morph(image, displacement, indexing='ij',
 
     displacement : ndarray (ndim = 3)
         Displacement field to be applied (Warping). The first dimension
-        corresponds to the coordinate to displace, depending on the indexing
-        convention (see indexing parameter below).
+        corresponds to the coordinate to displace.
 
         The dimensions are:
         displacement [ i/x (0) or j/y (1) ,
                       i index of pixel, j index of pixel ]
 
-
-
-    indexing : {‘xy’, ‘ij’}, optional
-        Cartesian (‘xy’, default) or matrix (‘ij’) indexing of output.
-        If ‘xy’ is selected, the displacement field dimensions correspond
-        to (x,y). Otherwise, the displacements corresponds to indexes of the
-        2D images (i,j).
 
     gradient : bool, optional
         If True, the gradient of the morphing function is returned.
@@ -155,14 +146,8 @@ def morph(image, displacement, indexing='ij',
 
     """
 
-    if indexing not in ['xy', 'ij']:
-        raise ValueError("Valid values for `indexing` are 'xy' and 'ij'.")
-
     _image = numpy.asarray(image, dtype='float64', order='C')
     _displacement = numpy.asarray(displacement, dtype='float64', order='C')
-
-    if indexing == 'xy':
-        _displacement = _displacement[::-1, :, :]
 
     return _warp(_image, _displacement, gradient=gradient)
 
@@ -327,7 +312,6 @@ def vet(input_images,
         first_guess=None,
         intermediate_steps=False,
         verbose=True,
-        indexing='xy',
         method='BFGS',
         options=None):
     """
@@ -374,13 +358,12 @@ def vet(input_images,
         Input images, sequence of 2D arrays, or 3D arrays.
         The first dimension represents the images time dimension.
 
-
-
         The template_image (first element in first dimensions) denotes the
         reference image used to obtain the displacement (2D array).
         The second is the target image.
-        The expected dimensions are (2,ny,nx).
-        Be aware the the 2D images dimensions correspond to (y, x).
+
+        The expected dimensions are (2,nx,ny).
+        Be aware the the 2D images dimensions correspond to (lon,lat) or (x,y).
 
     sectors : list or array, optional
         The number of sectors for each dimension used in the scaling procedure.
@@ -406,23 +389,6 @@ def vet(input_images,
 
     verbose : bool, optional
         Verbosity enabled if True (default).
-
-    indexing : {'xy', 'ij'}, optional
-        Cartesian ('xy', default) or matrix ('ij') indexing of output.
-        If 'xy' is selected, the displacement field dimensions correspond
-        to (x,y).
-        Otherwise, the displacements corresponds to indexes of the
-        2D images (i,j).
-
-        E.g.:
-            If 'ij' is selected, the returned displacementField first dimension
-            denote the displacement along the row (displacementField[0,:,:])
-            and along the column (displacementField[1,:,:]).
-
-            If 'xy' is selected, the returned displacementField first dimension
-            denote the displacement along the x dimension
-            (displacementField[0,:,:]) or along the y dimension
-            (displacementField[1,:,:]).
 
     method : str or callable, optional
         Type of solver. See `scipy minimization`_ function for more details.
@@ -462,9 +428,6 @@ def vet(input_images,
     doi: 10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2.
     """
 
-    if indexing not in ['xy', 'ij']:
-        raise ValueError("Valid values for `indexing` are 'xy' and 'ij'.")
-
     if verbose:
         def debug_print(*args, **kwargs):
             print(*args, **kwargs)
@@ -480,7 +443,7 @@ def vet(input_images,
 
     options.setdefault('eps', 0.1)
     options.setdefault('gtol', 0.1)
-    options.setdefault('maxiter', 30)
+    options.setdefault('maxiter', 100)
     options.setdefault('disp', True)
 
     # Set to None to suppress pylint warning.
@@ -512,8 +475,8 @@ def vet(input_images,
     # Create a 2D mask with the right data type for _vet
     mask = numpy.asarray(numpy.any(mask, axis=0), dtype='int8')
 
-    template_image = numpy.asarray(
-        input_images.data[0, :], dtype=numpy.float64)
+    template_image = numpy.asarray(input_images.data[0, :], dtype=numpy.float64)
+
     input_image = numpy.asarray(input_images.data[1, :], dtype=numpy.float64)
 
     # Check that the sectors divide the domain
@@ -620,10 +583,7 @@ def vet(input_images,
                               smooth_gain,
                               debug=True)
 
-        if indexing == 'xy':
-            scaling_guesses.append(first_guess[::-1, :, :])
-        else:
-            scaling_guesses.append(first_guess)
+        scaling_guesses.append(first_guess)
 
         previous_sectors_in_i = sectors_in_i
         previous_sectors_in_j = sectors_in_j
@@ -640,9 +600,6 @@ def vet(input_images,
     nj = _template_image.shape[1]
 
     first_guess = first_guess[:, pad_i[0]:ni - pad_i[1], pad_j[0]:nj - pad_j[1]]
-
-    if indexing == 'xy':
-        first_guess = first_guess[::-1, :, :]
 
     if intermediate_steps:
         return first_guess, scaling_guesses

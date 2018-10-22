@@ -476,10 +476,10 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
 
                     smoothness_penalty += inloop_smoothness_penalty
 
-        smoothness_penalty *= smooth_gain * x_block_size * y_block_size
+        smoothness_penalty *= smooth_gain  #* x_block_size * y_block_size
 
     if gradient:
-        gradient_smooth *= 2 * smooth_gain * x_block_size * y_block_size
+        gradient_smooth *= 2 * smooth_gain  #* x_block_size * y_block_size
 
         return gradient_residuals + gradient_smooth
     else:

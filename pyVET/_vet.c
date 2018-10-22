@@ -5230,7 +5230,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  * 
  *                     smoothness_penalty += inloop_smoothness_penalty             # <<<<<<<<<<<<<<
  * 
- *         smoothness_penalty *= smooth_gain * x_block_size * y_block_size
+ *         smoothness_penalty *= smooth_gain #* x_block_size * y_block_size
  */
                                   __pyx_v_smoothness_penalty = (__pyx_v_smoothness_penalty + __pyx_v_inloop_smoothness_penalty);
                                 }
@@ -5270,11 +5270,11 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     /* "pyVET/_vet.pyx":479
  *                     smoothness_penalty += inloop_smoothness_penalty
  * 
- *         smoothness_penalty *= smooth_gain * x_block_size * y_block_size             # <<<<<<<<<<<<<<
+ *         smoothness_penalty *= smooth_gain #* x_block_size * y_block_size             # <<<<<<<<<<<<<<
  * 
  *     if gradient:
  */
-    __pyx_v_smoothness_penalty = (__pyx_v_smoothness_penalty * ((__pyx_v_smooth_gain * __pyx_v_x_block_size) * __pyx_v_y_block_size));
+    __pyx_v_smoothness_penalty = (__pyx_v_smoothness_penalty * __pyx_v_smooth_gain);
 
     /* "pyVET/_vet.pyx":432
  *     cdef float64 inloop_smoothness_penalty
@@ -5286,10 +5286,10 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
   }
 
   /* "pyVET/_vet.pyx":481
- *         smoothness_penalty *= smooth_gain * x_block_size * y_block_size
+ *         smoothness_penalty *= smooth_gain #* x_block_size * y_block_size
  * 
  *     if gradient:             # <<<<<<<<<<<<<<
- *         gradient_smooth *= 2 * smooth_gain * x_block_size * y_block_size
+ *         gradient_smooth *= 2 * smooth_gain #* x_block_size * y_block_size
  * 
  */
   __pyx_t_1 = (__pyx_v_gradient != 0);
@@ -5298,11 +5298,11 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     /* "pyVET/_vet.pyx":482
  * 
  *     if gradient:
- *         gradient_smooth *= 2 * smooth_gain * x_block_size * y_block_size             # <<<<<<<<<<<<<<
+ *         gradient_smooth *= 2 * smooth_gain #* x_block_size * y_block_size             # <<<<<<<<<<<<<<
  * 
  *         return gradient_residuals + gradient_smooth
  */
-    __pyx_t_4 = PyFloat_FromDouble((((2.0 * __pyx_v_smooth_gain) * __pyx_v_x_block_size) * __pyx_v_y_block_size)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 482, __pyx_L1_error)
+    __pyx_t_4 = PyFloat_FromDouble((2.0 * __pyx_v_smooth_gain)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 482, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_3 = PyNumber_InPlaceMultiply(((PyObject *)__pyx_v_gradient_smooth), __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 482, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
@@ -5331,7 +5331,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     __pyx_t_3 = 0;
 
     /* "pyVET/_vet.pyx":484
- *         gradient_smooth *= 2 * smooth_gain * x_block_size * y_block_size
+ *         gradient_smooth *= 2 * smooth_gain #* x_block_size * y_block_size
  * 
  *         return gradient_residuals + gradient_smooth             # <<<<<<<<<<<<<<
  *     else:
@@ -5345,10 +5345,10 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     goto __pyx_L0;
 
     /* "pyVET/_vet.pyx":481
- *         smoothness_penalty *= smooth_gain * x_block_size * y_block_size
+ *         smoothness_penalty *= smooth_gain #* x_block_size * y_block_size
  * 
  *     if gradient:             # <<<<<<<<<<<<<<
- *         gradient_smooth *= 2 * smooth_gain * x_block_size * y_block_size
+ *         gradient_smooth *= 2 * smooth_gain #* x_block_size * y_block_size
  * 
  */
   }

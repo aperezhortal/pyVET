@@ -610,7 +610,7 @@ def vet(input_images,
 
         result = minimize(vet_cost_function,
                           first_guess.flatten(),
-                          jac=vet_cost_function_gradient,
+                          #jac=vet_cost_function_gradient,
                           args=(_input_images,
                                 (sectors_in_i, sectors_in_j),
                                 _mask,

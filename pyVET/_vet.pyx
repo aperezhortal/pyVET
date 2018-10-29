@@ -358,17 +358,53 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
     cdef np.ndarray[float64, ndim = 3] real_displacement = (
         np.zeros([2, x_image_size, y_image_size], dtype=np.float64))
 
-    cdef np.intp_t  x, y, i, j, l, m
+    cdef np.intp_t  i, j  # Original image indexes
+    cdef np.intp_t  ii, jj  # Original image indexes
+    cdef np.intp_t  l, m  # Sectors indexes
+    cdef np.int_t axis  # x or y axis
 
-    for i in prange(x_sectors, schedule='dynamic', nogil=True):
-        for j in range(y_sectors):
-            for l in range(x_block_size):
-                for m in range(y_block_size):
-                    x = l + i * x_block_size
-                    y = m + j * y_block_size
+    #Assume regular grid with constant grid spacing.
+    _x = np.arange(x_image_size, dtype='float64')
+    _y = np.arange(y_image_size, dtype='float64')
 
-                    real_displacement[0, x, y] = sector_displacement[0, i, j]
-                    real_displacement[1, x, y] = sector_displacement[1, i, j]
+    cdef np.ndarray[float64, ndim = 2] x
+    cdef np.ndarray[float64, ndim = 2] y
+
+    x, y = np.meshgrid(_x, _y, indexing='ij')
+
+    _xd = _x.reshape((x_sectors, x_block_size)).mean(axis=1)
+    _yd = _y.reshape((y_sectors, y_block_size)).mean(axis=1)
+
+    cdef np.ndarray[float64, ndim = 2] xd
+
+    cdef np.ndarray[float64, ndim = 2] yd
+
+    xd, yd = np.meshgrid(_xd, _yd, indexing='ij')
+
+    del _xd, _yd, _x, _y
+
+    # for i in prange(x_image_size, schedule='dynamic', nogil=False):
+    for i in range(x_image_size):
+        for j in range(y_image_size):
+
+            l = i / x_sectors
+            m = j / y_sectors
+
+            if l >= (x_sectors - 1):
+                l = x_sectors - 2
+
+            if m >= (y_sectors - 1):
+                m = y_sectors - 2
+
+            for axis in range(2):
+                real_displacement[axis, i, j] = _bilinear_interpolation(
+                    x[i, j], y[i, j],
+                    xd[l, m], xd[l + 1, m],
+                    yd[l, m], yd[l, m + 1],
+                    sector_displacement[axis, l, m],
+                    sector_displacement[axis, l, m + 1],
+                    sector_displacement[axis, l + 1, m],
+                    sector_displacement[axis, l + 1, m + 1])
 
     cdef np.ndarray[float64, ndim = 2] morphed_image
     cdef np.ndarray[int8, ndim = 2] morph_mask
@@ -397,20 +433,20 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
         buffer = (2 * (input_image - morphed_image))
 
         # Sum over each sector.
-        for i in prange(x_sectors, schedule='dynamic', nogil=True):
-            for j in range(y_sectors):
-                for l in range(x_block_size):
-                    for m in range(y_block_size):
+        for l in prange(x_sectors, schedule='dynamic', nogil=True):
+            for m in range(y_sectors):
+                for ii in range(x_block_size):
+                    for jj in range(y_block_size):
 
-                        x = l + i * x_block_size
-                        y = m + j * y_block_size
+                        i = ii + m * x_block_size
+                        j = jj + m * y_block_size
 
-                        if mask[x, y] == 0:
-                            gradient_residuals[0, i, j] += \
-                                _gradient_data[0, x, y] * buffer[x, y]
+                        if mask[i, i] == 0:
+                            gradient_residuals[0, l, m] += \
+                                _gradient_data[0, i, j] * buffer[i, j]
 
-                            gradient_residuals[1, i, j] += \
-                                _gradient_data[1, x, y] * buffer[x, y]
+                            gradient_residuals[1, l, m] += \
+                                _gradient_data[1, i, i] * buffer[i, j]
 
     else:
 
@@ -431,55 +467,59 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
 
     if smooth_gain > 0.:
 
-        for i in range(2):
+        smooth_gain  *= x_block_size * y_block_size
+
+        for axis in range(2):
 
             inloop_smoothness_penalty = 0
 
-            for x in prange(1, x_sectors - 1, schedule='dynamic', nogil=True):
+            for i in prange(1, x_sectors - 1, schedule='dynamic', nogil=True):
 
-                for y in range(1, y_sectors - 1):
-                    df_dx2 = (sector_displacement[i, x + 1, y]
-                              - 2 * sector_displacement[i, x, y]
-                              + sector_displacement[i, x - 1, y])
+                for j in range(1, y_sectors - 1):
+                    df_dx2 = (sector_displacement[axis, i + 1, j]
+                              - 2 * sector_displacement[axis, i, j]
+                              + sector_displacement[axis, i - 1, j])
 
                     df_dx2 = df_dx2 / (x_block_size * x_block_size)
 
-                    df_dy2 = (sector_displacement[i, x, y + 1]
-                              - 2 * sector_displacement[i, x, y]
-                              + sector_displacement[i, x, y - 1])
+                    df_dy2 = (sector_displacement[axis, i, j + 1]
+                              - 2 * sector_displacement[axis, i, j]
+                              + sector_displacement[axis, i, j - 1])
 
                     df_dy2 = df_dy2 / (y_block_size * y_block_size)
 
-                    df_dxdy = (sector_displacement[i, x + 1, y + 1]
-                               - sector_displacement[i, x + 1, y - 1]
-                               - sector_displacement[i, x - 1, y + 1]
-                               + sector_displacement[i, x - 1, y - 1])
+                    df_dxdy = (sector_displacement[axis, i + 1, j + 1]
+                               - sector_displacement[axis, i + 1, j - 1]
+                               - sector_displacement[axis, i - 1, j + 1]
+                               + sector_displacement[axis, i - 1, j - 1])
+
                     df_dxdy = df_dxdy / (4 * x_block_size * y_block_size)
+                    # df_dxdy = df_dxdy * 0.25
 
                     if gradient:
-                        gradient_smooth[i, x, y] -= 2 * df_dx2
-                        gradient_smooth[i, x + 1, y] += df_dx2
-                        gradient_smooth[i, x - 1, y] += df_dx2
+                        gradient_smooth[axis, i, j] -= 2 * df_dx2
+                        gradient_smooth[axis, i + 1, j] += df_dx2
+                        gradient_smooth[axis, i - 1, j] += df_dx2
 
-                        gradient_smooth[i, x, y] -= 2 * df_dy2
-                        gradient_smooth[i, x, y - 1] += df_dy2
-                        gradient_smooth[i, x, y + 1] += df_dy2
+                        gradient_smooth[axis, i, j] -= 2 * df_dy2
+                        gradient_smooth[axis, i, j - 1] += df_dy2
+                        gradient_smooth[axis, i, j + 1] += df_dy2
 
-                        gradient_smooth[i, x - 1, y - 1] += df_dxdy
-                        gradient_smooth[i, x - 1, y + 1] -= df_dxdy
-                        gradient_smooth[i, x + 1, y - 1] -= df_dxdy
-                        gradient_smooth[i, x + 1, y + 1] += df_dxdy
+                        gradient_smooth[axis, i - 1, j - 1] += df_dxdy
+                        gradient_smooth[axis, i - 1, j + 1] -= df_dxdy
+                        gradient_smooth[axis, i + 1, j - 1] -= df_dxdy
+                        gradient_smooth[axis, i + 1, j + 1] += df_dxdy
 
-                    inloop_smoothness_penalty = (df_dx2 * df_dx2
-                                                 + 2 * df_dxdy * df_dxdy
-                                                 + df_dy2 * df_dy2)
+                    inloop_smoothness_penalty = (df_dx2 **2
+                                                 + 2 * df_dxdy**2
+                                                 + df_dy2**2)
 
                     smoothness_penalty += inloop_smoothness_penalty
 
-        smoothness_penalty *= smooth_gain  #* x_block_size * y_block_size
+        smoothness_penalty *= smooth_gain
 
     if gradient:
-        gradient_smooth *= 2 * smooth_gain  #* x_block_size * y_block_size
+        gradient_smooth *= 2 * smooth_gain
 
         return gradient_residuals + gradient_smooth
     else:

@@ -109,7 +109,7 @@ new_displacement, intermediate_steps = vet(input_images,
                                            factors,
                                            verbose=True,
                                            intermediate_steps=True,
-                                           smooth_gain=1000)
+                                           smooth_gain=0)
 
 # new_displacement = dense_lucaskanade(input_images)
 # new_displacement=new_displacement[::-1,:,:]

@@ -146,10 +146,17 @@ def morph(image, displacement, gradient=False):
 
     """
 
+    if not isinstance(image, MaskedArray):
+        _mask = numpy.zeros_like(image, dtype='int8')
+    else:
+        _mask = numpy.asarray(numpy.ma.getmaskarray(image),
+                              dtype='int8')
+
     _image = numpy.asarray(image, dtype='float64', order='C')
     _displacement = numpy.asarray(displacement, dtype='float64', order='C')
 
-    return _warp(_image, _displacement, gradient=gradient)
+    # return _warp(_image, _displacement, gradient=gradient)
+    return _warp(_image, _mask, _displacement, gradient=gradient)
 
 
 def downsize(input_array, x_factor, y_factor=None):
@@ -346,7 +353,7 @@ def vet(input_images,
         intermediate_steps=False,
         verbose=True,
         indexing='ij',
-        method='BFGS',
+        method='CG',
         options=None):
     """
     Variational Echo Tracking Algorithm presented in
@@ -495,8 +502,6 @@ def vet(input_images,
     sectors_in_j = None
 
     debug_print("Running VET algorithm")
-
-    input_images = numpy.array(input_images, dtype=numpy.float64)
 
     if indexing == 'yx':
         input_images = numpy.swapaxes(input_images, 1, 2)

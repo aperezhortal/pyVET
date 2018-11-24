@@ -2494,7 +2494,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet__warp(CYTHON_UNUSED PyObject *__pyx_self,
  *     cdef np.ndarray[int8, ndim = 2] morphed_mask = (
  *         np.zeros([nx, ny], dtype=np.int8))             # <<<<<<<<<<<<<<
  * 
- *     morphed_mask[mask>0] = 1.0
+ *     morphed_mask[mask > 0] = 1.0
  */
   __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -2549,7 +2549,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet__warp(CYTHON_UNUSED PyObject *__pyx_self,
   /* "pyVET/_vet.pyx":144
  *         np.zeros([nx, ny], dtype=np.int8))
  * 
- *     morphed_mask[mask>0] = 1.0             # <<<<<<<<<<<<<<
+ *     morphed_mask[mask > 0] = 1.0             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[float64, ndim = 3] gradient_values = (
  */
@@ -3258,7 +3258,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet__warp(CYTHON_UNUSED PyObject *__pyx_self,
  *             f11 = (mask[x_floor, y_floor] - mask[x_ceil, y_floor]
  *                    - mask[x_floor, y_ceil] + mask[x_ceil, y_ceil])             # <<<<<<<<<<<<<<
  * 
- *             morphed_mask[x, y] = <int8>(f00 + dx * f10 + dy * f01
+ *             morphed_mask[x, y] = <int8> (f00 + dx * f10 + dy * f01
  */
                               __pyx_t_70 = __pyx_v_x_floor;
                               __pyx_t_71 = __pyx_v_y_ceil;
@@ -3269,8 +3269,8 @@ static PyObject *__pyx_pf_5pyVET_4_vet__warp(CYTHON_UNUSED PyObject *__pyx_self,
                               /* "pyVET/_vet.pyx":231
  *                    - mask[x_floor, y_ceil] + mask[x_ceil, y_ceil])
  * 
- *             morphed_mask[x, y] = <int8>(f00 + dx * f10 + dy * f01             # <<<<<<<<<<<<<<
- *                                         + dx * dy * f11)
+ *             morphed_mask[x, y] = <int8> (f00 + dx * f10 + dy * f01             # <<<<<<<<<<<<<<
+ *                                          + dx * dy * f11)
  * 
  */
                               __pyx_t_74 = __pyx_v_x;
@@ -3310,9 +3310,9 @@ static PyObject *__pyx_pf_5pyVET_4_vet__warp(CYTHON_UNUSED PyObject *__pyx_self,
   }
 
   /* "pyVET/_vet.pyx":234
- *                                         + dx * dy * f11)
+ *                                          + dx * dy * f11)
  * 
- *     morphed_mask[morphed_mask != 0 ] = 1             # <<<<<<<<<<<<<<
+ *     morphed_mask[morphed_mask != 0] = 1             # <<<<<<<<<<<<<<
  *     if gradient:
  *         return new_image, morphed_mask, gradient_values
  */
@@ -3322,7 +3322,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet__warp(CYTHON_UNUSED PyObject *__pyx_self,
 
   /* "pyVET/_vet.pyx":235
  * 
- *     morphed_mask[morphed_mask != 0 ] = 1
+ *     morphed_mask[morphed_mask != 0] = 1
  *     if gradient:             # <<<<<<<<<<<<<<
  *         return new_image, morphed_mask, gradient_values
  *     else:
@@ -3331,7 +3331,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet__warp(CYTHON_UNUSED PyObject *__pyx_self,
   if (__pyx_t_21) {
 
     /* "pyVET/_vet.pyx":236
- *     morphed_mask[morphed_mask != 0 ] = 1
+ *     morphed_mask[morphed_mask != 0] = 1
  *     if gradient:
  *         return new_image, morphed_mask, gradient_values             # <<<<<<<<<<<<<<
  *     else:
@@ -3355,7 +3355,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet__warp(CYTHON_UNUSED PyObject *__pyx_self,
 
     /* "pyVET/_vet.pyx":235
  * 
- *     morphed_mask[morphed_mask != 0 ] = 1
+ *     morphed_mask[morphed_mask != 0] = 1
  *     if gradient:             # <<<<<<<<<<<<<<
  *         return new_image, morphed_mask, gradient_values
  *     else:
@@ -3797,13 +3797,13 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
   Py_ssize_t __pyx_t_129;
   Py_ssize_t __pyx_t_130;
   Py_ssize_t __pyx_t_131;
-  long __pyx_t_132;
-  Py_ssize_t __pyx_t_133;
-  long __pyx_t_134;
+  Py_ssize_t __pyx_t_132;
+  __pyx_t_5pyVET_4_vet_intp __pyx_t_133;
+  __pyx_t_5pyVET_4_vet_intp __pyx_t_134;
   Py_ssize_t __pyx_t_135;
-  long __pyx_t_136;
+  __pyx_t_5pyVET_4_vet_intp __pyx_t_136;
   Py_ssize_t __pyx_t_137;
-  long __pyx_t_138;
+  __pyx_t_5pyVET_4_vet_intp __pyx_t_138;
   __pyx_t_5pyVET_4_vet_intp __pyx_t_139;
   Py_ssize_t __pyx_t_140;
   Py_ssize_t __pyx_t_141;
@@ -3845,12 +3845,12 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
   Py_ssize_t __pyx_t_177;
   Py_ssize_t __pyx_t_178;
   Py_ssize_t __pyx_t_179;
-  Py_ssize_t __pyx_t_180;
-  Py_ssize_t __pyx_t_181;
+  long __pyx_t_180;
+  long __pyx_t_181;
   Py_ssize_t __pyx_t_182;
-  long __pyx_t_183;
+  Py_ssize_t __pyx_t_183;
   Py_ssize_t __pyx_t_184;
-  long __pyx_t_185;
+  Py_ssize_t __pyx_t_185;
   Py_ssize_t __pyx_t_186;
   Py_ssize_t __pyx_t_187;
   Py_ssize_t __pyx_t_188;
@@ -3892,10 +3892,10 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
   Py_ssize_t __pyx_t_224;
   Py_ssize_t __pyx_t_225;
   __pyx_t_5pyVET_4_vet_float64 __pyx_t_226;
-  Py_ssize_t __pyx_t_227;
-  Py_ssize_t __pyx_t_228;
-  Py_ssize_t __pyx_t_229;
-  Py_ssize_t __pyx_t_230;
+  long __pyx_t_227;
+  long __pyx_t_228;
+  long __pyx_t_229;
+  long __pyx_t_230;
   Py_ssize_t __pyx_t_231;
   Py_ssize_t __pyx_t_232;
   Py_ssize_t __pyx_t_233;
@@ -3952,6 +3952,10 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
   Py_ssize_t __pyx_t_284;
   Py_ssize_t __pyx_t_285;
   Py_ssize_t __pyx_t_286;
+  Py_ssize_t __pyx_t_287;
+  Py_ssize_t __pyx_t_288;
+  Py_ssize_t __pyx_t_289;
+  Py_ssize_t __pyx_t_290;
   __Pyx_RefNannySetupContext("_cost_function", 0);
   __pyx_pybuffer_displacement.pybuffer.buf = NULL;
   __pyx_pybuffer_displacement.refcount = 0;
@@ -5790,7 +5794,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  *                                        return_index=True,
  *                                        return_counts=True)):             # <<<<<<<<<<<<<<
  *         j_min[m] = j
- *         j_max[m] = j + counts - 1
+ *         j_max[m] = j + counts
  */
   if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_return_counts, Py_True) < 0) __PYX_ERR(0, 474, __pyx_L1_error)
 
@@ -5918,7 +5922,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  *                                        return_index=True,
  *                                        return_counts=True)):
  *         j_min[m] = j             # <<<<<<<<<<<<<<
- *         j_max[m] = j + counts - 1
+ *         j_max[m] = j + counts
  * 
  */
     __pyx_t_113 = __pyx_v_m;
@@ -5927,7 +5931,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     /* "pyVET/_vet.pyx":477
  *                                        return_counts=True)):
  *         j_min[m] = j
- *         j_max[m] = j + counts - 1             # <<<<<<<<<<<<<<
+ *         j_max[m] = j + counts             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[float64, ndim = 2] morphed_image
  */
@@ -5936,11 +5940,8 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     __pyx_t_4 = PyNumber_Add(__pyx_t_5, __pyx_v_counts); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 477, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyInt_SubtractObjC(__pyx_t_4, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 477, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_25 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_4); if (unlikely((__pyx_t_25 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 477, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_25 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_5); if (unlikely((__pyx_t_25 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 477, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_114 = __pyx_v_m;
     *__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_max.rcbuffer->pybuffer.buf, __pyx_t_114, __pyx_pybuffernd_j_max.diminfo[0].strides) = __pyx_t_25;
 
@@ -5963,25 +5964,25 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
   __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 486, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_zeros); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 486, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 486, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_x_image_size); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 486, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_y_image_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 486, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_y_image_size); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 486, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 486, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_6);
   PyList_SET_ITEM(__pyx_t_3, 0, __pyx_t_6);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyList_SET_ITEM(__pyx_t_3, 1, __pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyList_SET_ITEM(__pyx_t_3, 1, __pyx_t_5);
   __pyx_t_6 = 0;
-  __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 486, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = 0;
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 486, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3);
   __pyx_t_3 = 0;
   __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 486, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -5992,10 +5993,10 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(0, 486, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 486, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 486, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 486, __pyx_L1_error)
   __pyx_t_115 = ((PyArrayObject *)__pyx_t_2);
@@ -6044,24 +6045,24 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_x_sectors); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 493, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_y_sectors); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 493, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = PyList_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 493, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_y_sectors); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 493, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_4 = PyList_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 493, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_int_2);
     __Pyx_GIVEREF(__pyx_int_2);
-    PyList_SET_ITEM(__pyx_t_5, 0, __pyx_int_2);
+    PyList_SET_ITEM(__pyx_t_4, 0, __pyx_int_2);
     __Pyx_GIVEREF(__pyx_t_2);
-    PyList_SET_ITEM(__pyx_t_5, 1, __pyx_t_2);
-    __Pyx_GIVEREF(__pyx_t_4);
-    PyList_SET_ITEM(__pyx_t_5, 2, __pyx_t_4);
-    __pyx_t_2 = 0;
-    __pyx_t_4 = 0;
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 493, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
+    PyList_SET_ITEM(__pyx_t_4, 1, __pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
+    PyList_SET_ITEM(__pyx_t_4, 2, __pyx_t_5);
+    __pyx_t_2 = 0;
     __pyx_t_5 = 0;
+    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 493, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4);
+    __pyx_t_4 = 0;
 
     /* "pyVET/_vet.pyx":494
  * 
@@ -6070,14 +6071,14 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  * 
  *         grad_residuals = np.zeros([2, x_sectors, y_sectors],
  */
-    __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 494, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 494, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 494, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_float64); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 494, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(0, 494, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(0, 494, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
     /* "pyVET/_vet.pyx":493
@@ -6087,11 +6088,11 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  *                                dtype=np.float64)
  * 
  */
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 493, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 493, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 493, __pyx_L1_error)
     __pyx_t_116 = ((PyArrayObject *)__pyx_t_6);
     {
@@ -6124,13 +6125,13 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
     __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 496, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_zeros); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 496, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 496, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_6 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_x_sectors); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 496, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_y_sectors); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 496, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_y_sectors); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 496, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_3 = PyList_New(3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 496, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_int_2);
@@ -6138,14 +6139,14 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     PyList_SET_ITEM(__pyx_t_3, 0, __pyx_int_2);
     __Pyx_GIVEREF(__pyx_t_6);
     PyList_SET_ITEM(__pyx_t_3, 1, __pyx_t_6);
-    __Pyx_GIVEREF(__pyx_t_4);
-    PyList_SET_ITEM(__pyx_t_3, 2, __pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyList_SET_ITEM(__pyx_t_3, 2, __pyx_t_5);
     __pyx_t_6 = 0;
-    __pyx_t_4 = 0;
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 496, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = 0;
+    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 496, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
+    PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3);
     __pyx_t_3 = 0;
 
     /* "pyVET/_vet.pyx":497
@@ -6172,10 +6173,10 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  *                                   dtype=np.float64)
  * 
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 496, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 496, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 496, __pyx_L1_error)
     __pyx_t_117 = ((PyArrayObject *)__pyx_t_2);
@@ -6234,11 +6235,11 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  *                                                           displacement,
  *                                                           gradient=True)             # <<<<<<<<<<<<<<
  * 
- *         morph_mask[mask>0] = 1
+ *         morph_mask[mask > 0] = 1
  */
-    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 502, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_gradient, Py_True) < 0) __PYX_ERR(0, 502, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 502, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_gradient, Py_True) < 0) __PYX_ERR(0, 502, __pyx_L1_error)
 
     /* "pyVET/_vet.pyx":499
  *                                   dtype=np.float64)
@@ -6247,13 +6248,13 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  *                                                           mask,
  *                                                           displacement,
  */
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 499, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 499, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if ((likely(PyTuple_CheckExact(__pyx_t_5))) || (PyList_CheckExact(__pyx_t_5))) {
-      PyObject* sequence = __pyx_t_5;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if ((likely(PyTuple_CheckExact(__pyx_t_4))) || (PyList_CheckExact(__pyx_t_4))) {
+      PyObject* sequence = __pyx_t_4;
       Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
       if (unlikely(size != 3)) {
         if (size > 3) __Pyx_RaiseTooManyValuesError(3);
@@ -6262,34 +6263,34 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_4 = PyTuple_GET_ITEM(sequence, 0); 
+        __pyx_t_5 = PyTuple_GET_ITEM(sequence, 0); 
         __pyx_t_3 = PyTuple_GET_ITEM(sequence, 1); 
         __pyx_t_2 = PyTuple_GET_ITEM(sequence, 2); 
       } else {
-        __pyx_t_4 = PyList_GET_ITEM(sequence, 0); 
+        __pyx_t_5 = PyList_GET_ITEM(sequence, 0); 
         __pyx_t_3 = PyList_GET_ITEM(sequence, 1); 
         __pyx_t_2 = PyList_GET_ITEM(sequence, 2); 
       }
-      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_2);
       #else
-      __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 499, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 499, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 499, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_2 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 499, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       #endif
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_6 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 499, __pyx_L1_error)
+      __pyx_t_6 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 499, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_110 = Py_TYPE(__pyx_t_6)->tp_iternext;
-      index = 0; __pyx_t_4 = __pyx_t_110(__pyx_t_6); if (unlikely(!__pyx_t_4)) goto __pyx_L27_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_4);
+      index = 0; __pyx_t_5 = __pyx_t_110(__pyx_t_6); if (unlikely(!__pyx_t_5)) goto __pyx_L27_unpacking_failed;
+      __Pyx_GOTREF(__pyx_t_5);
       index = 1; __pyx_t_3 = __pyx_t_110(__pyx_t_6); if (unlikely(!__pyx_t_3)) goto __pyx_L27_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_3);
       index = 2; __pyx_t_2 = __pyx_t_110(__pyx_t_6); if (unlikely(!__pyx_t_2)) goto __pyx_L27_unpacking_failed;
@@ -6305,10 +6306,10 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
       __PYX_ERR(0, 499, __pyx_L1_error)
       __pyx_L28_unpacking_done:;
     }
-    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 499, __pyx_L1_error)
+    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 499, __pyx_L1_error)
     if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 499, __pyx_L1_error)
     if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 499, __pyx_L1_error)
-    __pyx_t_118 = ((PyArrayObject *)__pyx_t_4);
+    __pyx_t_118 = ((PyArrayObject *)__pyx_t_5);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_morphed_image.rcbuffer->pybuffer);
@@ -6327,8 +6328,8 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
       if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 499, __pyx_L1_error)
     }
     __pyx_t_118 = 0;
-    __pyx_v_morphed_image = ((PyArrayObject *)__pyx_t_4);
-    __pyx_t_4 = 0;
+    __pyx_v_morphed_image = ((PyArrayObject *)__pyx_t_5);
+    __pyx_t_5 = 0;
     __pyx_t_119 = ((PyArrayObject *)__pyx_t_3);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -6375,26 +6376,26 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     /* "pyVET/_vet.pyx":504
  *                                                           gradient=True)
  * 
- *         morph_mask[mask>0] = 1             # <<<<<<<<<<<<<<
+ *         morph_mask[mask > 0] = 1             # <<<<<<<<<<<<<<
  * 
  *         buffer = (2 * (input_image - morphed_image))
  */
-    __pyx_t_5 = PyObject_RichCompare(((PyObject *)__pyx_v_mask), __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 504, __pyx_L1_error)
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_morph_mask), __pyx_t_5, __pyx_int_1) < 0)) __PYX_ERR(0, 504, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_4 = PyObject_RichCompare(((PyObject *)__pyx_v_mask), __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 504, __pyx_L1_error)
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_morph_mask), __pyx_t_4, __pyx_int_1) < 0)) __PYX_ERR(0, 504, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
     /* "pyVET/_vet.pyx":506
- *         morph_mask[mask>0] = 1
+ *         morph_mask[mask > 0] = 1
  * 
  *         buffer = (2 * (input_image - morphed_image))             # <<<<<<<<<<<<<<
- *         buffer[morph_mask==1]=0
+ *         buffer[morph_mask == 1] = 0
  * 
  */
-    __pyx_t_5 = PyNumber_Subtract(((PyObject *)__pyx_v_input_image), ((PyObject *)__pyx_v_morphed_image)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 506, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_2 = PyNumber_Multiply(__pyx_int_2, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 506, __pyx_L1_error)
+    __pyx_t_4 = PyNumber_Subtract(((PyObject *)__pyx_v_input_image), ((PyObject *)__pyx_v_morphed_image)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 506, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_2 = PyNumber_Multiply(__pyx_int_2, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 506, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 506, __pyx_L1_error)
     __pyx_t_115 = ((PyArrayObject *)__pyx_t_2);
     {
@@ -6421,7 +6422,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     /* "pyVET/_vet.pyx":507
  * 
  *         buffer = (2 * (input_image - morphed_image))
- *         buffer[morph_mask==1]=0             # <<<<<<<<<<<<<<
+ *         buffer[morph_mask == 1] = 0             # <<<<<<<<<<<<<<
  * 
  *         for i in prange(x_image_size, schedule='dynamic', nogil=True):
  */
@@ -6430,7 +6431,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
     /* "pyVET/_vet.pyx":509
- *         buffer[morph_mask==1]=0
+ *         buffer[morph_mask == 1] = 0
  * 
  *         for i in prange(x_image_size, schedule='dynamic', nogil=True):             # <<<<<<<<<<<<<<
  *             for j in range(y_image_size):
@@ -6499,7 +6500,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  *                 _gradient_data[0, i, j] *= buffer[i, j]
  *                 _gradient_data[1, i, j] *= buffer[i, j]             # <<<<<<<<<<<<<<
  * 
- * 
+ *         for l in prange(x_sectors, schedule='dynamic', nogil=True):
  */
                                 __pyx_t_126 = __pyx_v_i;
                                 __pyx_t_127 = __pyx_v_j;
@@ -6522,7 +6523,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
         }
 
         /* "pyVET/_vet.pyx":509
- *         buffer[morph_mask==1]=0
+ *         buffer[morph_mask == 1] = 0
  * 
  *         for i in prange(x_image_size, schedule='dynamic', nogil=True):             # <<<<<<<<<<<<<<
  *             for j in range(y_image_size):
@@ -6540,12 +6541,12 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
         }
     }
 
-    /* "pyVET/_vet.pyx":515
- * 
+    /* "pyVET/_vet.pyx":514
+ *                 _gradient_data[1, i, j] *= buffer[i, j]
  * 
  *         for l in prange(x_sectors, schedule='dynamic', nogil=True):             # <<<<<<<<<<<<<<
  *             for m in range(y_sectors):
- *                 for i in range(i_min[l], i_max[l] + 1):
+ *                 for i in range(i_min[l], i_max[l]):
  */
     {
         #ifdef WITH_THREAD
@@ -6581,49 +6582,49 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                               __pyx_v_j = ((__pyx_t_5pyVET_4_vet_intp)0xbad0bad0);
                               __pyx_v_m = ((__pyx_t_5pyVET_4_vet_intp)0xbad0bad0);
 
-                              /* "pyVET/_vet.pyx":516
+                              /* "pyVET/_vet.pyx":515
  * 
  *         for l in prange(x_sectors, schedule='dynamic', nogil=True):
  *             for m in range(y_sectors):             # <<<<<<<<<<<<<<
- *                 for i in range(i_min[l], i_max[l] + 1):
- *                     for j in range(j_min[m], j_max[m] + 1):
+ *                 for i in range(i_min[l], i_max[l]):
+ *                     for j in range(j_min[m], j_max[m]):
  */
                               __pyx_t_27 = __pyx_v_y_sectors;
                               __pyx_t_28 = __pyx_t_27;
                               for (__pyx_t_29 = 0; __pyx_t_29 < __pyx_t_28; __pyx_t_29+=1) {
                                 __pyx_v_m = __pyx_t_29;
 
-                                /* "pyVET/_vet.pyx":517
+                                /* "pyVET/_vet.pyx":516
  *         for l in prange(x_sectors, schedule='dynamic', nogil=True):
  *             for m in range(y_sectors):
- *                 for i in range(i_min[l], i_max[l] + 1):             # <<<<<<<<<<<<<<
- *                     for j in range(j_min[m], j_max[m] + 1):
+ *                 for i in range(i_min[l], i_max[l]):             # <<<<<<<<<<<<<<
+ *                     for j in range(j_min[m], j_max[m]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  */
                                 __pyx_t_131 = __pyx_v_l;
-                                __pyx_t_132 = ((*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_max.rcbuffer->pybuffer.buf, __pyx_t_131, __pyx_pybuffernd_i_max.diminfo[0].strides)) + 1);
-                                __pyx_t_133 = __pyx_v_l;
-                                __pyx_t_134 = __pyx_t_132;
-                                for (__pyx_t_79 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_min.rcbuffer->pybuffer.buf, __pyx_t_133, __pyx_pybuffernd_i_min.diminfo[0].strides)); __pyx_t_79 < __pyx_t_134; __pyx_t_79+=1) {
-                                  __pyx_v_i = __pyx_t_79;
+                                __pyx_t_79 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_max.rcbuffer->pybuffer.buf, __pyx_t_131, __pyx_pybuffernd_i_max.diminfo[0].strides));
+                                __pyx_t_132 = __pyx_v_l;
+                                __pyx_t_133 = __pyx_t_79;
+                                for (__pyx_t_134 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_min.rcbuffer->pybuffer.buf, __pyx_t_132, __pyx_pybuffernd_i_min.diminfo[0].strides)); __pyx_t_134 < __pyx_t_133; __pyx_t_134+=1) {
+                                  __pyx_v_i = __pyx_t_134;
 
-                                  /* "pyVET/_vet.pyx":518
+                                  /* "pyVET/_vet.pyx":517
  *             for m in range(y_sectors):
- *                 for i in range(i_min[l], i_max[l] + 1):
- *                     for j in range(j_min[m], j_max[m] + 1):             # <<<<<<<<<<<<<<
+ *                 for i in range(i_min[l], i_max[l]):
+ *                     for j in range(j_min[m], j_max[m]):             # <<<<<<<<<<<<<<
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[0, i, j])
  */
                                   __pyx_t_135 = __pyx_v_m;
-                                  __pyx_t_136 = ((*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_max.rcbuffer->pybuffer.buf, __pyx_t_135, __pyx_pybuffernd_j_max.diminfo[0].strides)) + 1);
+                                  __pyx_t_136 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_max.rcbuffer->pybuffer.buf, __pyx_t_135, __pyx_pybuffernd_j_max.diminfo[0].strides));
                                   __pyx_t_137 = __pyx_v_m;
                                   __pyx_t_138 = __pyx_t_136;
                                   for (__pyx_t_139 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_min.rcbuffer->pybuffer.buf, __pyx_t_137, __pyx_pybuffernd_j_min.diminfo[0].strides)); __pyx_t_139 < __pyx_t_138; __pyx_t_139+=1) {
                                     __pyx_v_j = __pyx_t_139;
 
-                                    /* "pyVET/_vet.pyx":519
- *                 for i in range(i_min[l], i_max[l] + 1):
- *                     for j in range(j_min[m], j_max[m] + 1):
+                                    /* "pyVET/_vet.pyx":518
+ *                 for i in range(i_min[l], i_max[l]):
+ *                     for j in range(j_min[m], j_max[m]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]             # <<<<<<<<<<<<<<
  *                                                     * interp_coef[0, i, j])
  * 
@@ -6632,8 +6633,8 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_141 = __pyx_v_i;
                                     __pyx_t_142 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":520
- *                     for j in range(j_min[m], j_max[m] + 1):
+                                    /* "pyVET/_vet.pyx":519
+ *                     for j in range(j_min[m], j_max[m]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[0, i, j])             # <<<<<<<<<<<<<<
  * 
@@ -6643,9 +6644,9 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_144 = __pyx_v_i;
                                     __pyx_t_145 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":519
- *                 for i in range(i_min[l], i_max[l] + 1):
- *                     for j in range(j_min[m], j_max[m] + 1):
+                                    /* "pyVET/_vet.pyx":518
+ *                 for i in range(i_min[l], i_max[l]):
+ *                     for j in range(j_min[m], j_max[m]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]             # <<<<<<<<<<<<<<
  *                                                     * interp_coef[0, i, j])
  * 
@@ -6655,7 +6656,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_148 = __pyx_v_m;
                                     *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_residuals.rcbuffer->pybuffer.buf, __pyx_t_146, __pyx_pybuffernd_grad_residuals.diminfo[0].strides, __pyx_t_147, __pyx_pybuffernd_grad_residuals.diminfo[1].strides, __pyx_t_148, __pyx_pybuffernd_grad_residuals.diminfo[2].strides) += ((*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd__gradient_data.rcbuffer->pybuffer.buf, __pyx_t_140, __pyx_pybuffernd__gradient_data.diminfo[0].strides, __pyx_t_141, __pyx_pybuffernd__gradient_data.diminfo[1].strides, __pyx_t_142, __pyx_pybuffernd__gradient_data.diminfo[2].strides)) * (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_interp_coef.rcbuffer->pybuffer.buf, __pyx_t_143, __pyx_pybuffernd_interp_coef.diminfo[0].strides, __pyx_t_144, __pyx_pybuffernd_interp_coef.diminfo[1].strides, __pyx_t_145, __pyx_pybuffernd_interp_coef.diminfo[2].strides)));
 
-                                    /* "pyVET/_vet.pyx":522
+                                    /* "pyVET/_vet.pyx":521
  *                                                     * interp_coef[0, i, j])
  * 
  *                         grad_residuals[1, l, m] *= (_gradient_data[1, i, j]             # <<<<<<<<<<<<<<
@@ -6666,7 +6667,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_150 = __pyx_v_i;
                                     __pyx_t_151 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":523
+                                    /* "pyVET/_vet.pyx":522
  * 
  *                         grad_residuals[1, l, m] *= (_gradient_data[1, i, j]
  *                                                     * interp_coef[0, i, j])             # <<<<<<<<<<<<<<
@@ -6677,7 +6678,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_153 = __pyx_v_i;
                                     __pyx_t_154 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":522
+                                    /* "pyVET/_vet.pyx":521
  *                                                     * interp_coef[0, i, j])
  * 
  *                         grad_residuals[1, l, m] *= (_gradient_data[1, i, j]             # <<<<<<<<<<<<<<
@@ -6692,49 +6693,49 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                 }
                               }
 
-                              /* "pyVET/_vet.pyx":525
+                              /* "pyVET/_vet.pyx":524
  *                                                     * interp_coef[0, i, j])
  * 
  *             for m in range(1, y_sectors):             # <<<<<<<<<<<<<<
- *                 for i in range(i_min[l], i_max[l] + 1):
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):
+ *                 for i in range(i_min[l], i_max[l]):
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):
  */
                               __pyx_t_27 = __pyx_v_y_sectors;
                               __pyx_t_28 = __pyx_t_27;
                               for (__pyx_t_29 = 1; __pyx_t_29 < __pyx_t_28; __pyx_t_29+=1) {
                                 __pyx_v_m = __pyx_t_29;
 
-                                /* "pyVET/_vet.pyx":526
+                                /* "pyVET/_vet.pyx":525
  * 
  *             for m in range(1, y_sectors):
- *                 for i in range(i_min[l], i_max[l] + 1):             # <<<<<<<<<<<<<<
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):
+ *                 for i in range(i_min[l], i_max[l]):             # <<<<<<<<<<<<<<
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  */
                                 __pyx_t_158 = __pyx_v_l;
-                                __pyx_t_132 = ((*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_max.rcbuffer->pybuffer.buf, __pyx_t_158, __pyx_pybuffernd_i_max.diminfo[0].strides)) + 1);
+                                __pyx_t_79 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_max.rcbuffer->pybuffer.buf, __pyx_t_158, __pyx_pybuffernd_i_max.diminfo[0].strides));
                                 __pyx_t_159 = __pyx_v_l;
-                                __pyx_t_134 = __pyx_t_132;
-                                for (__pyx_t_79 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_min.rcbuffer->pybuffer.buf, __pyx_t_159, __pyx_pybuffernd_i_min.diminfo[0].strides)); __pyx_t_79 < __pyx_t_134; __pyx_t_79+=1) {
-                                  __pyx_v_i = __pyx_t_79;
+                                __pyx_t_133 = __pyx_t_79;
+                                for (__pyx_t_134 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_min.rcbuffer->pybuffer.buf, __pyx_t_159, __pyx_pybuffernd_i_min.diminfo[0].strides)); __pyx_t_134 < __pyx_t_133; __pyx_t_134+=1) {
+                                  __pyx_v_i = __pyx_t_134;
 
-                                  /* "pyVET/_vet.pyx":527
+                                  /* "pyVET/_vet.pyx":526
  *             for m in range(1, y_sectors):
- *                 for i in range(i_min[l], i_max[l] + 1):
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):             # <<<<<<<<<<<<<<
+ *                 for i in range(i_min[l], i_max[l]):
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):             # <<<<<<<<<<<<<<
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[1, i, j])
  */
                                   __pyx_t_160 = (__pyx_v_m - 1);
-                                  __pyx_t_136 = ((*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_max.rcbuffer->pybuffer.buf, __pyx_t_160, __pyx_pybuffernd_j_max.diminfo[0].strides)) + 1);
+                                  __pyx_t_136 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_max.rcbuffer->pybuffer.buf, __pyx_t_160, __pyx_pybuffernd_j_max.diminfo[0].strides));
                                   __pyx_t_161 = (__pyx_v_m - 1);
                                   __pyx_t_138 = __pyx_t_136;
                                   for (__pyx_t_139 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_min.rcbuffer->pybuffer.buf, __pyx_t_161, __pyx_pybuffernd_j_min.diminfo[0].strides)); __pyx_t_139 < __pyx_t_138; __pyx_t_139+=1) {
                                     __pyx_v_j = __pyx_t_139;
 
-                                    /* "pyVET/_vet.pyx":528
- *                 for i in range(i_min[l], i_max[l] + 1):
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):
+                                    /* "pyVET/_vet.pyx":527
+ *                 for i in range(i_min[l], i_max[l]):
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]             # <<<<<<<<<<<<<<
  *                                                     * interp_coef[1, i, j])
  * 
@@ -6743,8 +6744,8 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_163 = __pyx_v_i;
                                     __pyx_t_164 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":529
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):
+                                    /* "pyVET/_vet.pyx":528
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[1, i, j])             # <<<<<<<<<<<<<<
  * 
@@ -6754,9 +6755,9 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_166 = __pyx_v_i;
                                     __pyx_t_167 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":528
- *                 for i in range(i_min[l], i_max[l] + 1):
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):
+                                    /* "pyVET/_vet.pyx":527
+ *                 for i in range(i_min[l], i_max[l]):
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]             # <<<<<<<<<<<<<<
  *                                                     * interp_coef[1, i, j])
  * 
@@ -6766,7 +6767,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_170 = __pyx_v_m;
                                     *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_residuals.rcbuffer->pybuffer.buf, __pyx_t_168, __pyx_pybuffernd_grad_residuals.diminfo[0].strides, __pyx_t_169, __pyx_pybuffernd_grad_residuals.diminfo[1].strides, __pyx_t_170, __pyx_pybuffernd_grad_residuals.diminfo[2].strides) += ((*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd__gradient_data.rcbuffer->pybuffer.buf, __pyx_t_162, __pyx_pybuffernd__gradient_data.diminfo[0].strides, __pyx_t_163, __pyx_pybuffernd__gradient_data.diminfo[1].strides, __pyx_t_164, __pyx_pybuffernd__gradient_data.diminfo[2].strides)) * (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_interp_coef.rcbuffer->pybuffer.buf, __pyx_t_165, __pyx_pybuffernd_interp_coef.diminfo[0].strides, __pyx_t_166, __pyx_pybuffernd_interp_coef.diminfo[1].strides, __pyx_t_167, __pyx_pybuffernd_interp_coef.diminfo[2].strides)));
 
-                                    /* "pyVET/_vet.pyx":531
+                                    /* "pyVET/_vet.pyx":530
  *                                                     * interp_coef[1, i, j])
  * 
  *                         grad_residuals[1, l, m] += (_gradient_data[0, i, j]             # <<<<<<<<<<<<<<
@@ -6777,7 +6778,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_172 = __pyx_v_i;
                                     __pyx_t_173 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":532
+                                    /* "pyVET/_vet.pyx":531
  * 
  *                         grad_residuals[1, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[1, i, j])             # <<<<<<<<<<<<<<
@@ -6788,7 +6789,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_175 = __pyx_v_i;
                                     __pyx_t_176 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":531
+                                    /* "pyVET/_vet.pyx":530
  *                                                     * interp_coef[1, i, j])
  * 
  *                         grad_residuals[1, l, m] += (_gradient_data[0, i, j]             # <<<<<<<<<<<<<<
@@ -6815,12 +6816,12 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
           #endif
         }
 
-        /* "pyVET/_vet.pyx":515
- * 
+        /* "pyVET/_vet.pyx":514
+ *                 _gradient_data[1, i, j] *= buffer[i, j]
  * 
  *         for l in prange(x_sectors, schedule='dynamic', nogil=True):             # <<<<<<<<<<<<<<
  *             for m in range(y_sectors):
- *                 for i in range(i_min[l], i_max[l] + 1):
+ *                 for i in range(i_min[l], i_max[l]):
  */
         /*finally:*/ {
           /*normal exit:*/{
@@ -6834,12 +6835,12 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
         }
     }
 
-    /* "pyVET/_vet.pyx":534
+    /* "pyVET/_vet.pyx":533
  *                                                     * interp_coef[1, i, j])
  * 
  *         for l in prange(1, x_sectors, schedule='dynamic', nogil=True):             # <<<<<<<<<<<<<<
  *             for m in range(y_sectors):
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):
  */
     {
         #ifdef WITH_THREAD
@@ -6857,67 +6858,67 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                   #define likely(x)   (x)
                   #define unlikely(x) (x)
               #endif
-              __pyx_t_134 = (__pyx_t_25 - 1 + 1 - 1/abs(1)) / 1;
-              if (__pyx_t_134 > 0)
+              __pyx_t_181 = (__pyx_t_25 - 1 + 1 - 1/abs(1)) / 1;
+              if (__pyx_t_181 > 0)
               {
                   #ifdef _OPENMP
-                  #pragma omp parallel private(__pyx_t_136, __pyx_t_138, __pyx_t_180, __pyx_t_181, __pyx_t_182, __pyx_t_183, __pyx_t_184, __pyx_t_185, __pyx_t_186, __pyx_t_187, __pyx_t_188, __pyx_t_189, __pyx_t_190, __pyx_t_191, __pyx_t_192, __pyx_t_193, __pyx_t_194, __pyx_t_195, __pyx_t_196, __pyx_t_197, __pyx_t_198, __pyx_t_199, __pyx_t_200, __pyx_t_201, __pyx_t_202, __pyx_t_203, __pyx_t_204, __pyx_t_205, __pyx_t_206, __pyx_t_207, __pyx_t_208, __pyx_t_209, __pyx_t_210, __pyx_t_211, __pyx_t_212, __pyx_t_213, __pyx_t_214, __pyx_t_215, __pyx_t_216, __pyx_t_217, __pyx_t_218, __pyx_t_219, __pyx_t_220, __pyx_t_221, __pyx_t_222, __pyx_t_223, __pyx_t_224, __pyx_t_225, __pyx_t_23, __pyx_t_24, __pyx_t_27, __pyx_t_28, __pyx_t_29)
+                  #pragma omp parallel private(__pyx_t_133, __pyx_t_134, __pyx_t_136, __pyx_t_182, __pyx_t_183, __pyx_t_184, __pyx_t_185, __pyx_t_186, __pyx_t_187, __pyx_t_188, __pyx_t_189, __pyx_t_190, __pyx_t_191, __pyx_t_192, __pyx_t_193, __pyx_t_194, __pyx_t_195, __pyx_t_196, __pyx_t_197, __pyx_t_198, __pyx_t_199, __pyx_t_200, __pyx_t_201, __pyx_t_202, __pyx_t_203, __pyx_t_204, __pyx_t_205, __pyx_t_206, __pyx_t_207, __pyx_t_208, __pyx_t_209, __pyx_t_210, __pyx_t_211, __pyx_t_212, __pyx_t_213, __pyx_t_214, __pyx_t_215, __pyx_t_216, __pyx_t_217, __pyx_t_218, __pyx_t_219, __pyx_t_220, __pyx_t_221, __pyx_t_222, __pyx_t_223, __pyx_t_224, __pyx_t_225, __pyx_t_23, __pyx_t_24, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_79)
                   #endif /* _OPENMP */
                   {
                       #ifdef _OPENMP
                       #pragma omp for lastprivate(__pyx_v_i) lastprivate(__pyx_v_j) firstprivate(__pyx_v_l) lastprivate(__pyx_v_l) lastprivate(__pyx_v_m) schedule(dynamic)
                       #endif /* _OPENMP */
-                      for (__pyx_t_132 = 0; __pyx_t_132 < __pyx_t_134; __pyx_t_132++){
+                      for (__pyx_t_180 = 0; __pyx_t_180 < __pyx_t_181; __pyx_t_180++){
                           {
-                              __pyx_v_l = (__pyx_t_5pyVET_4_vet_intp)(1 + 1 * __pyx_t_132);
+                              __pyx_v_l = (__pyx_t_5pyVET_4_vet_intp)(1 + 1 * __pyx_t_180);
                               /* Initialize private variables to invalid values */
                               __pyx_v_i = ((__pyx_t_5pyVET_4_vet_intp)0xbad0bad0);
                               __pyx_v_j = ((__pyx_t_5pyVET_4_vet_intp)0xbad0bad0);
                               __pyx_v_m = ((__pyx_t_5pyVET_4_vet_intp)0xbad0bad0);
 
-                              /* "pyVET/_vet.pyx":535
+                              /* "pyVET/_vet.pyx":534
  * 
  *         for l in prange(1, x_sectors, schedule='dynamic', nogil=True):
  *             for m in range(y_sectors):             # <<<<<<<<<<<<<<
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):
- *                     for j in range(j_min[m], j_max[m] + 1):
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):
+ *                     for j in range(j_min[m], j_max[m]):
  */
                               __pyx_t_24 = __pyx_v_y_sectors;
                               __pyx_t_23 = __pyx_t_24;
                               for (__pyx_t_27 = 0; __pyx_t_27 < __pyx_t_23; __pyx_t_27+=1) {
                                 __pyx_v_m = __pyx_t_27;
 
-                                /* "pyVET/_vet.pyx":536
+                                /* "pyVET/_vet.pyx":535
  *         for l in prange(1, x_sectors, schedule='dynamic', nogil=True):
  *             for m in range(y_sectors):
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):             # <<<<<<<<<<<<<<
- *                     for j in range(j_min[m], j_max[m] + 1):
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):             # <<<<<<<<<<<<<<
+ *                     for j in range(j_min[m], j_max[m]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  */
-                                __pyx_t_180 = (__pyx_v_l - 1);
-                                __pyx_t_136 = ((*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_max.rcbuffer->pybuffer.buf, __pyx_t_180, __pyx_pybuffernd_i_max.diminfo[0].strides)) + 1);
-                                __pyx_t_181 = (__pyx_v_l - 1);
-                                __pyx_t_138 = __pyx_t_136;
-                                for (__pyx_t_28 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_min.rcbuffer->pybuffer.buf, __pyx_t_181, __pyx_pybuffernd_i_min.diminfo[0].strides)); __pyx_t_28 < __pyx_t_138; __pyx_t_28+=1) {
-                                  __pyx_v_i = __pyx_t_28;
+                                __pyx_t_182 = (__pyx_v_l - 1);
+                                __pyx_t_28 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_max.rcbuffer->pybuffer.buf, __pyx_t_182, __pyx_pybuffernd_i_max.diminfo[0].strides));
+                                __pyx_t_183 = (__pyx_v_l - 1);
+                                __pyx_t_29 = __pyx_t_28;
+                                for (__pyx_t_79 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_min.rcbuffer->pybuffer.buf, __pyx_t_183, __pyx_pybuffernd_i_min.diminfo[0].strides)); __pyx_t_79 < __pyx_t_29; __pyx_t_79+=1) {
+                                  __pyx_v_i = __pyx_t_79;
 
-                                  /* "pyVET/_vet.pyx":537
+                                  /* "pyVET/_vet.pyx":536
  *             for m in range(y_sectors):
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):
- *                     for j in range(j_min[m], j_max[m] + 1):             # <<<<<<<<<<<<<<
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):
+ *                     for j in range(j_min[m], j_max[m]):             # <<<<<<<<<<<<<<
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[2, i, j])
  */
-                                  __pyx_t_182 = __pyx_v_m;
-                                  __pyx_t_183 = ((*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_max.rcbuffer->pybuffer.buf, __pyx_t_182, __pyx_pybuffernd_j_max.diminfo[0].strides)) + 1);
                                   __pyx_t_184 = __pyx_v_m;
-                                  __pyx_t_185 = __pyx_t_183;
-                                  for (__pyx_t_29 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_min.rcbuffer->pybuffer.buf, __pyx_t_184, __pyx_pybuffernd_j_min.diminfo[0].strides)); __pyx_t_29 < __pyx_t_185; __pyx_t_29+=1) {
-                                    __pyx_v_j = __pyx_t_29;
+                                  __pyx_t_133 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_max.rcbuffer->pybuffer.buf, __pyx_t_184, __pyx_pybuffernd_j_max.diminfo[0].strides));
+                                  __pyx_t_185 = __pyx_v_m;
+                                  __pyx_t_134 = __pyx_t_133;
+                                  for (__pyx_t_136 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_min.rcbuffer->pybuffer.buf, __pyx_t_185, __pyx_pybuffernd_j_min.diminfo[0].strides)); __pyx_t_136 < __pyx_t_134; __pyx_t_136+=1) {
+                                    __pyx_v_j = __pyx_t_136;
 
-                                    /* "pyVET/_vet.pyx":538
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):
- *                     for j in range(j_min[m], j_max[m] + 1):
+                                    /* "pyVET/_vet.pyx":537
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):
+ *                     for j in range(j_min[m], j_max[m]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]             # <<<<<<<<<<<<<<
  *                                                     * interp_coef[2, i, j])
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]
@@ -6926,8 +6927,8 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_187 = __pyx_v_i;
                                     __pyx_t_188 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":539
- *                     for j in range(j_min[m], j_max[m] + 1):
+                                    /* "pyVET/_vet.pyx":538
+ *                     for j in range(j_min[m], j_max[m]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[2, i, j])             # <<<<<<<<<<<<<<
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]
@@ -6937,9 +6938,9 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_190 = __pyx_v_i;
                                     __pyx_t_191 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":538
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):
- *                     for j in range(j_min[m], j_max[m] + 1):
+                                    /* "pyVET/_vet.pyx":537
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):
+ *                     for j in range(j_min[m], j_max[m]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]             # <<<<<<<<<<<<<<
  *                                                     * interp_coef[2, i, j])
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]
@@ -6949,7 +6950,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_194 = __pyx_v_m;
                                     *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_residuals.rcbuffer->pybuffer.buf, __pyx_t_192, __pyx_pybuffernd_grad_residuals.diminfo[0].strides, __pyx_t_193, __pyx_pybuffernd_grad_residuals.diminfo[1].strides, __pyx_t_194, __pyx_pybuffernd_grad_residuals.diminfo[2].strides) += ((*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd__gradient_data.rcbuffer->pybuffer.buf, __pyx_t_186, __pyx_pybuffernd__gradient_data.diminfo[0].strides, __pyx_t_187, __pyx_pybuffernd__gradient_data.diminfo[1].strides, __pyx_t_188, __pyx_pybuffernd__gradient_data.diminfo[2].strides)) * (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_interp_coef.rcbuffer->pybuffer.buf, __pyx_t_189, __pyx_pybuffernd_interp_coef.diminfo[0].strides, __pyx_t_190, __pyx_pybuffernd_interp_coef.diminfo[1].strides, __pyx_t_191, __pyx_pybuffernd_interp_coef.diminfo[2].strides)));
 
-                                    /* "pyVET/_vet.pyx":540
+                                    /* "pyVET/_vet.pyx":539
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[2, i, j])
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]             # <<<<<<<<<<<<<<
@@ -6960,7 +6961,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_196 = __pyx_v_i;
                                     __pyx_t_197 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":541
+                                    /* "pyVET/_vet.pyx":540
  *                                                     * interp_coef[2, i, j])
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]
  *                                                     * interp_coef[2, i, j])             # <<<<<<<<<<<<<<
@@ -6971,7 +6972,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_199 = __pyx_v_i;
                                     __pyx_t_200 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":540
+                                    /* "pyVET/_vet.pyx":539
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[2, i, j])
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]             # <<<<<<<<<<<<<<
@@ -6986,49 +6987,49 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                 }
                               }
 
-                              /* "pyVET/_vet.pyx":543
+                              /* "pyVET/_vet.pyx":542
  *                                                     * interp_coef[2, i, j])
  * 
  *             for m in range(1, y_sectors):             # <<<<<<<<<<<<<<
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):
  */
                               __pyx_t_24 = __pyx_v_y_sectors;
                               __pyx_t_23 = __pyx_t_24;
                               for (__pyx_t_27 = 1; __pyx_t_27 < __pyx_t_23; __pyx_t_27+=1) {
                                 __pyx_v_m = __pyx_t_27;
 
-                                /* "pyVET/_vet.pyx":544
+                                /* "pyVET/_vet.pyx":543
  * 
  *             for m in range(1, y_sectors):
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):             # <<<<<<<<<<<<<<
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):             # <<<<<<<<<<<<<<
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  */
                                 __pyx_t_204 = (__pyx_v_l - 1);
-                                __pyx_t_136 = ((*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_max.rcbuffer->pybuffer.buf, __pyx_t_204, __pyx_pybuffernd_i_max.diminfo[0].strides)) + 1);
+                                __pyx_t_28 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_max.rcbuffer->pybuffer.buf, __pyx_t_204, __pyx_pybuffernd_i_max.diminfo[0].strides));
                                 __pyx_t_205 = (__pyx_v_l - 1);
-                                __pyx_t_138 = __pyx_t_136;
-                                for (__pyx_t_28 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_min.rcbuffer->pybuffer.buf, __pyx_t_205, __pyx_pybuffernd_i_min.diminfo[0].strides)); __pyx_t_28 < __pyx_t_138; __pyx_t_28+=1) {
-                                  __pyx_v_i = __pyx_t_28;
+                                __pyx_t_29 = __pyx_t_28;
+                                for (__pyx_t_79 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_i_min.rcbuffer->pybuffer.buf, __pyx_t_205, __pyx_pybuffernd_i_min.diminfo[0].strides)); __pyx_t_79 < __pyx_t_29; __pyx_t_79+=1) {
+                                  __pyx_v_i = __pyx_t_79;
 
-                                  /* "pyVET/_vet.pyx":545
+                                  /* "pyVET/_vet.pyx":544
  *             for m in range(1, y_sectors):
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):             # <<<<<<<<<<<<<<
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):             # <<<<<<<<<<<<<<
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[3, i, j])
  */
                                   __pyx_t_206 = (__pyx_v_m - 1);
-                                  __pyx_t_183 = ((*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_max.rcbuffer->pybuffer.buf, __pyx_t_206, __pyx_pybuffernd_j_max.diminfo[0].strides)) + 1);
+                                  __pyx_t_133 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_max.rcbuffer->pybuffer.buf, __pyx_t_206, __pyx_pybuffernd_j_max.diminfo[0].strides));
                                   __pyx_t_207 = (__pyx_v_m - 1);
-                                  __pyx_t_185 = __pyx_t_183;
-                                  for (__pyx_t_29 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_min.rcbuffer->pybuffer.buf, __pyx_t_207, __pyx_pybuffernd_j_min.diminfo[0].strides)); __pyx_t_29 < __pyx_t_185; __pyx_t_29+=1) {
-                                    __pyx_v_j = __pyx_t_29;
+                                  __pyx_t_134 = __pyx_t_133;
+                                  for (__pyx_t_136 = (*__Pyx_BufPtrStrided1d(__pyx_t_5pyVET_4_vet_intp *, __pyx_pybuffernd_j_min.rcbuffer->pybuffer.buf, __pyx_t_207, __pyx_pybuffernd_j_min.diminfo[0].strides)); __pyx_t_136 < __pyx_t_134; __pyx_t_136+=1) {
+                                    __pyx_v_j = __pyx_t_136;
 
-                                    /* "pyVET/_vet.pyx":546
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):
+                                    /* "pyVET/_vet.pyx":545
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]             # <<<<<<<<<<<<<<
  *                                                     * interp_coef[3, i, j])
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]
@@ -7037,8 +7038,8 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_209 = __pyx_v_i;
                                     __pyx_t_210 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":547
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):
+                                    /* "pyVET/_vet.pyx":546
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[3, i, j])             # <<<<<<<<<<<<<<
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]
@@ -7048,9 +7049,9 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_212 = __pyx_v_i;
                                     __pyx_t_213 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":546
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):
- *                     for j in range(j_min[m-1], j_max[m-1] + 1):
+                                    /* "pyVET/_vet.pyx":545
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):
+ *                     for j in range(j_min[m - 1], j_max[m - 1]):
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]             # <<<<<<<<<<<<<<
  *                                                     * interp_coef[3, i, j])
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]
@@ -7060,7 +7061,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_216 = __pyx_v_m;
                                     *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_residuals.rcbuffer->pybuffer.buf, __pyx_t_214, __pyx_pybuffernd_grad_residuals.diminfo[0].strides, __pyx_t_215, __pyx_pybuffernd_grad_residuals.diminfo[1].strides, __pyx_t_216, __pyx_pybuffernd_grad_residuals.diminfo[2].strides) += ((*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd__gradient_data.rcbuffer->pybuffer.buf, __pyx_t_208, __pyx_pybuffernd__gradient_data.diminfo[0].strides, __pyx_t_209, __pyx_pybuffernd__gradient_data.diminfo[1].strides, __pyx_t_210, __pyx_pybuffernd__gradient_data.diminfo[2].strides)) * (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_interp_coef.rcbuffer->pybuffer.buf, __pyx_t_211, __pyx_pybuffernd_interp_coef.diminfo[0].strides, __pyx_t_212, __pyx_pybuffernd_interp_coef.diminfo[1].strides, __pyx_t_213, __pyx_pybuffernd_interp_coef.diminfo[2].strides)));
 
-                                    /* "pyVET/_vet.pyx":548
+                                    /* "pyVET/_vet.pyx":547
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[3, i, j])
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]             # <<<<<<<<<<<<<<
@@ -7071,7 +7072,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_218 = __pyx_v_i;
                                     __pyx_t_219 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":549
+                                    /* "pyVET/_vet.pyx":548
  *                                                     * interp_coef[3, i, j])
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]
  *                                                     * interp_coef[3, i, j])             # <<<<<<<<<<<<<<
@@ -7082,7 +7083,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                     __pyx_t_221 = __pyx_v_i;
                                     __pyx_t_222 = __pyx_v_j;
 
-                                    /* "pyVET/_vet.pyx":548
+                                    /* "pyVET/_vet.pyx":547
  *                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
  *                                                     * interp_coef[3, i, j])
  *                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]             # <<<<<<<<<<<<<<
@@ -7109,12 +7110,12 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
           #endif
         }
 
-        /* "pyVET/_vet.pyx":534
+        /* "pyVET/_vet.pyx":533
  *                                                     * interp_coef[1, i, j])
  * 
  *         for l in prange(1, x_sectors, schedule='dynamic', nogil=True):             # <<<<<<<<<<<<<<
  *             for m in range(y_sectors):
- *                 for i in range(i_min[l-1], i_max[l-1] + 1):
+ *                 for i in range(i_min[l - 1], i_max[l - 1]):
  */
         /*finally:*/ {
           /*normal exit:*/{
@@ -7138,7 +7139,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
     goto __pyx_L26;
   }
 
-  /* "pyVET/_vet.pyx":554
+  /* "pyVET/_vet.pyx":553
  *     else:
  * 
  *         morphed_image, morph_mask = _warp(template_image,             # <<<<<<<<<<<<<<
@@ -7146,87 +7147,87 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  *                                           displacement,
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_warp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 554, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_warp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 553, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
 
-    /* "pyVET/_vet.pyx":556
+    /* "pyVET/_vet.pyx":555
  *         morphed_image, morph_mask = _warp(template_image,
  *                                           mask,
  *                                           displacement,             # <<<<<<<<<<<<<<
  *                                           gradient=False)
- *         morph_mask[mask>0] = 1
+ *         morph_mask[mask > 0] = 1
  */
-    __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 554, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 553, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_INCREF(((PyObject *)__pyx_v_template_image));
     __Pyx_GIVEREF(((PyObject *)__pyx_v_template_image));
-    PyTuple_SET_ITEM(__pyx_t_5, 0, ((PyObject *)__pyx_v_template_image));
+    PyTuple_SET_ITEM(__pyx_t_4, 0, ((PyObject *)__pyx_v_template_image));
     __Pyx_INCREF(((PyObject *)__pyx_v_mask));
     __Pyx_GIVEREF(((PyObject *)__pyx_v_mask));
-    PyTuple_SET_ITEM(__pyx_t_5, 1, ((PyObject *)__pyx_v_mask));
+    PyTuple_SET_ITEM(__pyx_t_4, 1, ((PyObject *)__pyx_v_mask));
     __Pyx_INCREF(((PyObject *)__pyx_v_displacement));
     __Pyx_GIVEREF(((PyObject *)__pyx_v_displacement));
-    PyTuple_SET_ITEM(__pyx_t_5, 2, ((PyObject *)__pyx_v_displacement));
+    PyTuple_SET_ITEM(__pyx_t_4, 2, ((PyObject *)__pyx_v_displacement));
 
-    /* "pyVET/_vet.pyx":557
+    /* "pyVET/_vet.pyx":556
  *                                           mask,
  *                                           displacement,
  *                                           gradient=False)             # <<<<<<<<<<<<<<
- *         morph_mask[mask>0] = 1
+ *         morph_mask[mask > 0] = 1
  *         residuals = np.sum((morphed_image - input_image)[morph_mask == 0] ** 2)
  */
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 557, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 556, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_gradient, Py_False) < 0) __PYX_ERR(0, 557, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_gradient, Py_False) < 0) __PYX_ERR(0, 556, __pyx_L1_error)
 
-    /* "pyVET/_vet.pyx":554
+    /* "pyVET/_vet.pyx":553
  *     else:
  * 
  *         morphed_image, morph_mask = _warp(template_image,             # <<<<<<<<<<<<<<
  *                                           mask,
  *                                           displacement,
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 554, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 553, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if ((likely(PyTuple_CheckExact(__pyx_t_4))) || (PyList_CheckExact(__pyx_t_4))) {
-      PyObject* sequence = __pyx_t_4;
+    if ((likely(PyTuple_CheckExact(__pyx_t_5))) || (PyList_CheckExact(__pyx_t_5))) {
+      PyObject* sequence = __pyx_t_5;
       Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 554, __pyx_L1_error)
+        __PYX_ERR(0, 553, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
         __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_5 = PyTuple_GET_ITEM(sequence, 1); 
+        __pyx_t_4 = PyTuple_GET_ITEM(sequence, 1); 
       } else {
         __pyx_t_3 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_5 = PyList_GET_ITEM(sequence, 1); 
+        __pyx_t_4 = PyList_GET_ITEM(sequence, 1); 
       }
       __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(__pyx_t_4);
       #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 554, __pyx_L1_error)
+      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 553, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 554, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 553, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
       #endif
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_2 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 554, __pyx_L1_error)
+      __pyx_t_2 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 553, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_110 = Py_TYPE(__pyx_t_2)->tp_iternext;
       index = 0; __pyx_t_3 = __pyx_t_110(__pyx_t_2); if (unlikely(!__pyx_t_3)) goto __pyx_L82_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_3);
-      index = 1; __pyx_t_5 = __pyx_t_110(__pyx_t_2); if (unlikely(!__pyx_t_5)) goto __pyx_L82_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_5);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_110(__pyx_t_2), 2) < 0) __PYX_ERR(0, 554, __pyx_L1_error)
+      index = 1; __pyx_t_4 = __pyx_t_110(__pyx_t_2); if (unlikely(!__pyx_t_4)) goto __pyx_L82_unpacking_failed;
+      __Pyx_GOTREF(__pyx_t_4);
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_110(__pyx_t_2), 2) < 0) __PYX_ERR(0, 553, __pyx_L1_error)
       __pyx_t_110 = NULL;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       goto __pyx_L83_unpacking_done;
@@ -7234,11 +7235,11 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_110 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 554, __pyx_L1_error)
+      __PYX_ERR(0, 553, __pyx_L1_error)
       __pyx_L83_unpacking_done:;
     }
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 554, __pyx_L1_error)
-    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 554, __pyx_L1_error)
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 553, __pyx_L1_error)
+    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 553, __pyx_L1_error)
     __pyx_t_118 = ((PyArrayObject *)__pyx_t_3);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -7255,12 +7256,12 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
         __pyx_t_12 = __pyx_t_11 = __pyx_t_10 = 0;
       }
       __pyx_pybuffernd_morphed_image.diminfo[0].strides = __pyx_pybuffernd_morphed_image.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_morphed_image.diminfo[0].shape = __pyx_pybuffernd_morphed_image.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_morphed_image.diminfo[1].strides = __pyx_pybuffernd_morphed_image.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_morphed_image.diminfo[1].shape = __pyx_pybuffernd_morphed_image.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 554, __pyx_L1_error)
+      if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 553, __pyx_L1_error)
     }
     __pyx_t_118 = 0;
     __pyx_v_morphed_image = ((PyArrayObject *)__pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_119 = ((PyArrayObject *)__pyx_t_5);
+    __pyx_t_119 = ((PyArrayObject *)__pyx_t_4);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_morph_mask.rcbuffer->pybuffer);
@@ -7276,43 +7277,43 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
         __pyx_t_10 = __pyx_t_11 = __pyx_t_12 = 0;
       }
       __pyx_pybuffernd_morph_mask.diminfo[0].strides = __pyx_pybuffernd_morph_mask.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_morph_mask.diminfo[0].shape = __pyx_pybuffernd_morph_mask.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_morph_mask.diminfo[1].strides = __pyx_pybuffernd_morph_mask.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_morph_mask.diminfo[1].shape = __pyx_pybuffernd_morph_mask.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 554, __pyx_L1_error)
+      if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 553, __pyx_L1_error)
     }
     __pyx_t_119 = 0;
-    __pyx_v_morph_mask = ((PyArrayObject *)__pyx_t_5);
-    __pyx_t_5 = 0;
+    __pyx_v_morph_mask = ((PyArrayObject *)__pyx_t_4);
+    __pyx_t_4 = 0;
 
-    /* "pyVET/_vet.pyx":558
+    /* "pyVET/_vet.pyx":557
  *                                           displacement,
  *                                           gradient=False)
- *         morph_mask[mask>0] = 1             # <<<<<<<<<<<<<<
+ *         morph_mask[mask > 0] = 1             # <<<<<<<<<<<<<<
  *         residuals = np.sum((morphed_image - input_image)[morph_mask == 0] ** 2)
  * 
  */
-    __pyx_t_4 = PyObject_RichCompare(((PyObject *)__pyx_v_mask), __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 558, __pyx_L1_error)
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_morph_mask), __pyx_t_4, __pyx_int_1) < 0)) __PYX_ERR(0, 558, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_5 = PyObject_RichCompare(((PyObject *)__pyx_v_mask), __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 557, __pyx_L1_error)
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_morph_mask), __pyx_t_5, __pyx_int_1) < 0)) __PYX_ERR(0, 557, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "pyVET/_vet.pyx":559
+    /* "pyVET/_vet.pyx":558
  *                                           gradient=False)
- *         morph_mask[mask>0] = 1
+ *         morph_mask[mask > 0] = 1
  *         residuals = np.sum((morphed_image - input_image)[morph_mask == 0] ** 2)             # <<<<<<<<<<<<<<
  * 
  *     # Compute smoothness constraint part of the cost function
  */
-    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 559, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 559, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 558, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 558, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = PyNumber_Subtract(((PyObject *)__pyx_v_morphed_image), ((PyObject *)__pyx_v_input_image)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 559, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_2 = PyObject_RichCompare(((PyObject *)__pyx_v_morph_mask), __pyx_int_0, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 559, __pyx_L1_error)
-    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_t_5, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 559, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = PyNumber_Subtract(((PyObject *)__pyx_v_morphed_image), ((PyObject *)__pyx_v_input_image)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 558, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_2 = PyObject_RichCompare(((PyObject *)__pyx_v_morph_mask), __pyx_int_0, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 558, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 558, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyNumber_Power(__pyx_t_6, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 559, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Power(__pyx_t_6, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 558, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_6 = NULL;
@@ -7326,48 +7327,48 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
       }
     }
     if (!__pyx_t_6) {
-      __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 559, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 558, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_GOTREF(__pyx_t_5);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_2};
-        __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 559, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 558, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __Pyx_GOTREF(__pyx_t_4);
+        __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       } else
       #endif
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_t_2};
-        __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 559, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 558, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __Pyx_GOTREF(__pyx_t_4);
+        __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       } else
       #endif
       {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 559, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6); __pyx_t_6 = NULL;
-        __Pyx_GIVEREF(__pyx_t_2);
-        PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_2);
-        __pyx_t_2 = 0;
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 559, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 558, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6); __pyx_t_6 = NULL;
+        __Pyx_GIVEREF(__pyx_t_2);
+        PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_t_2);
+        __pyx_t_2 = 0;
+        __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 558, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_226 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_226 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 559, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_226 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_226 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 558, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_v_residuals = __pyx_t_226;
   }
   __pyx_L26:;
 
-  /* "pyVET/_vet.pyx":562
+  /* "pyVET/_vet.pyx":561
  * 
  *     # Compute smoothness constraint part of the cost function
  *     cdef float64 smoothness_penalty = 0             # <<<<<<<<<<<<<<
@@ -7376,7 +7377,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
   __pyx_v_smoothness_penalty = 0.0;
 
-  /* "pyVET/_vet.pyx":564
+  /* "pyVET/_vet.pyx":563
  *     cdef float64 smoothness_penalty = 0
  * 
  *     cdef float64 df_dx2 = 0             # <<<<<<<<<<<<<<
@@ -7385,7 +7386,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
   __pyx_v_df_dx2 = 0.0;
 
-  /* "pyVET/_vet.pyx":565
+  /* "pyVET/_vet.pyx":564
  * 
  *     cdef float64 df_dx2 = 0
  *     cdef float64 df_dxdy = 0             # <<<<<<<<<<<<<<
@@ -7394,7 +7395,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
   __pyx_v_df_dxdy = 0.0;
 
-  /* "pyVET/_vet.pyx":566
+  /* "pyVET/_vet.pyx":565
  *     cdef float64 df_dx2 = 0
  *     cdef float64 df_dxdy = 0
  *     cdef float64 df_dy2 = 0             # <<<<<<<<<<<<<<
@@ -7403,7 +7404,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
   __pyx_v_df_dy2 = 0.0;
 
-  /* "pyVET/_vet.pyx":570
+  /* "pyVET/_vet.pyx":569
  *     cdef float64 inloop_smoothness_penalty
  * 
  *     if smooth_gain > 0.:             # <<<<<<<<<<<<<<
@@ -7413,17 +7414,17 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
   __pyx_t_1 = ((__pyx_v_smooth_gain > 0.) != 0);
   if (__pyx_t_1) {
 
-    /* "pyVET/_vet.pyx":572
+    /* "pyVET/_vet.pyx":571
  *     if smooth_gain > 0.:
  * 
  *         for axis in range(2):             # <<<<<<<<<<<<<<
  * 
  *             inloop_smoothness_penalty = 0
  */
-    for (__pyx_t_134 = 0; __pyx_t_134 < 2; __pyx_t_134+=1) {
-      __pyx_v_axis = __pyx_t_134;
+    for (__pyx_t_181 = 0; __pyx_t_181 < 2; __pyx_t_181+=1) {
+      __pyx_v_axis = __pyx_t_181;
 
-      /* "pyVET/_vet.pyx":574
+      /* "pyVET/_vet.pyx":573
  *         for axis in range(2):
  * 
  *             inloop_smoothness_penalty = 0             # <<<<<<<<<<<<<<
@@ -7432,7 +7433,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
       __pyx_v_inloop_smoothness_penalty = 0.0;
 
-      /* "pyVET/_vet.pyx":576
+      /* "pyVET/_vet.pyx":575
  *             inloop_smoothness_penalty = 0
  * 
  *             for l in prange(1, x_sectors - 1, schedule='dynamic', nogil=True):             # <<<<<<<<<<<<<<
@@ -7446,7 +7447,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
           __Pyx_FastGIL_Remember();
           #endif
           /*try:*/ {
-            __pyx_t_132 = (__pyx_v_x_sectors - 1);
+            __pyx_t_180 = (__pyx_v_x_sectors - 1);
             if (1 == 0) abort();
             {
                 #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
@@ -7455,19 +7456,19 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                     #define likely(x)   (x)
                     #define unlikely(x) (x)
                 #endif
-                __pyx_t_138 = (__pyx_t_132 - 1 + 1 - 1/abs(1)) / 1;
-                if (__pyx_t_138 > 0)
+                __pyx_t_228 = (__pyx_t_180 - 1 + 1 - 1/abs(1)) / 1;
+                if (__pyx_t_228 > 0)
                 {
                     #ifdef _OPENMP
-                    #pragma omp parallel reduction(+:__pyx_v_smoothness_penalty) private(__pyx_t_1, __pyx_t_183, __pyx_t_185, __pyx_t_227, __pyx_t_228, __pyx_t_229, __pyx_t_230, __pyx_t_231, __pyx_t_232, __pyx_t_233, __pyx_t_234, __pyx_t_235, __pyx_t_236, __pyx_t_237, __pyx_t_238, __pyx_t_239, __pyx_t_240, __pyx_t_241, __pyx_t_242, __pyx_t_243, __pyx_t_244, __pyx_t_245, __pyx_t_246, __pyx_t_247, __pyx_t_248, __pyx_t_249, __pyx_t_25, __pyx_t_250, __pyx_t_251, __pyx_t_252, __pyx_t_253, __pyx_t_254, __pyx_t_255, __pyx_t_256, __pyx_t_257, __pyx_t_258, __pyx_t_259, __pyx_t_260, __pyx_t_261, __pyx_t_262, __pyx_t_263, __pyx_t_264, __pyx_t_265, __pyx_t_266, __pyx_t_267, __pyx_t_268, __pyx_t_269, __pyx_t_270, __pyx_t_271, __pyx_t_272, __pyx_t_273, __pyx_t_274, __pyx_t_275, __pyx_t_276, __pyx_t_277, __pyx_t_278, __pyx_t_279, __pyx_t_280, __pyx_t_281, __pyx_t_282, __pyx_t_283, __pyx_t_284, __pyx_t_285, __pyx_t_286)
+                    #pragma omp parallel reduction(+:__pyx_v_smoothness_penalty) private(__pyx_t_1, __pyx_t_229, __pyx_t_230, __pyx_t_231, __pyx_t_232, __pyx_t_233, __pyx_t_234, __pyx_t_235, __pyx_t_236, __pyx_t_237, __pyx_t_238, __pyx_t_239, __pyx_t_240, __pyx_t_241, __pyx_t_242, __pyx_t_243, __pyx_t_244, __pyx_t_245, __pyx_t_246, __pyx_t_247, __pyx_t_248, __pyx_t_249, __pyx_t_25, __pyx_t_250, __pyx_t_251, __pyx_t_252, __pyx_t_253, __pyx_t_254, __pyx_t_255, __pyx_t_256, __pyx_t_257, __pyx_t_258, __pyx_t_259, __pyx_t_260, __pyx_t_261, __pyx_t_262, __pyx_t_263, __pyx_t_264, __pyx_t_265, __pyx_t_266, __pyx_t_267, __pyx_t_268, __pyx_t_269, __pyx_t_270, __pyx_t_271, __pyx_t_272, __pyx_t_273, __pyx_t_274, __pyx_t_275, __pyx_t_276, __pyx_t_277, __pyx_t_278, __pyx_t_279, __pyx_t_280, __pyx_t_281, __pyx_t_282, __pyx_t_283, __pyx_t_284, __pyx_t_285, __pyx_t_286, __pyx_t_287, __pyx_t_288, __pyx_t_289, __pyx_t_290)
                     #endif /* _OPENMP */
                     {
                         #ifdef _OPENMP
                         #pragma omp for lastprivate(__pyx_v_df_dx2) lastprivate(__pyx_v_df_dxdy) lastprivate(__pyx_v_df_dy2) lastprivate(__pyx_v_inloop_smoothness_penalty) firstprivate(__pyx_v_l) lastprivate(__pyx_v_l) lastprivate(__pyx_v_m) schedule(dynamic)
                         #endif /* _OPENMP */
-                        for (__pyx_t_136 = 0; __pyx_t_136 < __pyx_t_138; __pyx_t_136++){
+                        for (__pyx_t_227 = 0; __pyx_t_227 < __pyx_t_228; __pyx_t_227++){
                             {
-                                __pyx_v_l = (__pyx_t_5pyVET_4_vet_intp)(1 + 1 * __pyx_t_136);
+                                __pyx_v_l = (__pyx_t_5pyVET_4_vet_intp)(1 + 1 * __pyx_t_227);
                                 /* Initialize private variables to invalid values */
                                 __pyx_v_df_dx2 = ((__pyx_t_5pyVET_4_vet_float64)__PYX_NAN());
                                 __pyx_v_df_dxdy = ((__pyx_t_5pyVET_4_vet_float64)__PYX_NAN());
@@ -7475,53 +7476,53 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                 __pyx_v_inloop_smoothness_penalty = ((__pyx_t_5pyVET_4_vet_float64)__PYX_NAN());
                                 __pyx_v_m = ((__pyx_t_5pyVET_4_vet_intp)0xbad0bad0);
 
-                                /* "pyVET/_vet.pyx":578
+                                /* "pyVET/_vet.pyx":577
  *             for l in prange(1, x_sectors - 1, schedule='dynamic', nogil=True):
  * 
  *                 for m in range(1, y_sectors - 1):             # <<<<<<<<<<<<<<
  *                     df_dx2 = (sector_displacement[axis, l + 1, m]
  *                               - 2 * sector_displacement[axis, l, m]
  */
-                                __pyx_t_183 = (__pyx_v_y_sectors - 1);
-                                __pyx_t_185 = __pyx_t_183;
-                                for (__pyx_t_25 = 1; __pyx_t_25 < __pyx_t_185; __pyx_t_25+=1) {
+                                __pyx_t_229 = (__pyx_v_y_sectors - 1);
+                                __pyx_t_230 = __pyx_t_229;
+                                for (__pyx_t_25 = 1; __pyx_t_25 < __pyx_t_230; __pyx_t_25+=1) {
                                   __pyx_v_m = __pyx_t_25;
 
-                                  /* "pyVET/_vet.pyx":579
+                                  /* "pyVET/_vet.pyx":578
  * 
  *                 for m in range(1, y_sectors - 1):
  *                     df_dx2 = (sector_displacement[axis, l + 1, m]             # <<<<<<<<<<<<<<
  *                               - 2 * sector_displacement[axis, l, m]
  *                               + sector_displacement[axis, l - 1, m])
  */
-                                  __pyx_t_227 = __pyx_v_axis;
-                                  __pyx_t_228 = (__pyx_v_l + 1);
-                                  __pyx_t_229 = __pyx_v_m;
+                                  __pyx_t_231 = __pyx_v_axis;
+                                  __pyx_t_232 = (__pyx_v_l + 1);
+                                  __pyx_t_233 = __pyx_v_m;
 
-                                  /* "pyVET/_vet.pyx":580
+                                  /* "pyVET/_vet.pyx":579
  *                 for m in range(1, y_sectors - 1):
  *                     df_dx2 = (sector_displacement[axis, l + 1, m]
  *                               - 2 * sector_displacement[axis, l, m]             # <<<<<<<<<<<<<<
  *                               + sector_displacement[axis, l - 1, m])
  * 
  */
-                                  __pyx_t_230 = __pyx_v_axis;
-                                  __pyx_t_231 = __pyx_v_l;
-                                  __pyx_t_232 = __pyx_v_m;
+                                  __pyx_t_234 = __pyx_v_axis;
+                                  __pyx_t_235 = __pyx_v_l;
+                                  __pyx_t_236 = __pyx_v_m;
 
-                                  /* "pyVET/_vet.pyx":581
+                                  /* "pyVET/_vet.pyx":580
  *                     df_dx2 = (sector_displacement[axis, l + 1, m]
  *                               - 2 * sector_displacement[axis, l, m]
  *                               + sector_displacement[axis, l - 1, m])             # <<<<<<<<<<<<<<
  * 
  *                     df_dx2 = df_dx2 / (x_sector_size * x_sector_size)
  */
-                                  __pyx_t_233 = __pyx_v_axis;
-                                  __pyx_t_234 = (__pyx_v_l - 1);
-                                  __pyx_t_235 = __pyx_v_m;
-                                  __pyx_v_df_dx2 = (((*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_227, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_228, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_229, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)) - (2.0 * (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_230, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_231, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_232, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)))) + (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_233, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_234, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_235, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)));
+                                  __pyx_t_237 = __pyx_v_axis;
+                                  __pyx_t_238 = (__pyx_v_l - 1);
+                                  __pyx_t_239 = __pyx_v_m;
+                                  __pyx_v_df_dx2 = (((*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_231, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_232, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_233, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)) - (2.0 * (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_234, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_235, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_236, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)))) + (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_237, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_238, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_239, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)));
 
-                                  /* "pyVET/_vet.pyx":583
+                                  /* "pyVET/_vet.pyx":582
  *                               + sector_displacement[axis, l - 1, m])
  * 
  *                     df_dx2 = df_dx2 / (x_sector_size * x_sector_size)             # <<<<<<<<<<<<<<
@@ -7530,41 +7531,41 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
                                   __pyx_v_df_dx2 = (__pyx_v_df_dx2 / (__pyx_v_x_sector_size * __pyx_v_x_sector_size));
 
-                                  /* "pyVET/_vet.pyx":585
+                                  /* "pyVET/_vet.pyx":584
  *                     df_dx2 = df_dx2 / (x_sector_size * x_sector_size)
  * 
  *                     df_dy2 = (sector_displacement[axis, l, m + 1]             # <<<<<<<<<<<<<<
  *                               - 2 * sector_displacement[axis, l, m]
  *                               + sector_displacement[axis, l, m - 1])
  */
-                                  __pyx_t_236 = __pyx_v_axis;
-                                  __pyx_t_237 = __pyx_v_l;
-                                  __pyx_t_238 = (__pyx_v_m + 1);
+                                  __pyx_t_240 = __pyx_v_axis;
+                                  __pyx_t_241 = __pyx_v_l;
+                                  __pyx_t_242 = (__pyx_v_m + 1);
 
-                                  /* "pyVET/_vet.pyx":586
+                                  /* "pyVET/_vet.pyx":585
  * 
  *                     df_dy2 = (sector_displacement[axis, l, m + 1]
  *                               - 2 * sector_displacement[axis, l, m]             # <<<<<<<<<<<<<<
  *                               + sector_displacement[axis, l, m - 1])
  * 
  */
-                                  __pyx_t_239 = __pyx_v_axis;
-                                  __pyx_t_240 = __pyx_v_l;
-                                  __pyx_t_241 = __pyx_v_m;
+                                  __pyx_t_243 = __pyx_v_axis;
+                                  __pyx_t_244 = __pyx_v_l;
+                                  __pyx_t_245 = __pyx_v_m;
 
-                                  /* "pyVET/_vet.pyx":587
+                                  /* "pyVET/_vet.pyx":586
  *                     df_dy2 = (sector_displacement[axis, l, m + 1]
  *                               - 2 * sector_displacement[axis, l, m]
  *                               + sector_displacement[axis, l, m - 1])             # <<<<<<<<<<<<<<
  * 
  *                     df_dy2 = df_dy2 / (y_sector_size * y_sector_size)
  */
-                                  __pyx_t_242 = __pyx_v_axis;
-                                  __pyx_t_243 = __pyx_v_l;
-                                  __pyx_t_244 = (__pyx_v_m - 1);
-                                  __pyx_v_df_dy2 = (((*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_236, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_237, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_238, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)) - (2.0 * (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_239, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_240, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_241, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)))) + (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_242, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_243, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_244, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)));
+                                  __pyx_t_246 = __pyx_v_axis;
+                                  __pyx_t_247 = __pyx_v_l;
+                                  __pyx_t_248 = (__pyx_v_m - 1);
+                                  __pyx_v_df_dy2 = (((*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_240, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_241, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_242, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)) - (2.0 * (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_243, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_244, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_245, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)))) + (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_246, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_247, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_248, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)));
 
-                                  /* "pyVET/_vet.pyx":589
+                                  /* "pyVET/_vet.pyx":588
  *                               + sector_displacement[axis, l, m - 1])
  * 
  *                     df_dy2 = df_dy2 / (y_sector_size * y_sector_size)             # <<<<<<<<<<<<<<
@@ -7573,52 +7574,52 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
                                   __pyx_v_df_dy2 = (__pyx_v_df_dy2 / (__pyx_v_y_sector_size * __pyx_v_y_sector_size));
 
-                                  /* "pyVET/_vet.pyx":591
+                                  /* "pyVET/_vet.pyx":590
  *                     df_dy2 = df_dy2 / (y_sector_size * y_sector_size)
  * 
  *                     df_dxdy = (sector_displacement[axis, l + 1, m + 1]             # <<<<<<<<<<<<<<
  *                                - sector_displacement[axis, l + 1, m - 1]
  *                                - sector_displacement[axis, l - 1, m + 1]
  */
-                                  __pyx_t_245 = __pyx_v_axis;
-                                  __pyx_t_246 = (__pyx_v_l + 1);
-                                  __pyx_t_247 = (__pyx_v_m + 1);
+                                  __pyx_t_249 = __pyx_v_axis;
+                                  __pyx_t_250 = (__pyx_v_l + 1);
+                                  __pyx_t_251 = (__pyx_v_m + 1);
 
-                                  /* "pyVET/_vet.pyx":592
+                                  /* "pyVET/_vet.pyx":591
  * 
  *                     df_dxdy = (sector_displacement[axis, l + 1, m + 1]
  *                                - sector_displacement[axis, l + 1, m - 1]             # <<<<<<<<<<<<<<
  *                                - sector_displacement[axis, l - 1, m + 1]
  *                                + sector_displacement[axis, l - 1, m - 1])
  */
-                                  __pyx_t_248 = __pyx_v_axis;
-                                  __pyx_t_249 = (__pyx_v_l + 1);
-                                  __pyx_t_250 = (__pyx_v_m - 1);
+                                  __pyx_t_252 = __pyx_v_axis;
+                                  __pyx_t_253 = (__pyx_v_l + 1);
+                                  __pyx_t_254 = (__pyx_v_m - 1);
 
-                                  /* "pyVET/_vet.pyx":593
+                                  /* "pyVET/_vet.pyx":592
  *                     df_dxdy = (sector_displacement[axis, l + 1, m + 1]
  *                                - sector_displacement[axis, l + 1, m - 1]
  *                                - sector_displacement[axis, l - 1, m + 1]             # <<<<<<<<<<<<<<
  *                                + sector_displacement[axis, l - 1, m - 1])
  *                     df_dxdy = df_dxdy / (4 * x_sector_size * y_sector_size)
  */
-                                  __pyx_t_251 = __pyx_v_axis;
-                                  __pyx_t_252 = (__pyx_v_l - 1);
-                                  __pyx_t_253 = (__pyx_v_m + 1);
+                                  __pyx_t_255 = __pyx_v_axis;
+                                  __pyx_t_256 = (__pyx_v_l - 1);
+                                  __pyx_t_257 = (__pyx_v_m + 1);
 
-                                  /* "pyVET/_vet.pyx":594
+                                  /* "pyVET/_vet.pyx":593
  *                                - sector_displacement[axis, l + 1, m - 1]
  *                                - sector_displacement[axis, l - 1, m + 1]
  *                                + sector_displacement[axis, l - 1, m - 1])             # <<<<<<<<<<<<<<
  *                     df_dxdy = df_dxdy / (4 * x_sector_size * y_sector_size)
  * 
  */
-                                  __pyx_t_254 = __pyx_v_axis;
-                                  __pyx_t_255 = (__pyx_v_l - 1);
-                                  __pyx_t_256 = (__pyx_v_m - 1);
-                                  __pyx_v_df_dxdy = ((((*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_245, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_246, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_247, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)) - (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_248, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_249, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_250, __pyx_pybuffernd_sector_displacement.diminfo[2].strides))) - (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_251, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_252, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_253, __pyx_pybuffernd_sector_displacement.diminfo[2].strides))) + (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_254, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_255, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_256, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)));
+                                  __pyx_t_258 = __pyx_v_axis;
+                                  __pyx_t_259 = (__pyx_v_l - 1);
+                                  __pyx_t_260 = (__pyx_v_m - 1);
+                                  __pyx_v_df_dxdy = ((((*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_249, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_250, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_251, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)) - (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_252, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_253, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_254, __pyx_pybuffernd_sector_displacement.diminfo[2].strides))) - (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_255, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_256, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_257, __pyx_pybuffernd_sector_displacement.diminfo[2].strides))) + (*__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_sector_displacement.rcbuffer->pybuffer.buf, __pyx_t_258, __pyx_pybuffernd_sector_displacement.diminfo[0].strides, __pyx_t_259, __pyx_pybuffernd_sector_displacement.diminfo[1].strides, __pyx_t_260, __pyx_pybuffernd_sector_displacement.diminfo[2].strides)));
 
-                                  /* "pyVET/_vet.pyx":595
+                                  /* "pyVET/_vet.pyx":594
  *                                - sector_displacement[axis, l - 1, m + 1]
  *                                + sector_displacement[axis, l - 1, m - 1])
  *                     df_dxdy = df_dxdy / (4 * x_sector_size * y_sector_size)             # <<<<<<<<<<<<<<
@@ -7627,7 +7628,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
                                   __pyx_v_df_dxdy = (__pyx_v_df_dxdy / ((4 * __pyx_v_x_sector_size) * __pyx_v_y_sector_size));
 
-                                  /* "pyVET/_vet.pyx":597
+                                  /* "pyVET/_vet.pyx":596
  *                     df_dxdy = df_dxdy / (4 * x_sector_size * y_sector_size)
  * 
  *                     if gradient:             # <<<<<<<<<<<<<<
@@ -7637,127 +7638,127 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
                                   __pyx_t_1 = (__pyx_v_gradient != 0);
                                   if (__pyx_t_1) {
 
-                                    /* "pyVET/_vet.pyx":598
+                                    /* "pyVET/_vet.pyx":597
  * 
  *                     if gradient:
  *                         grad_smooth[axis, l, m] -= 2 * df_dx2             # <<<<<<<<<<<<<<
  *                         grad_smooth[axis, l + 1, m] += df_dx2
  *                         grad_smooth[axis, l - 1, m] += df_dx2
  */
-                                    __pyx_t_257 = __pyx_v_axis;
-                                    __pyx_t_258 = __pyx_v_l;
-                                    __pyx_t_259 = __pyx_v_m;
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_257, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_258, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_259, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) -= (2.0 * __pyx_v_df_dx2);
+                                    __pyx_t_261 = __pyx_v_axis;
+                                    __pyx_t_262 = __pyx_v_l;
+                                    __pyx_t_263 = __pyx_v_m;
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_261, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_262, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_263, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) -= (2.0 * __pyx_v_df_dx2);
 
-                                    /* "pyVET/_vet.pyx":599
+                                    /* "pyVET/_vet.pyx":598
  *                     if gradient:
  *                         grad_smooth[axis, l, m] -= 2 * df_dx2
  *                         grad_smooth[axis, l + 1, m] += df_dx2             # <<<<<<<<<<<<<<
  *                         grad_smooth[axis, l - 1, m] += df_dx2
  * 
  */
-                                    __pyx_t_260 = __pyx_v_axis;
-                                    __pyx_t_261 = (__pyx_v_l + 1);
-                                    __pyx_t_262 = __pyx_v_m;
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_260, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_261, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_262, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dx2;
+                                    __pyx_t_264 = __pyx_v_axis;
+                                    __pyx_t_265 = (__pyx_v_l + 1);
+                                    __pyx_t_266 = __pyx_v_m;
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_264, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_265, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_266, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dx2;
 
-                                    /* "pyVET/_vet.pyx":600
+                                    /* "pyVET/_vet.pyx":599
  *                         grad_smooth[axis, l, m] -= 2 * df_dx2
  *                         grad_smooth[axis, l + 1, m] += df_dx2
  *                         grad_smooth[axis, l - 1, m] += df_dx2             # <<<<<<<<<<<<<<
  * 
  *                         grad_smooth[axis, l, m] -= 2 * df_dy2
  */
-                                    __pyx_t_263 = __pyx_v_axis;
-                                    __pyx_t_264 = (__pyx_v_l - 1);
-                                    __pyx_t_265 = __pyx_v_m;
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_263, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_264, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_265, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dx2;
+                                    __pyx_t_267 = __pyx_v_axis;
+                                    __pyx_t_268 = (__pyx_v_l - 1);
+                                    __pyx_t_269 = __pyx_v_m;
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_267, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_268, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_269, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dx2;
 
-                                    /* "pyVET/_vet.pyx":602
+                                    /* "pyVET/_vet.pyx":601
  *                         grad_smooth[axis, l - 1, m] += df_dx2
  * 
  *                         grad_smooth[axis, l, m] -= 2 * df_dy2             # <<<<<<<<<<<<<<
  *                         grad_smooth[axis, l, m - 1] += df_dy2
  *                         grad_smooth[axis, l, m + 1] += df_dy2
  */
-                                    __pyx_t_266 = __pyx_v_axis;
-                                    __pyx_t_267 = __pyx_v_l;
-                                    __pyx_t_268 = __pyx_v_m;
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_266, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_267, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_268, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) -= (2.0 * __pyx_v_df_dy2);
+                                    __pyx_t_270 = __pyx_v_axis;
+                                    __pyx_t_271 = __pyx_v_l;
+                                    __pyx_t_272 = __pyx_v_m;
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_270, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_271, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_272, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) -= (2.0 * __pyx_v_df_dy2);
 
-                                    /* "pyVET/_vet.pyx":603
+                                    /* "pyVET/_vet.pyx":602
  * 
  *                         grad_smooth[axis, l, m] -= 2 * df_dy2
  *                         grad_smooth[axis, l, m - 1] += df_dy2             # <<<<<<<<<<<<<<
  *                         grad_smooth[axis, l, m + 1] += df_dy2
  * 
  */
-                                    __pyx_t_269 = __pyx_v_axis;
-                                    __pyx_t_270 = __pyx_v_l;
-                                    __pyx_t_271 = (__pyx_v_m - 1);
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_269, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_270, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_271, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dy2;
+                                    __pyx_t_273 = __pyx_v_axis;
+                                    __pyx_t_274 = __pyx_v_l;
+                                    __pyx_t_275 = (__pyx_v_m - 1);
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_273, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_274, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_275, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dy2;
 
-                                    /* "pyVET/_vet.pyx":604
+                                    /* "pyVET/_vet.pyx":603
  *                         grad_smooth[axis, l, m] -= 2 * df_dy2
  *                         grad_smooth[axis, l, m - 1] += df_dy2
  *                         grad_smooth[axis, l, m + 1] += df_dy2             # <<<<<<<<<<<<<<
  * 
  *                         grad_smooth[axis, l - 1, m - 1] += df_dxdy
  */
-                                    __pyx_t_272 = __pyx_v_axis;
-                                    __pyx_t_273 = __pyx_v_l;
-                                    __pyx_t_274 = (__pyx_v_m + 1);
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_272, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_273, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_274, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dy2;
+                                    __pyx_t_276 = __pyx_v_axis;
+                                    __pyx_t_277 = __pyx_v_l;
+                                    __pyx_t_278 = (__pyx_v_m + 1);
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_276, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_277, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_278, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dy2;
 
-                                    /* "pyVET/_vet.pyx":606
+                                    /* "pyVET/_vet.pyx":605
  *                         grad_smooth[axis, l, m + 1] += df_dy2
  * 
  *                         grad_smooth[axis, l - 1, m - 1] += df_dxdy             # <<<<<<<<<<<<<<
  *                         grad_smooth[axis, l - 1, m + 1] -= df_dxdy
  *                         grad_smooth[axis, l + 1, m - 1] -= df_dxdy
  */
-                                    __pyx_t_275 = __pyx_v_axis;
-                                    __pyx_t_276 = (__pyx_v_l - 1);
-                                    __pyx_t_277 = (__pyx_v_m - 1);
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_275, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_276, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_277, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dxdy;
+                                    __pyx_t_279 = __pyx_v_axis;
+                                    __pyx_t_280 = (__pyx_v_l - 1);
+                                    __pyx_t_281 = (__pyx_v_m - 1);
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_279, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_280, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_281, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dxdy;
 
-                                    /* "pyVET/_vet.pyx":607
+                                    /* "pyVET/_vet.pyx":606
  * 
  *                         grad_smooth[axis, l - 1, m - 1] += df_dxdy
  *                         grad_smooth[axis, l - 1, m + 1] -= df_dxdy             # <<<<<<<<<<<<<<
  *                         grad_smooth[axis, l + 1, m - 1] -= df_dxdy
  *                         grad_smooth[axis, l + 1, m + 1] += df_dxdy
  */
-                                    __pyx_t_278 = __pyx_v_axis;
-                                    __pyx_t_279 = (__pyx_v_l - 1);
-                                    __pyx_t_280 = (__pyx_v_m + 1);
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_278, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_279, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_280, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) -= __pyx_v_df_dxdy;
+                                    __pyx_t_282 = __pyx_v_axis;
+                                    __pyx_t_283 = (__pyx_v_l - 1);
+                                    __pyx_t_284 = (__pyx_v_m + 1);
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_282, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_283, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_284, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) -= __pyx_v_df_dxdy;
 
-                                    /* "pyVET/_vet.pyx":608
+                                    /* "pyVET/_vet.pyx":607
  *                         grad_smooth[axis, l - 1, m - 1] += df_dxdy
  *                         grad_smooth[axis, l - 1, m + 1] -= df_dxdy
  *                         grad_smooth[axis, l + 1, m - 1] -= df_dxdy             # <<<<<<<<<<<<<<
  *                         grad_smooth[axis, l + 1, m + 1] += df_dxdy
  * 
  */
-                                    __pyx_t_281 = __pyx_v_axis;
-                                    __pyx_t_282 = (__pyx_v_l + 1);
-                                    __pyx_t_283 = (__pyx_v_m - 1);
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_281, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_282, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_283, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) -= __pyx_v_df_dxdy;
+                                    __pyx_t_285 = __pyx_v_axis;
+                                    __pyx_t_286 = (__pyx_v_l + 1);
+                                    __pyx_t_287 = (__pyx_v_m - 1);
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_285, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_286, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_287, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) -= __pyx_v_df_dxdy;
 
-                                    /* "pyVET/_vet.pyx":609
+                                    /* "pyVET/_vet.pyx":608
  *                         grad_smooth[axis, l - 1, m + 1] -= df_dxdy
  *                         grad_smooth[axis, l + 1, m - 1] -= df_dxdy
  *                         grad_smooth[axis, l + 1, m + 1] += df_dxdy             # <<<<<<<<<<<<<<
  * 
  *                     inloop_smoothness_penalty = (df_dx2 * df_dx2
  */
-                                    __pyx_t_284 = __pyx_v_axis;
-                                    __pyx_t_285 = (__pyx_v_l + 1);
-                                    __pyx_t_286 = (__pyx_v_m + 1);
-                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_284, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_285, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_286, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dxdy;
+                                    __pyx_t_288 = __pyx_v_axis;
+                                    __pyx_t_289 = (__pyx_v_l + 1);
+                                    __pyx_t_290 = (__pyx_v_m + 1);
+                                    *__Pyx_BufPtrStrided3d(__pyx_t_5pyVET_4_vet_float64 *, __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.buf, __pyx_t_288, __pyx_pybuffernd_grad_smooth.diminfo[0].strides, __pyx_t_289, __pyx_pybuffernd_grad_smooth.diminfo[1].strides, __pyx_t_290, __pyx_pybuffernd_grad_smooth.diminfo[2].strides) += __pyx_v_df_dxdy;
 
-                                    /* "pyVET/_vet.pyx":597
+                                    /* "pyVET/_vet.pyx":596
  *                     df_dxdy = df_dxdy / (4 * x_sector_size * y_sector_size)
  * 
  *                     if gradient:             # <<<<<<<<<<<<<<
@@ -7766,7 +7767,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
                                   }
 
-                                  /* "pyVET/_vet.pyx":613
+                                  /* "pyVET/_vet.pyx":612
  *                     inloop_smoothness_penalty = (df_dx2 * df_dx2
  *                                                  + 2 * df_dxdy * df_dxdy
  *                                                  + df_dy2 * df_dy2)             # <<<<<<<<<<<<<<
@@ -7775,7 +7776,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
                                   __pyx_v_inloop_smoothness_penalty = (((__pyx_v_df_dx2 * __pyx_v_df_dx2) + ((2.0 * __pyx_v_df_dxdy) * __pyx_v_df_dxdy)) + (__pyx_v_df_dy2 * __pyx_v_df_dy2));
 
-                                  /* "pyVET/_vet.pyx":615
+                                  /* "pyVET/_vet.pyx":614
  *                                                  + df_dy2 * df_dy2)
  * 
  *                     smoothness_penalty += inloop_smoothness_penalty             # <<<<<<<<<<<<<<
@@ -7797,7 +7798,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
             #endif
           }
 
-          /* "pyVET/_vet.pyx":576
+          /* "pyVET/_vet.pyx":575
  *             inloop_smoothness_penalty = 0
  * 
  *             for l in prange(1, x_sectors - 1, schedule='dynamic', nogil=True):             # <<<<<<<<<<<<<<
@@ -7817,7 +7818,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
       }
     }
 
-    /* "pyVET/_vet.pyx":617
+    /* "pyVET/_vet.pyx":616
  *                     smoothness_penalty += inloop_smoothness_penalty
  * 
  *         smoothness_penalty *= smooth_gain  #* x_sector_size * y_sector_size             # <<<<<<<<<<<<<<
@@ -7826,7 +7827,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
     __pyx_v_smoothness_penalty = (__pyx_v_smoothness_penalty * __pyx_v_smooth_gain);
 
-    /* "pyVET/_vet.pyx":570
+    /* "pyVET/_vet.pyx":569
  *     cdef float64 inloop_smoothness_penalty
  * 
  *     if smooth_gain > 0.:             # <<<<<<<<<<<<<<
@@ -7835,7 +7836,7 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
   }
 
-  /* "pyVET/_vet.pyx":619
+  /* "pyVET/_vet.pyx":618
  *         smoothness_penalty *= smooth_gain  #* x_sector_size * y_sector_size
  * 
  *     if gradient:             # <<<<<<<<<<<<<<
@@ -7845,19 +7846,19 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
   __pyx_t_1 = (__pyx_v_gradient != 0);
   if (__pyx_t_1) {
 
-    /* "pyVET/_vet.pyx":620
+    /* "pyVET/_vet.pyx":619
  * 
  *     if gradient:
  *         grad_smooth *= 2 * smooth_gain  #* x_sector_size * y_sector_size             # <<<<<<<<<<<<<<
  * 
  *         return grad_residuals + grad_smooth
  */
-    __pyx_t_4 = PyFloat_FromDouble((2.0 * __pyx_v_smooth_gain)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 620, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = PyNumber_InPlaceMultiply(((PyObject *)__pyx_v_grad_smooth), __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 620, __pyx_L1_error)
+    __pyx_t_5 = PyFloat_FromDouble((2.0 * __pyx_v_smooth_gain)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 619, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_3 = PyNumber_InPlaceMultiply(((PyObject *)__pyx_v_grad_smooth), __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 619, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 620, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 619, __pyx_L1_error)
     __pyx_t_116 = ((PyArrayObject *)__pyx_t_3);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -7874,13 +7875,13 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
         __pyx_t_12 = __pyx_t_11 = __pyx_t_10 = 0;
       }
       __pyx_pybuffernd_grad_smooth.diminfo[0].strides = __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_grad_smooth.diminfo[0].shape = __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_grad_smooth.diminfo[1].strides = __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_grad_smooth.diminfo[1].shape = __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_grad_smooth.diminfo[2].strides = __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_grad_smooth.diminfo[2].shape = __pyx_pybuffernd_grad_smooth.rcbuffer->pybuffer.shape[2];
-      if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 620, __pyx_L1_error)
+      if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 619, __pyx_L1_error)
     }
     __pyx_t_116 = 0;
     __Pyx_XDECREF_SET(__pyx_v_grad_smooth, ((PyArrayObject *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "pyVET/_vet.pyx":622
+    /* "pyVET/_vet.pyx":621
  *         grad_smooth *= 2 * smooth_gain  #* x_sector_size * y_sector_size
  * 
  *         return grad_residuals + grad_smooth             # <<<<<<<<<<<<<<
@@ -7888,13 +7889,13 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  *         return residuals, smoothness_penalty
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = PyNumber_Add(((PyObject *)__pyx_v_grad_residuals), ((PyObject *)__pyx_v_grad_smooth)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 622, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Add(((PyObject *)__pyx_v_grad_residuals), ((PyObject *)__pyx_v_grad_smooth)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 621, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "pyVET/_vet.pyx":619
+    /* "pyVET/_vet.pyx":618
  *         smoothness_penalty *= smooth_gain  #* x_sector_size * y_sector_size
  * 
  *     if gradient:             # <<<<<<<<<<<<<<
@@ -7903,27 +7904,27 @@ static PyObject *__pyx_pf_5pyVET_4_vet_2_cost_function(CYTHON_UNUSED PyObject *_
  */
   }
 
-  /* "pyVET/_vet.pyx":624
+  /* "pyVET/_vet.pyx":623
  *         return grad_residuals + grad_smooth
  *     else:
  *         return residuals, smoothness_penalty             # <<<<<<<<<<<<<<
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_residuals); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 624, __pyx_L1_error)
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_residuals); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 623, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyFloat_FromDouble(__pyx_v_smoothness_penalty); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 624, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 624, __pyx_L1_error)
+    __pyx_t_5 = PyFloat_FromDouble(__pyx_v_smoothness_penalty); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 623, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 623, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3);
-    __Pyx_GIVEREF(__pyx_t_4);
-    PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_5);
     __pyx_t_3 = 0;
-    __pyx_t_4 = 0;
-    __pyx_r = __pyx_t_5;
     __pyx_t_5 = 0;
+    __pyx_r = __pyx_t_4;
+    __pyx_t_4 = 0;
     goto __pyx_L0;
   }
 

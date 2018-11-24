@@ -141,7 +141,7 @@ def _warp(np.ndarray[float64, ndim=2] image,
     cdef np.ndarray[int8, ndim = 2] morphed_mask = (
         np.zeros([nx, ny], dtype=np.int8))
 
-    morphed_mask[mask>0] = 1.0
+    morphed_mask[mask > 0] = 1.0
 
     cdef np.ndarray[float64, ndim = 3] gradient_values = (
         np.zeros([2, nx, ny], dtype=np.float64))
@@ -228,10 +228,10 @@ def _warp(np.ndarray[float64, ndim=2] image,
             f11 = (mask[x_floor, y_floor] - mask[x_ceil, y_floor]
                    - mask[x_floor, y_ceil] + mask[x_ceil, y_ceil])
 
-            morphed_mask[x, y] = <int8>(f00 + dx * f10 + dy * f01
-                                        + dx * dy * f11)
+            morphed_mask[x, y] = <int8> (f00 + dx * f10 + dy * f01
+                                         + dx * dy * f11)
 
-    morphed_mask[morphed_mask != 0 ] = 1
+    morphed_mask[morphed_mask != 0] = 1
     if gradient:
         return new_image, morphed_mask, gradient_values
     else:
@@ -474,7 +474,7 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
                                        return_index=True,
                                        return_counts=True)):
         j_min[m] = j
-        j_max[m] = j + counts - 1
+        j_max[m] = j + counts
 
     cdef np.ndarray[float64, ndim = 2] morphed_image
     cdef np.ndarray[int8, ndim = 2] morph_mask
@@ -501,21 +501,20 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
                                                           displacement,
                                                           gradient=True)
 
-        morph_mask[mask>0] = 1
+        morph_mask[mask > 0] = 1
 
         buffer = (2 * (input_image - morphed_image))
-        buffer[morph_mask==1]=0
+        buffer[morph_mask == 1] = 0
 
         for i in prange(x_image_size, schedule='dynamic', nogil=True):
             for j in range(y_image_size):
                 _gradient_data[0, i, j] *= buffer[i, j]
                 _gradient_data[1, i, j] *= buffer[i, j]
 
-
         for l in prange(x_sectors, schedule='dynamic', nogil=True):
             for m in range(y_sectors):
-                for i in range(i_min[l], i_max[l] + 1):
-                    for j in range(j_min[m], j_max[m] + 1):
+                for i in range(i_min[l], i_max[l]):
+                    for j in range(j_min[m], j_max[m]):
                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
                                                     * interp_coef[0, i, j])
 
@@ -523,8 +522,8 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
                                                     * interp_coef[0, i, j])
 
             for m in range(1, y_sectors):
-                for i in range(i_min[l], i_max[l] + 1):
-                    for j in range(j_min[m-1], j_max[m-1] + 1):
+                for i in range(i_min[l], i_max[l]):
+                    for j in range(j_min[m - 1], j_max[m - 1]):
                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
                                                     * interp_coef[1, i, j])
 
@@ -533,16 +532,16 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
 
         for l in prange(1, x_sectors, schedule='dynamic', nogil=True):
             for m in range(y_sectors):
-                for i in range(i_min[l-1], i_max[l-1] + 1):
-                    for j in range(j_min[m], j_max[m] + 1):
+                for i in range(i_min[l - 1], i_max[l - 1]):
+                    for j in range(j_min[m], j_max[m]):
                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
                                                     * interp_coef[2, i, j])
                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]
                                                     * interp_coef[2, i, j])
 
             for m in range(1, y_sectors):
-                for i in range(i_min[l-1], i_max[l-1] + 1):
-                    for j in range(j_min[m-1], j_max[m-1] + 1):
+                for i in range(i_min[l - 1], i_max[l - 1]):
+                    for j in range(j_min[m - 1], j_max[m - 1]):
                         grad_residuals[0, l, m] += (_gradient_data[0, i, j]
                                                     * interp_coef[3, i, j])
                         grad_residuals[1, l, m] += (_gradient_data[1, i, j]
@@ -555,7 +554,7 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
                                           mask,
                                           displacement,
                                           gradient=False)
-        morph_mask[mask>0] = 1
+        morph_mask[mask > 0] = 1
         residuals = np.sum((morphed_image - input_image)[morph_mask == 0] ** 2)
 
     # Compute smoothness constraint part of the cost function

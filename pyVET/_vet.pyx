@@ -17,6 +17,7 @@ cimport numpy as np
 
 ctypedef np.float64_t float64
 ctypedef np.int8_t int8
+ctypedef np.intp_t intp
 
 from libc.math cimport floor, round
 
@@ -24,6 +25,10 @@ cimport numpy as np
 
 cdef inline float64 float_abs(float64 a) nogil: return a if a > 0. else -a
 """ Return the absolute value of a float """
+
+cdef inline intp int_min(intp a, intp b) nogil: return a if a < b else b
+
+cdef inline intp int_max(intp a, intp b) nogil: return a if a > b else b
 
 @cython.cdivision(True)
 cdef inline float64 _linear_interpolation(float64 x,
@@ -65,6 +70,7 @@ cdef inline float64 _bilinear_interpolation(float64 x,
 @cython.nonecheck(False)
 @cython.cdivision(True)
 def _warp(np.ndarray[float64, ndim=2] image,
+          np.ndarray[int8, ndim=2] mask,
           np.ndarray[float64, ndim=3] displacement,
           bint gradient=False):
     """
@@ -126,32 +132,34 @@ def _warp(np.ndarray[float64, ndim=2] image,
         returned.
     """
 
-    cdef np.intp_t nx = <np.intp_t> image.shape[0]
-    cdef np.intp_t ny = <np.intp_t> image.shape[1]
+    cdef intp nx = <intp> image.shape[0]
+    cdef intp ny = <intp> image.shape[1]
 
     cdef np.ndarray[float64, ndim = 2] new_image = (
         np.zeros([nx, ny], dtype=np.float64))
 
-    cdef np.ndarray[int8, ndim = 2] mask = (
+    cdef np.ndarray[int8, ndim = 2] morphed_mask = (
         np.zeros([nx, ny], dtype=np.int8))
+
+    morphed_mask[mask > 0] = 1.0
 
     cdef np.ndarray[float64, ndim = 3] gradient_values = (
         np.zeros([2, nx, ny], dtype=np.float64))
 
-    cdef np.intp_t x, y
+    cdef intp x, y
 
-    cdef np.intp_t x_max_int = nx - 1
-    cdef np.intp_t y_max_int = ny - 1
+    cdef intp x_max_int = nx - 1
+    cdef intp y_max_int = ny - 1
 
     cdef float64 x_max_float = <float64> x_max_int
     cdef float64 y_max_float = <float64> y_max_int
 
     cdef float64 x_float, y_float, dx, dy
 
-    cdef np.intp_t x_floor
-    cdef np.intp_t x_ceil
-    cdef np.intp_t y_floor
-    cdef np.intp_t y_ceil
+    cdef intp x_floor
+    cdef intp x_ceil
+    cdef intp y_floor
+    cdef intp y_ceil
 
     cdef float64 f00, f10, f01, f11
 
@@ -162,35 +170,35 @@ def _warp(np.ndarray[float64, ndim=2] image,
             y_float = (<float64> y) - displacement[1, x, y]
 
             if x_float < 0:
-                mask[x, y] = 1
+                morphed_mask[x, y] = 1
                 x_float = 0
                 x_floor = 0
                 x_ceil = 0
 
             elif x_float > x_max_float:
-                mask[x, y] = 1
+                morphed_mask[x, y] = 1
                 x_float = x_max_float
                 x_floor = x_max_int
                 x_ceil = x_max_int
 
             else:
-                x_floor = <np.intp_t> floor(x_float)
+                x_floor = <intp> floor(x_float)
                 x_ceil = x_floor + 1
                 if x_ceil > x_max_int:
                     x_ceil = x_max_int
 
             if y_float < 0:
-                mask[x, y] = 1
+                morphed_mask[x, y] = 1
                 y_float = 0
                 y_floor = 0
                 y_ceil = 0
             elif y_float > y_max_float:
-                mask[x, y] = 1
+                morphed_mask[x, y] = 1
                 y_float = y_max_float
                 y_floor = y_max_int
                 y_ceil = y_max_int
             else:
-                y_floor = <np.intp_t> floor(y_float)
+                y_floor = <intp> floor(y_float)
                 y_ceil = y_floor + 1
                 if y_ceil > y_max_int:
                     y_ceil = y_max_int
@@ -214,10 +222,20 @@ def _warp(np.ndarray[float64, ndim=2] image,
                 gradient_values[0, x, y] = f10 + dy * f11
                 gradient_values[1, x, y] = f01 + dx * f11
 
+            f00 = mask[x_floor, y_floor]
+            f10 = mask[x_ceil, y_floor] - mask[x_floor, y_floor]
+            f01 = mask[x_floor, y_ceil] - mask[x_floor, y_floor]
+            f11 = (mask[x_floor, y_floor] - mask[x_ceil, y_floor]
+                   - mask[x_floor, y_ceil] + mask[x_ceil, y_ceil])
+
+            morphed_mask[x, y] = <int8> (f00 + dx * f10 + dy * f01
+                                         + dx * dy * f11)
+
+    morphed_mask[morphed_mask != 0] = 1
     if gradient:
-        return new_image, mask, gradient_values
+        return new_image, morphed_mask, gradient_values
     else:
-        return new_image, mask
+        return new_image, morphed_mask
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -333,11 +351,11 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
     
     """
 
-    cdef np.intp_t x_sectors = <np.intp_t> sector_displacement.shape[1]
-    cdef np.intp_t y_sectors = <np.intp_t> sector_displacement.shape[2]
+    cdef intp x_sectors = <intp> sector_displacement.shape[1]
+    cdef intp y_sectors = <intp> sector_displacement.shape[2]
 
-    cdef np.intp_t x_image_size = <np.intp_t> template_image.shape[0]
-    cdef np.intp_t y_image_size = <np.intp_t> template_image.shape[1]
+    cdef intp x_image_size = <intp> template_image.shape[0]
+    cdef intp y_image_size = <intp> template_image.shape[1]
 
     if x_image_size % x_sectors != 0:
         raise ValueError("Error computing cost function.\n",
@@ -349,32 +367,120 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
                          "The number of sectors in y axis (axis=1) don't"
                          + " divide the image size")
 
-    cdef np.intp_t x_block_size = (
-        <np.intp_t> (round(x_image_size / x_sectors)))
+    cdef intp x_sector_size = (
+        <intp> (round(x_image_size / x_sectors)))
 
-    cdef np.intp_t y_block_size = (
-        <np.intp_t> (round(y_image_size / y_sectors)))
+    cdef intp y_sector_size = (
+        <intp> (round(y_image_size / y_sectors)))
 
-    cdef np.ndarray[float64, ndim = 3] real_displacement = (
+    cdef np.ndarray[float64, ndim = 3] displacement = (
         np.zeros([2, x_image_size, y_image_size], dtype=np.float64))
 
-    cdef np.intp_t  x, y, i, j, l, m
+    cdef intp  i, j, xy, l, m, ll, mm, i_sec, j_sec
+    cdef intp l0, m0, l1, m1, i_shift, j_shift
 
-    for i in prange(x_sectors, schedule='dynamic', nogil=True):
-        for j in range(y_sectors):
-            for l in range(x_block_size):
-                for m in range(y_block_size):
-                    x = l + i * x_block_size
-                    y = m + j * y_block_size
+    i_shift = (x_sector_size // 2)
+    j_shift = (y_sector_size // 2)
 
-                    real_displacement[0, x, y] = sector_displacement[0, i, j]
-                    real_displacement[1, x, y] = sector_displacement[1, i, j]
+    #Assume regular grid with constant grid spacing.
+
+    cdef np.ndarray[float64, ndim = 1] x
+    cdef np.ndarray[float64, ndim = 1] y
+    x = np.arange(x_image_size, dtype='float64')
+    y = np.arange(y_image_size, dtype='float64')
+
+    cdef np.ndarray[float64, ndim = 1] x_guess
+    cdef np.ndarray[float64, ndim = 1] y_guess
+
+    x_guess = x.reshape((x_sectors, x_sector_size)).mean(axis=1)
+    y_guess = y.reshape((y_sectors, y_sector_size)).mean(axis=1)
+
+    cdef float64 sector_area
+
+    cdef np.ndarray[float64, ndim = 3] interp_coef
+
+    interp_coef = np.zeros([4, x_image_size, y_image_size], dtype=np.float64)
+
+    cdef np.ndarray[intp, ndim = 1] l_i = np.zeros(x_image_size, dtype=np.intp)
+    cdef np.ndarray[intp, ndim = 1] m_j = np.zeros(y_image_size, dtype=np.intp)
+
+    cdef np.ndarray[intp, ndim = 1] i_min = np.full(x_sectors,
+                                                    x_image_size,
+                                                    dtype=np.intp)
+
+    cdef np.ndarray[intp, ndim = 1] i_max = np.full(x_sectors,
+                                                    x_image_size,
+                                                    dtype=np.intp)
+
+    cdef np.ndarray[intp, ndim = 1] j_min = np.full(y_sectors,
+                                                    y_image_size,
+                                                    dtype=np.intp)
+
+    cdef np.ndarray[intp, ndim = 1] j_max = np.full(y_sectors,
+                                                    y_image_size,
+                                                    dtype=np.intp)
+
+    for i in prange(x_image_size, schedule='dynamic', nogil=True):
+
+        l0 = int_min((i - i_shift) // x_sector_size, x_sectors - 2)
+        l0 = int_max(l0, 0)
+        l1 = l0 + 1
+
+        l_i[i] = l0
+
+        for j in range(y_image_size):
+            m0 = int_min((j - j_shift) // y_sector_size, y_sectors - 2)
+            m0 = int_max(m0, 0)
+            m1 = m0 + 1
+
+            m_j[j] = m0
+
+            sector_area = (x_guess[m1] - x_guess[m0]) * (y_guess[m1] - y_guess[m0])
+            interp_coef[0, i, j] = (x_guess[l1] * y_guess[m1]
+                                    - x[i] * y_guess[m1]
+                                    - x_guess[l1] * y[j]
+                                    + x[i] * y[j]) / sector_area
+
+            interp_coef[1, i, j] = (-x_guess[l1] * y_guess[m0]
+                                    + x[i] * y_guess[m0]
+                                    + x_guess[l1] * y[j]
+                                    - x[i] * y[j]) / sector_area
+
+            interp_coef[2, i, j] = (-x_guess[l0] * y_guess[m1]
+                                    + x[i] * y_guess[m1]
+                                    + x_guess[l0] * y[j]
+                                    - x[i] * y[j]) / sector_area
+
+            interp_coef[3, i, j] = (x_guess[l0] * y_guess[m0]
+                                    - x[i] * y_guess[m0]
+                                    - x_guess[l0] * y[j]
+                                    + x[i] * y[j]) / sector_area
+
+            for xy in range(2):
+                displacement[xy, i, j] = (
+                        sector_displacement[xy, l0, m0] * interp_coef[0, i, j]
+                        + sector_displacement[xy, l0, m1] * interp_coef[1, i, j]
+                        + sector_displacement[xy, l1, m0] * interp_coef[2, i, j]
+                        + sector_displacement[xy, l1, m1] * interp_coef[3, i, j]
+                )
+
+    for l, i, counts in zip(*np.unique(l_i,
+                                       return_index=True,
+                                       return_counts=True)):
+        i_min[l] = i
+        i_max[l] = i + counts - 1
+
+    for m, j, counts in zip(*np.unique(m_j,
+                                       return_index=True,
+                                       return_counts=True)):
+        j_min[m] = j
+        j_max[m] = j + counts
 
     cdef np.ndarray[float64, ndim = 2] morphed_image
     cdef np.ndarray[int8, ndim = 2] morph_mask
     cdef np.ndarray[float64, ndim = 3] _gradient_data
-    cdef np.ndarray[float64, ndim = 3] gradient_residuals
-    cdef np.ndarray[float64, ndim = 3] gradient_smooth
+    cdef np.ndarray[float64, ndim = 3] grad_residuals
+    cdef np.ndarray[float64, ndim = 3] grad_smooth
 
     cdef np.ndarray[float64, ndim = 2] buffer = \
         np.zeros([x_image_size, y_image_size], dtype=np.float64)
@@ -384,41 +490,72 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
     # Compute residual part of the cost function
     if gradient:
 
-        gradient_smooth = np.zeros([2, x_sectors, y_sectors],
-                                   dtype=np.float64)
+        grad_smooth = np.zeros([2, x_sectors, y_sectors],
+                               dtype=np.float64)
 
-        gradient_residuals = np.zeros([2, x_sectors, y_sectors],
-                                      dtype=np.float64)
+        grad_residuals = np.zeros([2, x_sectors, y_sectors],
+                                  dtype=np.float64)
 
         morphed_image, morph_mask, _gradient_data = _warp(template_image,
-                                                          real_displacement,
+                                                          mask,
+                                                          displacement,
                                                           gradient=True)
-        mask[morph_mask == 1] = 1
+
+        morph_mask[mask > 0] = 1
+
         buffer = (2 * (input_image - morphed_image))
+        buffer[morph_mask == 1] = 0
 
-        # Sum over each sector.
-        for i in prange(x_sectors, schedule='dynamic', nogil=True):
-            for j in range(y_sectors):
-                for l in range(x_block_size):
-                    for m in range(y_block_size):
+        for i in prange(x_image_size, schedule='dynamic', nogil=True):
+            for j in range(y_image_size):
+                _gradient_data[0, i, j] *= buffer[i, j]
+                _gradient_data[1, i, j] *= buffer[i, j]
 
-                        x = l + i * x_block_size
-                        y = m + j * y_block_size
+        for l in prange(x_sectors, schedule='dynamic', nogil=True):
+            for m in range(y_sectors):
+                for i in range(i_min[l], i_max[l]):
+                    for j in range(j_min[m], j_max[m]):
+                        grad_residuals[0, l, m] += (_gradient_data[0, i, j]
+                                                    * interp_coef[0, i, j])
 
-                        if mask[x, y] == 0:
-                            gradient_residuals[0, i, j] += \
-                                _gradient_data[0, x, y] * buffer[x, y]
+                        grad_residuals[1, l, m] *= (_gradient_data[1, i, j]
+                                                    * interp_coef[0, i, j])
 
-                            gradient_residuals[1, i, j] += \
-                                _gradient_data[1, x, y] * buffer[x, y]
+            for m in range(1, y_sectors):
+                for i in range(i_min[l], i_max[l]):
+                    for j in range(j_min[m - 1], j_max[m - 1]):
+                        grad_residuals[0, l, m] += (_gradient_data[0, i, j]
+                                                    * interp_coef[1, i, j])
+
+                        grad_residuals[1, l, m] += (_gradient_data[0, i, j]
+                                                    * interp_coef[1, i, j])
+
+        for l in prange(1, x_sectors, schedule='dynamic', nogil=True):
+            for m in range(y_sectors):
+                for i in range(i_min[l - 1], i_max[l - 1]):
+                    for j in range(j_min[m], j_max[m]):
+                        grad_residuals[0, l, m] += (_gradient_data[0, i, j]
+                                                    * interp_coef[2, i, j])
+                        grad_residuals[1, l, m] += (_gradient_data[1, i, j]
+                                                    * interp_coef[2, i, j])
+
+            for m in range(1, y_sectors):
+                for i in range(i_min[l - 1], i_max[l - 1]):
+                    for j in range(j_min[m - 1], j_max[m - 1]):
+                        grad_residuals[0, l, m] += (_gradient_data[0, i, j]
+                                                    * interp_coef[3, i, j])
+                        grad_residuals[1, l, m] += (_gradient_data[1, i, j]
+                                                    * interp_coef[3, i, j])
+
 
     else:
 
         morphed_image, morph_mask = _warp(template_image,
-                                          real_displacement,
+                                          mask,
+                                          displacement,
                                           gradient=False)
-        mask[morph_mask == 1] = 1
-        residuals = np.sum((morphed_image - input_image)[mask == 0] ** 2)
+        morph_mask[mask > 0] = 1
+        residuals = np.sum((morphed_image - input_image)[morph_mask == 0] ** 2)
 
     # Compute smoothness constraint part of the cost function
     cdef float64 smoothness_penalty = 0
@@ -431,44 +568,44 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
 
     if smooth_gain > 0.:
 
-        for i in range(2):
+        for axis in range(2):
 
             inloop_smoothness_penalty = 0
 
-            for x in prange(1, x_sectors - 1, schedule='dynamic', nogil=True):
+            for l in prange(1, x_sectors - 1, schedule='dynamic', nogil=True):
 
-                for y in range(1, y_sectors - 1):
-                    df_dx2 = (sector_displacement[i, x + 1, y]
-                              - 2 * sector_displacement[i, x, y]
-                              + sector_displacement[i, x - 1, y])
+                for m in range(1, y_sectors - 1):
+                    df_dx2 = (sector_displacement[axis, l + 1, m]
+                              - 2 * sector_displacement[axis, l, m]
+                              + sector_displacement[axis, l - 1, m])
 
-                    df_dx2 = df_dx2 / (x_block_size * x_block_size)
+                    df_dx2 = df_dx2 / (x_sector_size * x_sector_size)
 
-                    df_dy2 = (sector_displacement[i, x, y + 1]
-                              - 2 * sector_displacement[i, x, y]
-                              + sector_displacement[i, x, y - 1])
+                    df_dy2 = (sector_displacement[axis, l, m + 1]
+                              - 2 * sector_displacement[axis, l, m]
+                              + sector_displacement[axis, l, m - 1])
 
-                    df_dy2 = df_dy2 / (y_block_size * y_block_size)
+                    df_dy2 = df_dy2 / (y_sector_size * y_sector_size)
 
-                    df_dxdy = (sector_displacement[i, x + 1, y + 1]
-                               - sector_displacement[i, x + 1, y - 1]
-                               - sector_displacement[i, x - 1, y + 1]
-                               + sector_displacement[i, x - 1, y - 1])
-                    df_dxdy = df_dxdy / (4 * x_block_size * y_block_size)
+                    df_dxdy = (sector_displacement[axis, l + 1, m + 1]
+                               - sector_displacement[axis, l + 1, m - 1]
+                               - sector_displacement[axis, l - 1, m + 1]
+                               + sector_displacement[axis, l - 1, m - 1])
+                    df_dxdy = df_dxdy / (4 * x_sector_size * y_sector_size)
 
                     if gradient:
-                        gradient_smooth[i, x, y] -= 2 * df_dx2
-                        gradient_smooth[i, x + 1, y] += df_dx2
-                        gradient_smooth[i, x - 1, y] += df_dx2
+                        grad_smooth[axis, l, m] -= 2 * df_dx2
+                        grad_smooth[axis, l + 1, m] += df_dx2
+                        grad_smooth[axis, l - 1, m] += df_dx2
 
-                        gradient_smooth[i, x, y] -= 2 * df_dy2
-                        gradient_smooth[i, x, y - 1] += df_dy2
-                        gradient_smooth[i, x, y + 1] += df_dy2
+                        grad_smooth[axis, l, m] -= 2 * df_dy2
+                        grad_smooth[axis, l, m - 1] += df_dy2
+                        grad_smooth[axis, l, m + 1] += df_dy2
 
-                        gradient_smooth[i, x - 1, y - 1] += df_dxdy
-                        gradient_smooth[i, x - 1, y + 1] -= df_dxdy
-                        gradient_smooth[i, x + 1, y - 1] -= df_dxdy
-                        gradient_smooth[i, x + 1, y + 1] += df_dxdy
+                        grad_smooth[axis, l - 1, m - 1] += df_dxdy
+                        grad_smooth[axis, l - 1, m + 1] -= df_dxdy
+                        grad_smooth[axis, l + 1, m - 1] -= df_dxdy
+                        grad_smooth[axis, l + 1, m + 1] += df_dxdy
 
                     inloop_smoothness_penalty = (df_dx2 * df_dx2
                                                  + 2 * df_dxdy * df_dxdy
@@ -476,11 +613,11 @@ def _cost_function(np.ndarray[float64, ndim=3] sector_displacement,
 
                     smoothness_penalty += inloop_smoothness_penalty
 
-        smoothness_penalty *= smooth_gain  #* x_block_size * y_block_size
+        smoothness_penalty *= smooth_gain  #* x_sector_size * y_sector_size
 
     if gradient:
-        gradient_smooth *= 2 * smooth_gain  #* x_block_size * y_block_size
+        grad_smooth *= 2 * smooth_gain  #* x_sector_size * y_sector_size
 
-        return gradient_residuals + gradient_smooth
+        return grad_residuals + grad_smooth
     else:
         return residuals, smoothness_penalty

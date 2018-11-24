@@ -146,10 +146,17 @@ def morph(image, displacement, gradient=False):
 
     """
 
+    if not isinstance(image, MaskedArray):
+        _mask = numpy.zeros_like(image, dtype='int8')
+    else:
+        _mask = numpy.asarray(numpy.ma.getmaskarray(image),
+                              dtype='int8')
+
     _image = numpy.asarray(image, dtype='float64', order='C')
     _displacement = numpy.asarray(displacement, dtype='float64', order='C')
 
-    return _warp(_image, _displacement, gradient=gradient)
+    # return _warp(_image, _displacement, gradient=gradient)
+    return _warp(_image, _mask, _displacement, gradient=gradient)
 
 
 def downsize(input_array, x_factor, y_factor=None):
@@ -325,28 +332,19 @@ def vet_cost_function(sector_displacement_1d,
             smoothness_penalty += _smoothness
 
         if debug:
-            print()
-            print("residuals", residuals)
+            print("\nresiduals", residuals)
             print("smoothness_penalty", smoothness_penalty)
 
         return residuals + smoothness_penalty
 
 
-# TODO: Implement support for 3 times.
-# This can be done by:
-# * Allowing the input_images to have more than 2 times
-# * Adding the corresponding times of each image
-# * Add the # image to be taken as reference.
-# * The cost function is the sum of all the cost functions for each pair of
-# image, reference image.
 def vet(input_images,
-        sectors=((32, 16, 4, 2, 1), (32, 16, 4, 2, 1)),
-        smooth_gain=100,
+        sectors=((32, 16, 4, 2), (32, 16, 4, 2)),
+        smooth_gain=1e6,
         first_guess=None,
         intermediate_steps=False,
         verbose=True,
         indexing='ij',
-        method='BFGS',
         options=None):
     """
     Variational Echo Tracking Algorithm presented in
@@ -377,7 +375,16 @@ def vet(input_images,
 
     If a first guess is not given, zero displacements are used as first guess.
 
-    Internally, the function uses the `scipy minimization`_ function.
+    To minimize the cost function, the `scipy minimization`_ function is used
+    with the 'CG' method. This method proved to give the best results under
+    any different conditions and is the most similar one to the original VET
+    implementation in `Laroche and Zawadzki (1995)`_.
+
+
+    The method CG uses a nonlinear conjugate gradient algorithm by Polak and
+    Ribiere, a variant of the Fletcher-Reeves method described in
+    Nocedal and Wright (2006), pp. 120-122.
+
 
     .. _MaskedArray: https://docs.scipy.org/doc/numpy/reference/\
         maskedarray.baseclass.html#numpy.ma.MaskedArray
@@ -429,15 +436,9 @@ def vet(input_images,
         dimensions of the input are (time, longitude, latitude), while
         'yx' indicates (time, latitude, longitude).
 
-    method : str or callable, optional
-        Type of solver. See `scipy minimization`_ function for more details.
-        The quasi-Newton method of Broyden, Fletcher, Goldfarb, and Shanno
-        (BFGS) is used by default.
-
     options : dict, optional
         A dictionary of solver options.
         See `scipy minimization`_ function for more details.
-
 
     .. _`scipy minimization` : https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html
 
@@ -468,6 +469,9 @@ def vet(input_images,
     Radar Images.  Part I: Description of the Methodology.
     Mon. Wea. Rev., 130, 2859–2873,
     doi: 10.1175/1520-0493(2002)130<2859:SDOTPO>2.0.CO;2.
+
+    Nocedal, J, and S J Wright. 2006. Numerical Optimization. Springer New York.
+
     """
 
     if verbose:
@@ -483,6 +487,8 @@ def vet(input_images,
     else:
         options = dict(options)
 
+    method = 'CG'
+
     options.setdefault('eps', 0.1)
     options.setdefault('gtol', 0.1)
     options.setdefault('maxiter', 100)
@@ -495,8 +501,6 @@ def vet(input_images,
     sectors_in_j = None
 
     debug_print("Running VET algorithm")
-
-    input_images = numpy.array(input_images, dtype=numpy.float64)
 
     if indexing == 'yx':
         input_images = numpy.swapaxes(input_images, 1, 2)
@@ -527,14 +531,14 @@ def vet(input_images,
     # Create a 2D mask with the right data type for _vet
     mask = numpy.asarray(numpy.any(mask, axis=0), dtype='int8')
 
-    input_images = numpy.asarray(input_images.data, dtype=numpy.float64)
+    input_images = numpy.asarray(input_images.data, dtype='float64')
 
     # Check that the sectors divide the domain
-    sectors = numpy.asarray(sectors, dtype=numpy.int)
+    sectors = numpy.asarray(sectors, dtype="int")
 
     if sectors.ndim == 1:
 
-        new_sectors = (numpy.zeros((2,) + sectors.shape, dtype=numpy.int)
+        new_sectors = (numpy.zeros((2,) + sectors.shape, dtype='int')
                        + sectors.reshape((1, sectors.shape[0]))
                        )
         sectors = new_sectors
@@ -555,10 +559,13 @@ def vet(input_images,
         first_guess = numpy.zeros(first_guess_shape, order='C')
     else:
         if first_guess.shape != first_guess_shape:
-            raise ValueError("The shape of the initial guess do not match " +
-                             "the sectors coarse resolution")
+            raise ValueError(
+                "The shape of the initial guess do not match the number of "
+                + "sectors of the first scaling guess\n"
+                + "first_guess.shape={}\n".format(str(first_guess.shape))
+                + "Expected shape={}".format(str(first_guess_shape)))
         else:
-            first_guess = numpy.asarray(first_guess, order='C')
+            first_guess = numpy.asarray(first_guess, order='C', dtype='float64')
 
     scaling_guesses = list()
 

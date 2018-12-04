@@ -3,13 +3,23 @@
 pyVET -- Variational Echo Tracking Algorithm
 ============================================
 
- * UNDER DEVELOPMENT!!! *
-
-The pyVET package provides a python implementation of the 
+The pyVET package provides a python implementation of the
 Variational Echo Tracking presented in Laroche and Zawadzki (1995).
 
-This algorithm is used by the McGill Algorithm for Prediction by 
+This algorithm is used by the McGill Algorithm for Prediction by
 Lagrangian Extrapolation (MAPLE) described in Germann and Zawadzki (2002).
+
+
+IMPORTANT
+=========
+
+**This project is now part of the  pySTEPS_ nowcasting initiative.**
+The latest version of pyVET can be found in https://github.com/pySTEPS/pysteps
+
+This repository is deprecated and if left here to mantain a registry of the
+pyVET development history, but be aware that is not up to date.
+
+.. _pySTEPS : https://github.com/pySTEPS/pysteps
 
 
 

@@ -6,7 +6,7 @@ IMPORTANT!: Project moved to the pySTEPS nowcasting initiative
 **This project is now part of the  pySTEPS_ nowcasting initiative.**
 The latest version of pyVET can be found in https://github.com/pySTEPS/pysteps
 
-This repository is deprecated and if left here to mantain a registry of the
+This repository is deprecated and it is left here to maintain a registry of the
 pyVET development history, but be aware that is not up to date.
 
 .. _pySTEPS : https://github.com/pySTEPS/pysteps
